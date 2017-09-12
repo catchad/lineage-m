@@ -1,0 +1,26 @@
+block variables
+
+doctype html
+html(lang="zh-tw")
+	head
+		meta(charset="UTF-8")
+		meta(name="viewport", content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0")
+		title 天堂M #{title}
+		block head
+	body
+		header
+			a(href="/")
+				img(src="assets/images/logo.png")
+			ul
+				li
+					a(href="/") 活動首頁
+				li
+					a(href="register.html") 預先登錄
+				li
+					a(href="treasure.html") 狂抽奪寶
+				li
+					a(href="analysis.html") 戰力評比
+		block content
+
+		block script
+		
