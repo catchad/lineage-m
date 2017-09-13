@@ -1,5 +1,8 @@
 @import "_common.scss";
 
+body {
+	overflow: hidden;
+}
 header {
 	background-color: rgba(0,0,0,0.7);
 	box-shadow: 0px 3px 20px 7px rgba(0, 0, 0, 0.6);
@@ -12,4 +15,47 @@ main {
 	background-image: url(../images/register-bg.jpg);
 	background-size: cover;
 	background-position: center;
+}
+
+#form {
+
+	text-align: center;
+
+	.wrapper {
+		width: 600px;
+		margin: 0 auto;
+	}
+	// .title {
+
+	// }
+	table {
+		width: 100%;
+		max-width: 450px;
+		margin: 0 auto;
+		border-collapse: separate;
+		border-spacing: 0px 1em;
+		font-size: 1.2em;
+		
+	}
+	td {
+		font-weight: 100;
+		&:nth-child(1) {
+			width: 120px;
+			text-align: left;
+		}
+		&:nth-child(2) {
+			padding-left: 20px;
+		}
+	}
+
+	img.block {
+		display: block;
+		margin: 0 auto;
+	}
+
+	// p {
+	// 	font-weight: 100;
+	// }
+
+	
 }

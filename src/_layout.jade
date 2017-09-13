@@ -6,8 +6,17 @@ html(lang="zh-tw")
 		meta(charset="UTF-8")
 		meta(name="viewport", content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0")
 		title 天堂M #{title}
+		script.
+			(function(d, s, id) {
+			var js, fjs = d.getElementsByTagName(s)[0];
+			if (d.getElementById(id)) return;
+			js = d.createElement(s); js.id = id;
+			js.src = "//connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.10&appId=357364581351235";
+			fjs.parentNode.insertBefore(js, fjs);
+			}(document, 'script', 'facebook-jssdk'));
 		block head
 	body
+		#fb-root
 		header
 			a(href="/")
 				img(src="assets/images/logo.png")
@@ -22,5 +31,6 @@ html(lang="zh-tw")
 					a(href="analysis.html") 戰力評比
 		block content
 
+		script(src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.4.3/vue.min.js")
 		block script
 		

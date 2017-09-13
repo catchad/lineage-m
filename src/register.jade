@@ -9,7 +9,51 @@ block head
 block content
 	main
 		section
-			p register
+			canvas(id="pixiCanvas")
+			#form.lightbox(v-bind:class="{active: show}")
+				img(class="close", src="http://fakeimg.pl/60x60/", alt="close", v-on:click="closeForm")
+				.wrapper
+					img(class="block", src="http://fakeimg.pl/250x100/", alt="預先登錄")
+					form
+						table
+							tr
+								td
+									p STEP1
+									p 登入排隊
+								td
+									img(src="http://fakeimg.pl/60x60/", alt="facebook")
+									img(src="http://fakeimg.pl/60x60/", alt="googleplus")
+									img(src="http://fakeimg.pl/60x60/", alt="beanfun")
+							tr
+								td
+									p STEP2
+									p FB按讚
+								td
+									.fb-like(data-href="https://developers.facebook.com/docs/plugins/", data-width="200", data-layout="standard", data-action="like", data-size="small", data-show-faces="false", data-share="false")
 
+							tr
+								td
+									p STEP3
+									p
+										| 留下電話號碼
+										br
+										| 或電子信箱
+								td
+									input(type="text")
+									input(type="text")
+							tr
+								td
+									p STEP4
+									p 完成獎勵
+								td
+									img(src="http://fakeimg.pl/200x100/")
+						div
+							input(type="checkbox")
+							label 我同意遊戲橘子『隱私權政策』履行您個人資料的搜集與運用
+						p 預先註冊
+						img(class="block", src="http://fakeimg.pl/200x70/")
+						img(class="block", src="http://fakeimg.pl/250x100/")
+								
 block script
+	script(src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.5.5/pixi.min.js")
 	script(src="assets/scripts/register.js")
