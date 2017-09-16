@@ -9,12 +9,13 @@ block head
 block content
 	main
 		.debug
-			button(data-to="page1") page1
+			button.selected(data-to="page1") page1
 			button(data-to="page2") page2
 			button(data-to="page3") page3
 			button(data-to="page4") page4
 			button(data-to="page5") page5
-			//- button(data-to="page6") page6
+			button(data-to="page6") page6
+			button(data-to="page7") page7
 		section#title
 			img(src="assets/images/analysis/title.png", alt="")
 		section#page1.page.show
@@ -128,8 +129,49 @@ block content
 			.btn.btn-job-submit
 				.btn-container
 					p 進入測驗
-			
 			.placeholder
+		section#page6.page
+			.placeholder
+			.quiz-container.quiz1
+				.quiz-title
+					p 一、你會注重強化哪一種能力值呢？
+				.quiz-option-list
+					.quiz-option.option1(data-value="")
+						p A.力量
+					.quiz-option.option2(data-value="")
+						p B.敏捷
+					.quiz-option.option3(data-value="")
+						p C.智力
+					.quiz-option.option4(data-value="")
+						p D.體質
+				.quiz-progress-bar
+					.quiz-progress.done(data-qNum="1")
+					.quiz-progress(data-qNum="2")
+					.quiz-progress(data-qNum="3")
+					.quiz-progress(data-qNum="4")
+					.quiz-progress(data-qNum="5")
+					.quiz-progress(data-qNum="6")
+			.btn.btn-quiz-submit
+				.btn-container
+					p 下一題
+			.placeholder
+		section#page7.page
+			.subtitle
+				p 測驗結果
+			.final-img
+				img(src="assets/images/analysis/final.png", alt="")
+			.btn-list
+				.btn.btn-fb-share
+					.btn-container
+						img(src="assets/images/analysis/btn_icon_fb.png", alt="")
+						p 分享到Facebook
+				.btn.btn-line-share
+					.btn-container
+						img(src="assets/images/analysis/btn_icon_line.png", alt="")
+						p 分享到Line 
+			.placeholder
+
+
 
 
 block script

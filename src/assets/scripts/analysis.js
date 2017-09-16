@@ -1,6 +1,8 @@
 $(".debug button").on("click", function(){
 	$(".show").removeClass("show");
 	$("#"+$(this).data("to")).addClass("show");
+	$(".debug button.selected").removeClass("selected");
+	$(this).addClass("selected");
 })
 
 
@@ -18,4 +20,9 @@ $(".choose-frame").on("click", function() {
 		$(".old").removeClass("selected").addClass("not-selected");
 		$(".new").removeClass("not-selected").addClass("selected");
 	}
+})
+
+$(".quiz-option").on("click", function() {
+	$(".quiz-option.selected").removeClass("selected");
+	$(this).addClass("selected");
 })
