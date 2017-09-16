@@ -8,28 +8,130 @@ block head
 
 block content
 	main
+		.debug
+			button(data-to="page1") page1
+			button(data-to="page2") page2
+			button(data-to="page3") page3
+			button(data-to="page4") page4
+			button(data-to="page5") page5
+			//- button(data-to="page6") page6
 		section#title
 			img(src="assets/images/analysis/title.png", alt="")
-
-		section#page1.page
-			.frame
-				.frame-container
+		section#page1.page.show
+			.subtitle
+				p 想了解你有多少戰力，並且超越多少人嗎？
+			.tel-container
+				p 輸入手機號碼
+				.tel-input
+			.btn.btn-tel-submit
+				.btn-container
+					p 立即登入
+			.placeholder
 		section#page2.page
 			.subtitle
 				p 請選擇資深玩家或天堂新血
 			.choose-container
-				.choose-frame.old
+				.choose-frame.old(data-stat="old")
 					.frame-container
 						p 資深玩家
-				.choose-frame.new
+						p 擁有天堂月/免服帳號，登入看角色戰力
+				.choose-frame.new(data-stat="new")
 					.frame-container
 						p 天堂新血
-			.btn
+						p 接受測驗了解自身潛力
+			.placeholder
+			.placeholder
+		section#page3.page
+			.placeholder
+			.char-table
+				.row
+					.check
+						.check-box.checked
+					.server
+						p 伺服器
+					.job
+						p 職業
+					.name
+						p 角色名稱
+				.row
+					.check
+						.check-box
+					.server
+						p 伺服器
+					.job
+						p 職業
+					.name
+						p 角色名稱
+				.row
+					.check
+						.check-box
+					.server
+						p 伺服器
+					.job
+						p 職業
+					.name
+						p 角色名稱
+				.row
+					.check
+						.check-box
+					.server
+						p 伺服器
+					.job
+						p 職業
+					.name
+						p 角色名稱
+				.row
+					.check
+						.check-box
+					.server
+						p 伺服器
+					.job
+						p 職業
+					.name
+						p 角色名稱
+			.btn.btn-char-submit
 				.btn-container
 					p 確認
-		section#page3.page
+			.placeholder
 		section#page4.page
+			.placeholder
+			.name-container
+				p 請輸入您的角色暱稱
+				.name-input
+
+			.btn.btn-name-submit
+				.btn-container
+					p 確認
+			.placeholder
+		section#page5.page
+			.subtitle
+				p 請選擇喜愛的職業並進入測驗
+			.choose-container
+				.img-container
+					.job.king
+						.card-container
+							img(src="assets/images/analysis/card_king.png", alt="")
+					.job.knight
+						.card-container
+							img(src="assets/images/analysis/card_knight.png", alt="")
+					.job.elf.selected
+						.card-container
+							img(src="assets/images/analysis/card_elf.png", alt="")
+					.job.wizard
+						.card-container
+							img(src="assets/images/analysis/card_wizard.png", alt="")
+				.clicker-container
+					.job-clicker(data-job="king")
+					.job-clicker(data-job="knight")
+					.job-clicker(data-job="elf")
+					.job-clicker(data-job="wizard")
+			.btn.btn-job-submit
+				.btn-container
+					p 進入測驗
+			
+			.placeholder
 
 
 block script
+	script(src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous")
 	script(src="assets/scripts/analysis.js")
