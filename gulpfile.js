@@ -105,7 +105,7 @@ gulp.task('webserver', function() {
             livereload: true,
             directoryListing: false,
             open: true,
-            fallback: '/index.html'
+            fallback: 'index.html'
         }));
 });
 
