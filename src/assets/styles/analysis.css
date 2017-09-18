@@ -107,6 +107,9 @@ div.lightbox {
     right: 10px;
     cursor: pointer; }
 
+* {
+  box-sizing: border-box; }
+
 main {
   position: relative;
   width: 100%;
@@ -117,8 +120,8 @@ main {
   color: #fff; }
   main .debug {
     position: fixed;
-    top: 200px;
-    left: 50px;
+    bottom: 0;
+    left: 0;
     z-index: 100; }
     main .debug button {
       background-color: #FFF;
@@ -126,14 +129,26 @@ main {
       main .debug button.selected {
         background-color: #000;
         color: #fff; }
+  main .canvas-test {
+    display: fixed;
+    z-index: 10000;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%; }
   main #title {
     position: relative;
     width: 100%;
-    height: 15%;
-    padding-top: 100px;
+    height: calc(15% + 75px);
+    padding-top: 75px;
     display: flex;
     justify-content: center;
-    align-items: center; }
+    align-items: center;
+    flex: 0 0 auto; }
+    @media screen and (max-width: 1000px) {
+      main #title {
+        height: calc(10% + 40px);
+        padding-top: 40px; } }
     main #title img {
       height: 100%;
       max-height: 126px; }
@@ -144,13 +159,31 @@ main {
     display: none;
     flex-direction: column;
     justify-content: space-between;
-    align-items: center; }
+    align-items: center;
+    overflow: hidden; }
+    @media screen and (max-width: 1000px) {
+      main .page {
+        height: calc(90% - 40px); } }
     main .page.show {
       display: flex; }
     main .page .subtitle {
       margin: 0 0 50px 0;
+      max-width: 80%;
       font-size: 1.5em;
-      color: #ffe6c5; }
+      color: #ffe6c5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap; }
+      @media screen and (max-width: 1000px) {
+        main .page .subtitle {
+          margin: 0 0 30px 0;
+          font-size: 1.3em; } }
+      @media screen and (max-width: 350px) {
+        main .page .subtitle {
+          font-size: 1em; } }
+      main .page .subtitle p {
+        padding: 5px 0; }
     main .page .frame {
       position: relative;
       width: 940px;
@@ -180,7 +213,7 @@ main {
         content: "";
         display: block;
         width: 100%;
-        padding-bottom: 49.1%; }
+        padding-bottom: 30.42%; }
       main .page .btn .btn-container {
         position: absolute;
         top: 0;
@@ -209,17 +242,25 @@ main {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    width: 80%; }
+    flex-wrap: wrap;
+    width: 85%; }
+    @media screen and (max-width: 1000px) {
+      main #page2 .choose-container {
+        width: 75%;
+        max-width: 650px;
+        margin-top: -30px; } }
     main #page2 .choose-container .choose-frame {
       position: relative;
-      width: 45%;
+      width: 50%;
       background-origin: center;
       background-size: 100% 100%;
       filter: brightness(50%);
       transition: 0.3s;
       cursor: pointer; }
-      main #page2 .choose-container .choose-frame:hover {
-        filter: brightness(100%); }
+      @media screen and (max-width: 1000px) {
+        main #page2 .choose-container .choose-frame {
+          width: 100%;
+          filter: brightness(100%); } }
       main #page2 .choose-container .choose-frame.selected {
         transform: scale(1.1);
         filter: brightness(100%); }
@@ -245,9 +286,20 @@ main {
         align-items: center; }
         main #page2 .choose-container .choose-frame .frame-container p {
           font-size: 1em; }
+          @media screen and (max-width: 1000px) {
+            main #page2 .choose-container .choose-frame .frame-container p {
+              font-size: 0.7em; } }
         main #page2 .choose-container .choose-frame .frame-container p:first-child {
           margin: 30px 0 10px 0;
           font-size: 2em; }
+          @media screen and (max-width: 1000px) {
+            main #page2 .choose-container .choose-frame .frame-container p:first-child {
+              margin: 20px 0 7px 0;
+              font-size: 1.5em; } }
+          @media screen and (max-width: 350px) {
+            main #page2 .choose-container .choose-frame .frame-container p:first-child {
+              margin: 10px 0 4px 0;
+              font-size: 1.2em; } }
     main #page2 .choose-container .old {
       background-image: url("../images/analysis/old.png"); }
     main #page2 .choose-container .new {
@@ -259,12 +311,18 @@ main {
     align-items: center;
     width: 90%;
     max-width: 600px; }
+    @media screen and (max-width: 1000px) {
+      main #page3 .char-table {
+        font-size: 0.8em; } }
     main #page3 .char-table .row {
       display: flex;
       width: 100%;
       padding: 30px 0;
       font-size: 1.5em;
       position: relative; }
+      @media screen and (max-width: 1000px) {
+        main #page3 .char-table .row {
+          padding: 20px 0; } }
       main #page3 .char-table .row::after {
         content: "";
         position: absolute;
@@ -299,28 +357,61 @@ main {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center; }
+    align-items: center;
+    width: 100%; }
     main #page4 .name-container p {
       font-size: 1.5em;
       color: #ffe6c5; }
+      @media screen and (max-width: 1000px) {
+        main #page4 .name-container p {
+          font-size: 1.2em; } }
     main #page4 .name-container .name-input {
       margin: 60px 0;
-      width: 300px;
+      width: 80%;
+      max-width: 300px;
       height: 40px;
       background-color: #fff; }
   main #page5 .choose-container {
     width: 90%;
     max-width: 1500px;
     position: relative; }
+    @media screen and (max-width: 1000px) {
+      main #page5 .choose-container {
+        width: 100%; }
+        main #page5 .choose-container::before {
+          content: "";
+          display: block;
+          width: 100%;
+          padding-bottom: 90%; } }
+    @media screen and (max-width: 1000px) {
+      main #page5 .choose-container.mobile .job0 {
+        left: calc((100% - 65%) / 2); } }
+    @media screen and (max-width: 1000px) {
+      main #page5 .choose-container.mobile .job1 {
+        left: calc((100% - 65%) / 2 - 65% * 1); } }
+    @media screen and (max-width: 1000px) {
+      main #page5 .choose-container.mobile .job2 {
+        left: calc((100% - 65%) / 2 - 65% * 2); } }
+    @media screen and (max-width: 1000px) {
+      main #page5 .choose-container.mobile .job3 {
+        left: calc((100% - 65%) / 2 - 65% * 3); } }
     main #page5 .choose-container .img-container {
       display: flex;
       justify-content: center;
       align-items: center;
       width: 100%; }
+      @media screen and (max-width: 1000px) {
+        main #page5 .choose-container .img-container {
+          position: absolute;
+          top: 50%;
+          left: calc((100% - 65%) / 2);
+          width: calc(65% * 4);
+          transform: translate(0%, -50%);
+          transition: 0.3s; } }
       main #page5 .choose-container .img-container .job {
         width: 25%;
         position: relative;
-        filter: brightness(30%);
+        filter: brightness(60%);
         transition: 0.3s; }
         main #page5 .choose-container .img-container .job.selected {
           filter: brightness(100%);
@@ -363,24 +454,56 @@ main {
       align-items: center;
       width: 100%;
       z-index: 2; }
+      @media screen and (max-width: 1000px) {
+        main #page5 .choose-container .clicker-container {
+          position: absolute;
+          top: 50%;
+          left: calc((100% - 65%) / 2);
+          width: calc(65% * 4);
+          transform: translate(0%, -50%); } }
       main #page5 .choose-container .clicker-container .job-clicker {
-        width: 25%; }
+        width: 25%;
+        cursor: pointer; }
         main #page5 .choose-container .clicker-container .job-clicker::before {
           content: "";
           display: block;
           width: 100%;
           padding-bottom: 127.68%; }
+  main #page5 .mobile-job-switch-list {
+    display: none;
+    margin: 10px 0; }
+    @media screen and (max-width: 1000px) {
+      main #page5 .mobile-job-switch-list {
+        display: flex;
+        justify-content: center;
+        align-items: center; } }
+    main #page5 .mobile-job-switch-list .job-switch {
+      width: 15px;
+      height: 15px;
+      background-color: #666;
+      margin: 0 8px;
+      transform: rotate(45deg); }
+      main #page5 .mobile-job-switch-list .job-switch.selected {
+        background-color: #ffe6c5; }
   main #page6 .quiz-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center; }
+    @media screen and (max-width: 1000px) {
+      main #page6 .quiz-container {
+        font-size: 0.8em;
+        width: 90%;
+        max-width: 400px; } }
     main #page6 .quiz-container .quiz-title {
       font-size: 1.5em;
       color: #ffe6c5; }
     main #page6 .quiz-container .quiz-option-list {
       padding: 50px 0;
       width: 100%; }
+      @media screen and (max-width: 1000px) {
+        main #page6 .quiz-container .quiz-option-list {
+          padding: 30px 0; } }
       main #page6 .quiz-container .quiz-option-list .quiz-option {
         width: 100%;
         font-size: 1.5em;
@@ -390,6 +513,9 @@ main {
         background-color: rgba(255, 246, 197, 0);
         transition: 0.2s;
         cursor: pointer; }
+        @media screen and (max-width: 1000px) {
+          main #page6 .quiz-container .quiz-option-list .quiz-option {
+            margin: 0; } }
         main #page6 .quiz-container .quiz-option-list .quiz-option:hover {
           background-color: rgba(255, 246, 197, 0.5); }
         main #page6 .quiz-container .quiz-option-list .quiz-option.selected {
@@ -405,6 +531,9 @@ main {
         background-color: #666;
         margin: 0 15px;
         transform: rotate(45deg); }
+        @media screen and (max-width: 1000px) {
+          main #page6 .quiz-container .quiz-progress-bar .quiz-progress {
+            margin: 10px; } }
         main #page6 .quiz-container .quiz-progress-bar .quiz-progress.done {
           background-color: #ffe6c5; }
   main #page7 .final-img {
@@ -416,7 +545,18 @@ main {
     display: flex;
     justify-content: center;
     align-items: center; }
+    @media screen and (max-width: 1000px) {
+      main #page7 .btn-list {
+        flex-direction: column; } }
     main #page7 .btn-list .btn {
       width: 300px; }
+      @media screen and (max-width: 1000px) {
+        main #page7 .btn-list .btn {
+          width: 200px;
+          font-size: 0.7em; } }
       main #page7 .btn-list .btn .btn-container img {
         margin-right: 10px; }
+        @media screen and (max-width: 1000px) {
+          main #page7 .btn-list .btn .btn-container img {
+            margin-right: 5px;
+            width: 20px; } }

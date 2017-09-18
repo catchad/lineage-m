@@ -16,11 +16,13 @@ block content
 			button(data-to="page5") page5
 			button(data-to="page6") page6
 			button(data-to="page7") page7
+		//- .canvas-test
 		section#title
 			img(src="assets/images/analysis/title.png", alt="")
 		section#page1.page.show
 			.subtitle
-				p 想了解你有多少戰力，並且超越多少人嗎？
+				p 想了解你有多少戰力，
+				p 並且超越多少人嗎？
 			.tel-container
 				p 輸入手機號碼
 				.tel-input
@@ -30,7 +32,8 @@ block content
 			.placeholder
 		section#page2.page
 			.subtitle
-				p 請選擇資深玩家或天堂新血
+				p 請選擇資深玩家
+				p 或天堂新血
 			.choose-container
 				.choose-frame.old(data-stat="old")
 					.frame-container
@@ -106,19 +109,20 @@ block content
 			.placeholder
 		section#page5.page
 			.subtitle
-				p 請選擇喜愛的職業並進入測驗
+				p 請選擇喜愛的職業
+				p 並進入測驗
 			.choose-container
 				.img-container
-					.job.king
+					.job.king.selected(data-job="king")
 						.card-container
 							img(src="assets/images/analysis/card_king.png", alt="")
-					.job.knight
+					.job.knight(data-job="knight")
 						.card-container
 							img(src="assets/images/analysis/card_knight.png", alt="")
-					.job.elf.selected
+					.job.elf(data-job="elf")
 						.card-container
 							img(src="assets/images/analysis/card_elf.png", alt="")
-					.job.wizard
+					.job.wizard(data-job="wizard")
 						.card-container
 							img(src="assets/images/analysis/card_wizard.png", alt="")
 				.clicker-container
@@ -126,13 +130,18 @@ block content
 					.job-clicker(data-job="knight")
 					.job-clicker(data-job="elf")
 					.job-clicker(data-job="wizard")
+			.mobile-job-switch-list
+				.job-switch.king.selected
+				.job-switch.knight
+				.job-switch.elf
+				.job-switch.wizard
 			.btn.btn-job-submit
 				.btn-container
 					p 進入測驗
 			.placeholder
 		section#page6.page
 			.placeholder
-			.quiz-container.quiz1
+			.quiz-container
 				.quiz-title
 					p 一、你會注重強化哪一種能力值呢？
 				.quiz-option-list
@@ -159,7 +168,7 @@ block content
 			.subtitle
 				p 測驗結果
 			.final-img
-				img(src="assets/images/analysis/final.png", alt="")
+				//- img(src="assets/images/analysis/final.png", alt="")
 			.btn-list
 				.btn.btn-fb-share
 					.btn-container
@@ -176,4 +185,5 @@ block content
 
 block script
 	script(src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous")
+	script(src="https://hammerjs.github.io/dist/hammer.js")
 	script(src="assets/scripts/analysis.js")
