@@ -65,9 +65,9 @@ gulp.task('concat-js', function() {
 gulp.task('js', ['clean-js', 'concat-js'], function() {
     gulp.src('src/assets/scripts/*.js')
         .pipe(plumber())
-        .pipe(babel({
-            presets: ['es2015']
-        }))
+        // .pipe(babel({
+        //     presets: ['es2015']
+        // }))
         // .pipe(uglify())
         .pipe(gulp.dest('build/assets/scripts/'));
 });
