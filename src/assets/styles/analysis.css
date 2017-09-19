@@ -107,10 +107,456 @@ div.lightbox {
     right: 10px;
     cursor: pointer; }
 
+* {
+  box-sizing: border-box; }
+
 main {
   position: relative;
   width: 100%;
   height: 100vh;
-  background-image: url(../images/analysis-bg.jpg);
+  background-image: url(../images/analysis/analysis-bg.jpg);
   background-size: cover;
-  background-position: center; }
+  background-position: center;
+  color: #fff; }
+  main .debug {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 100; }
+    main .debug button {
+      background-color: #FFF;
+      outline: none; }
+      main .debug button.selected {
+        background-color: #000;
+        color: #fff; }
+  main .canvas-test {
+    display: fixed;
+    z-index: 10000;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%; }
+  main #title {
+    position: relative;
+    width: 100%;
+    height: calc(15% + 75px);
+    padding-top: 75px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 0 0 auto; }
+    @media screen and (max-width: 1000px) {
+      main #title {
+        height: calc(10% + 40px);
+        padding-top: 40px; } }
+    main #title img {
+      height: 100%;
+      max-height: 126px; }
+  main .page {
+    position: relative;
+    width: 100%;
+    height: calc(85% - 75px);
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    overflow: hidden; }
+    @media screen and (max-width: 1000px) {
+      main .page {
+        height: calc(90% - 40px); } }
+    main .page.show {
+      display: flex; }
+    main .page .subtitle {
+      margin: 0 0 50px 0;
+      max-width: 80%;
+      font-size: 1.5em;
+      color: #ffe6c5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap; }
+      @media screen and (max-width: 1000px) {
+        main .page .subtitle {
+          margin: 0 0 30px 0;
+          font-size: 1.3em; } }
+      @media screen and (max-width: 350px) {
+        main .page .subtitle {
+          font-size: 1em; } }
+      main .page .subtitle p {
+        padding: 5px 0; }
+    main .page .frame {
+      position: relative;
+      width: 940px;
+      background-image: url("../images/analysis/frame.png");
+      background-origin: center;
+      background-size: 100% 100%; }
+      main .page .frame::before {
+        content: "";
+        display: block;
+        width: 100%;
+        padding-bottom: 63.51%; }
+      main .page .frame .frame-container {
+        position: absolute;
+        top: 0;
+        left: 0; }
+    main .page .btn {
+      position: relative;
+      width: 200px;
+      background-image: url("../images/analysis/btn.png");
+      background-origin: center;
+      background-size: 100% 100%;
+      cursor: pointer;
+      transition: 0.2s; }
+      main .page .btn:hover {
+        filter: brightness(50%); }
+      main .page .btn::before {
+        content: "";
+        display: block;
+        width: 100%;
+        padding-bottom: 30.42%; }
+      main .page .btn .btn-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.3em; }
+        main .page .btn .btn-container p {
+          color: #ffe6c5; }
+  main #page1 .tel-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; }
+    main #page1 .tel-container .tel-input {
+      margin-top: 20px;
+      width: 200px;
+      height: 40px;
+      background-color: #fff; }
+  main #page1 .btn-login {
+    margin-bottom: 100px; }
+  main #page2 .choose-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 85%; }
+    @media screen and (max-width: 1000px) {
+      main #page2 .choose-container {
+        width: 75%;
+        max-width: 650px;
+        margin-top: -30px; } }
+    main #page2 .choose-container .choose-frame {
+      position: relative;
+      width: 50%;
+      background-origin: center;
+      background-size: 100% 100%;
+      filter: brightness(50%);
+      transition: 0.3s;
+      cursor: pointer; }
+      @media screen and (max-width: 1000px) {
+        main #page2 .choose-container .choose-frame {
+          width: 100%;
+          filter: brightness(100%); } }
+      main #page2 .choose-container .choose-frame.selected {
+        transform: scale(1.1);
+        filter: brightness(100%); }
+      main #page2 .choose-container .choose-frame.not-selected {
+        transform: scale(0.9);
+        filter: brightness(50%); }
+        main #page2 .choose-container .choose-frame.not-selected:hover {
+          filter: brightness(80%); }
+      main #page2 .choose-container .choose-frame::before {
+        content: "";
+        display: block;
+        width: 100%;
+        padding-bottom: 71.17%; }
+      main #page2 .choose-container .choose-frame .frame-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center; }
+        main #page2 .choose-container .choose-frame .frame-container p {
+          font-size: 1em; }
+          @media screen and (max-width: 1000px) {
+            main #page2 .choose-container .choose-frame .frame-container p {
+              font-size: 0.7em; } }
+        main #page2 .choose-container .choose-frame .frame-container p:first-child {
+          margin: 30px 0 10px 0;
+          font-size: 2em; }
+          @media screen and (max-width: 1000px) {
+            main #page2 .choose-container .choose-frame .frame-container p:first-child {
+              margin: 20px 0 7px 0;
+              font-size: 1.5em; } }
+          @media screen and (max-width: 350px) {
+            main #page2 .choose-container .choose-frame .frame-container p:first-child {
+              margin: 10px 0 4px 0;
+              font-size: 1.2em; } }
+    main #page2 .choose-container .old {
+      background-image: url("../images/analysis/old.png"); }
+    main #page2 .choose-container .new {
+      background-image: url("../images/analysis/new.png"); }
+  main #page3 .char-table {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    max-width: 600px; }
+    @media screen and (max-width: 1000px) {
+      main #page3 .char-table {
+        font-size: 0.8em; } }
+    main #page3 .char-table .row {
+      display: flex;
+      width: 100%;
+      padding: 30px 0;
+      font-size: 1.5em;
+      position: relative; }
+      @media screen and (max-width: 1000px) {
+        main #page3 .char-table .row {
+          padding: 20px 0; } }
+      main #page3 .char-table .row::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background-color: #FFF; }
+      main #page3 .char-table .row:last-child::after {
+        width: 0;
+        height: 0; }
+      main #page3 .char-table .row div {
+        display: flex;
+        justify-content: center;
+        align-items: center; }
+      main #page3 .char-table .row .check {
+        width: 19%; }
+        main #page3 .char-table .row .check .check-box {
+          width: 20px;
+          height: 20px;
+          border: 2px solid #fff;
+          border-radius: 100%; }
+          main #page3 .char-table .row .check .check-box.checked {
+            background-color: #fff; }
+      main #page3 .char-table .row .server {
+        width: 27%; }
+      main #page3 .char-table .row .job {
+        width: 27%; }
+      main #page3 .char-table .row .name {
+        width: 27%; }
+  main #page4 .name-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%; }
+    main #page4 .name-container p {
+      font-size: 1.5em;
+      color: #ffe6c5; }
+      @media screen and (max-width: 1000px) {
+        main #page4 .name-container p {
+          font-size: 1.2em; } }
+    main #page4 .name-container .name-input {
+      margin: 60px 0;
+      width: 80%;
+      max-width: 300px;
+      height: 40px;
+      background-color: #fff; }
+  main #page5 .choose-container {
+    width: 90%;
+    max-width: 1500px;
+    position: relative; }
+    @media screen and (max-width: 1000px) {
+      main #page5 .choose-container {
+        width: 100%; }
+        main #page5 .choose-container::before {
+          content: "";
+          display: block;
+          width: 100%;
+          padding-bottom: 90%; } }
+    @media screen and (max-width: 1000px) {
+      main #page5 .choose-container.mobile .job0 {
+        left: calc((100% - 65%) / 2); } }
+    @media screen and (max-width: 1000px) {
+      main #page5 .choose-container.mobile .job1 {
+        left: calc((100% - 65%) / 2 - 65% * 1); } }
+    @media screen and (max-width: 1000px) {
+      main #page5 .choose-container.mobile .job2 {
+        left: calc((100% - 65%) / 2 - 65% * 2); } }
+    @media screen and (max-width: 1000px) {
+      main #page5 .choose-container.mobile .job3 {
+        left: calc((100% - 65%) / 2 - 65% * 3); } }
+    main #page5 .choose-container .img-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%; }
+      @media screen and (max-width: 1000px) {
+        main #page5 .choose-container .img-container {
+          position: absolute;
+          top: 50%;
+          left: calc((100% - 65%) / 2);
+          width: calc(65% * 4);
+          transform: translate(0%, -50%);
+          transition: 0.3s; } }
+      main #page5 .choose-container .img-container .job {
+        width: 25%;
+        position: relative;
+        filter: brightness(60%);
+        transition: 0.3s; }
+        main #page5 .choose-container .img-container .job.selected {
+          filter: brightness(100%);
+          transform: scale(1.1);
+          z-index: 1; }
+        main #page5 .choose-container .img-container .job::before {
+          content: "";
+          display: block;
+          width: 100%;
+          padding-bottom: 127.68%; }
+        main #page5 .choose-container .img-container .job .card-container {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%; }
+          main #page5 .choose-container .img-container .job .card-container img {
+            position: absolute;
+            top: 0;
+            left: 0; }
+      main #page5 .choose-container .img-container .king > .card-container > img {
+        width: 100%; }
+      main #page5 .choose-container .img-container .knight > .card-container > img {
+        width: 104.8%;
+        top: -1.3%; }
+      main #page5 .choose-container .img-container .elf > .card-container > img {
+        width: 127%;
+        top: -8%;
+        left: -24%; }
+      main #page5 .choose-container .img-container .wizard > .card-container > img {
+        width: 155%;
+        top: -10%;
+        left: -45%; }
+    main #page5 .choose-container .clicker-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      z-index: 2; }
+      @media screen and (max-width: 1000px) {
+        main #page5 .choose-container .clicker-container {
+          position: absolute;
+          top: 50%;
+          left: calc((100% - 65%) / 2);
+          width: calc(65% * 4);
+          transform: translate(0%, -50%); } }
+      main #page5 .choose-container .clicker-container .job-clicker {
+        width: 25%;
+        cursor: pointer; }
+        main #page5 .choose-container .clicker-container .job-clicker::before {
+          content: "";
+          display: block;
+          width: 100%;
+          padding-bottom: 127.68%; }
+  main #page5 .mobile-job-switch-list {
+    display: none;
+    margin: 10px 0; }
+    @media screen and (max-width: 1000px) {
+      main #page5 .mobile-job-switch-list {
+        display: flex;
+        justify-content: center;
+        align-items: center; } }
+    main #page5 .mobile-job-switch-list .job-switch {
+      width: 15px;
+      height: 15px;
+      background-color: #666;
+      margin: 0 8px;
+      transform: rotate(45deg); }
+      main #page5 .mobile-job-switch-list .job-switch.selected {
+        background-color: #ffe6c5; }
+  main #page6 .quiz-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; }
+    @media screen and (max-width: 1000px) {
+      main #page6 .quiz-container {
+        font-size: 0.8em;
+        width: 90%;
+        max-width: 400px; } }
+    main #page6 .quiz-container .quiz-title {
+      font-size: 1.5em;
+      color: #ffe6c5; }
+    main #page6 .quiz-container .quiz-option-list {
+      padding: 50px 0;
+      width: 100%; }
+      @media screen and (max-width: 1000px) {
+        main #page6 .quiz-container .quiz-option-list {
+          padding: 30px 0; } }
+      main #page6 .quiz-container .quiz-option-list .quiz-option {
+        width: 100%;
+        font-size: 1.5em;
+        margin: 10px 0;
+        padding: 10px 0;
+        text-align: center;
+        background-color: rgba(255, 246, 197, 0);
+        transition: 0.2s;
+        cursor: pointer; }
+        @media screen and (max-width: 1000px) {
+          main #page6 .quiz-container .quiz-option-list .quiz-option {
+            margin: 0; } }
+        main #page6 .quiz-container .quiz-option-list .quiz-option:hover {
+          background-color: rgba(255, 246, 197, 0.5); }
+        main #page6 .quiz-container .quiz-option-list .quiz-option.selected {
+          background-color: #ffe6c5;
+          color: #000; }
+    main #page6 .quiz-container .quiz-progress-bar {
+      display: flex;
+      justify-content: center;
+      align-items: center; }
+      main #page6 .quiz-container .quiz-progress-bar .quiz-progress {
+        width: 15px;
+        height: 15px;
+        background-color: #666;
+        margin: 0 15px;
+        transform: rotate(45deg); }
+        @media screen and (max-width: 1000px) {
+          main #page6 .quiz-container .quiz-progress-bar .quiz-progress {
+            margin: 10px; } }
+        main #page6 .quiz-container .quiz-progress-bar .quiz-progress.done {
+          background-color: #ffe6c5; }
+  main #page7 .final-img {
+    width: 90%;
+    max-width: 800px; }
+    main #page7 .final-img img {
+      width: 100%; }
+  main #page7 .btn-list {
+    display: flex;
+    justify-content: center;
+    align-items: center; }
+    @media screen and (max-width: 1000px) {
+      main #page7 .btn-list {
+        flex-direction: column; } }
+    main #page7 .btn-list .btn {
+      width: 300px; }
+      @media screen and (max-width: 1000px) {
+        main #page7 .btn-list .btn {
+          width: 200px;
+          font-size: 0.7em; } }
+      main #page7 .btn-list .btn .btn-container img {
+        margin-right: 10px; }
+        @media screen and (max-width: 1000px) {
+          main #page7 .btn-list .btn .btn-container img {
+            margin-right: 5px;
+            width: 20px; } }
