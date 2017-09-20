@@ -231,11 +231,25 @@ main {
     flex-direction: column;
     justify-content: center;
     align-items: center; }
-    main #page1 .tel-container .tel-input {
-      margin-top: 20px;
-      width: 200px;
-      height: 40px;
-      background-color: #fff; }
+    main #page1 .tel-container .input-container {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      margin-top: 20px; }
+      main #page1 .tel-container .input-container .tel-header-selecter {
+        width: 80px;
+        height: 40px;
+        background-color: #fff;
+        border-radius: 4px;
+        margin-right: 5px;
+        font-size: 1em; }
+      main #page1 .tel-container .input-container .tel-input {
+        width: 150px;
+        height: 40px;
+        padding: 5px 10px;
+        background-color: #fff;
+        border-radius: 4px;
+        font-size: 1.1em; }
   main #page1 .btn-login {
     margin-bottom: 100px; }
   main #page2 .choose-container {
@@ -368,9 +382,13 @@ main {
     main #page4 .name-container .name-input {
       margin: 60px 0;
       width: 80%;
-      max-width: 300px;
+      max-width: 200px;
       height: 40px;
-      background-color: #fff; }
+      padding: 5px 10px;
+      background-color: #fff;
+      border-radius: 4px;
+      font-size: 1.1em;
+      text-align: center; }
   main #page5 .choose-container {
     width: 90%;
     max-width: 1500px;

@@ -9,13 +9,13 @@ block head
 block content
 	main
 		.debug
-			button.selected(data-to="page1") page1
-			button(data-to="page2") page2
-			button(data-to="page3") page3
-			button(data-to="page4") page4
-			button(data-to="page5") page5
-			button(data-to="page6") page6
-			button(data-to="page7") page7
+			button.selected(data-to="1") page1
+			button(data-to="2") page2
+			button(data-to="3") page3
+			button(data-to="4") page4
+			button(data-to="5") page5
+			button(data-to="6") page6
+			button(data-to="7") page7
 		//- .canvas-test
 		section#title
 			img(src="assets/images/analysis/title.png", alt="")
@@ -25,7 +25,13 @@ block content
 				p 並且超越多少人嗎？
 			.tel-container
 				p 輸入手機號碼
-				.tel-input
+				.input-container
+					select.tel-header-selecter
+						option(value="+886") +886
+						option(value="+86") +86
+						option(value="+852") +852
+						option(value="+853") +853
+					input.tel-input(type="input") 
 			.btn.btn-tel-submit
 				.btn-container
 					p 立即登入
@@ -101,7 +107,7 @@ block content
 			.placeholder
 			.name-container
 				p 請輸入您的角色暱稱
-				.name-input
+				input.name-input
 
 			.btn.btn-name-submit
 				.btn-container
