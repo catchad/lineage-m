@@ -57,12 +57,13 @@ main {
 	.page {
 		position: relative;
 		width: 100%;
-		height: calc(85% - 75px);
+		// height: calc(85% - 75px);
 		display: none;
 		flex-direction: column;
-		justify-content: space-between;
+		// justify-content: space-between;
+		justify-content: flex-start;
 		align-items: center;
-		overflow: hidden;
+		// overflow: scroll;
 		@media screen and (max-width: $mobile-breakpoint ) {
 			height: calc(90% - 40px);
 		}
@@ -89,22 +90,21 @@ main {
 				padding: 5px 0;
 			}
 		}
-		.frame {
+		.hr {
+			width: 100%;
+			height: 1px;
 			position: relative;
-			width: 940px;
-			background-image: url("../images/analysis/frame.png");
-			background-origin: center;
-			background-size: 100% 100%;
-			&::before {
+			background-image: linear-gradient(left ,rgba(#333,0) 1%, rgba(#333,0.7) 50%, rgba(#333,0) 99%);
+			box-shadow: 0px -1px 1px rgba(#333,0.5);
+			&::after {
 				content: "";
 				display: block;
-				width: 100%;
-				padding-bottom: 63.51%;
-			}
-			.frame-container {
 				position: absolute;
-				top: 0;
+				top: 1px;
 				left: 0;
+				width: 100%;
+				height: 1px;
+				background-image: linear-gradient(left ,rgba(#ffe6c5,0) 1%, rgba(#ffe6c5,0.7) 50%, rgba(#ffe6c5,0) 99%);
 			}
 		}
 		.btn {
@@ -143,6 +143,7 @@ main {
 	}
 	#page1 {
 		.tel-container {
+			margin: 100px 0; 
 			display: flex;
 			flex-direction: column;
 			justify-content: center;
@@ -153,20 +154,27 @@ main {
 				align-items: center;
 				margin-top: 20px;
 				.tel-header-selecter {
-					width: 80px;
+					width: 70px;
 					height: 40px;
-					background-color: #fff;
-					border-radius: 4px;
+					background-color: rgba(#000,0.5);
+					border-radius: 0px;
+					border: 0;
+					outline: 1px solid #000;
+					outline-offset: -1px;
 					margin-right: 5px;
 					font-size: 1em;
+					color: #aaa;
 				}
 				.tel-input {
 					width: 150px;
 					height: 40px;
 					padding: 5px 10px;
-					background-color: #fff;
-					border-radius: 4px;
+					background-color: rgba(#000,0.5);
+					border: 0;
+					border-left: 1px solid rgba(#fff,0.5);
+					outline: none;
 					font-size: 1.1em;
+					color: #aaa;
 				}
 			}
 		}
@@ -176,15 +184,16 @@ main {
 	}
 	#page2 {
 		.choose-container {
+			margin: 20px 0;
 			display: flex;
 			justify-content: space-around;
 			align-items: center;
 			flex-wrap: wrap;
 			width: 85%;
 			@media screen and (max-width: $mobile-breakpoint ) {
+				margin: 20px 0;
 				width: 75%;
 				max-width: 650px;
-				margin-top: -30px;
 			}
 			.choose-frame {
 				position: relative;
@@ -257,6 +266,7 @@ main {
 	}
 	#page3 {
 		.char-table {
+			margin: 100px 0; 
 			display: flex;
 			flex-direction: column;
 			justify-content: center;
@@ -264,42 +274,29 @@ main {
 			width: 90%;
 			max-width: 600px;
 			@media screen and (max-width: $mobile-breakpoint ) {
+				margin: 30px 0;
 				font-size: 0.8em;
 			}
 			.row {
 				display: flex;
+				justify-content: center;
+				align-items: center;
 				width: 100%;
-				padding: 30px 0;
-				font-size: 1.5em;
+				padding: 20px 0;
+				font-size: 1.2em;
 				position: relative;
 				@media screen and (max-width: $mobile-breakpoint ) {
-					padding: 20px 0;
+					padding: 10px 0;
 				}
-				&::after {
-					content: "";
-					position: absolute;
-					bottom: 0;
-					left: 0;
-					width: 100%;
-					height: 1px;
-					background-color: #FFF;
-				}
-				&:last-child {
-					&::after {
-						width: 0;
-						height: 0;
-					}
-				}
-				div {
+				.left {
 					display: flex;
 					justify-content: center;
 					align-items: center;
-				}
-				.check {
-					width: 19%;
+					height: 100%;
 					.check-box {
 						width: 20px;
 						height: 20px;
+						margin-right: 20px;
 						border: 2px solid #fff;
 						border-radius: 100%;
 						&.checked {
@@ -307,54 +304,70 @@ main {
 						}
 					}
 				}
-				.server {
-					width: 27%;
-					p {}
+				.right {
+					display: flex;
+					justify-content: center;
+					align-items: flex-start;
+					@media screen and (max-width: $mobile-breakpoint ) {
+						flex-direction: column;
+					}
+					.top {
+						display: flex;
+						justify-content: flex-start;
+						align-items: center;
+						padding: 5px 0;
+						.server {
+							flex: 0 0 auto;
+							margin-right: 20px;
+						}
+					}
+					.bottom {
+						display: flex;
+						justify-content: flex-start;
+						align-items: center;
+						padding: 5px 0;
+						.job {
+							flex: 0 0 auto;
+							margin-right: 20px;
+						}
+						.name {
+							flex: 0 0 auto;
+						}
+					}
 				}
-				.job {
-					width: 27%;
-					p {}
-				}
-				.name {
-					width: 27%;
-					p {}
-				}
+			}
+			.hr:last-child {
+				display: none;
 			}
 		}
 	}
 	#page4 {
 		.name-container {
+			margin: 150px 0; 
 			display: flex;
 			flex-direction: column;
 			justify-content: center;
 			align-items: center;
-			width: 100%;
-			p {
-				font-size: 1.5em;
-				color: #ffe6c5;
-				@media screen and (max-width: $mobile-breakpoint ) {
-					font-size: 1.2em;
-				}
-			}
 			.name-input {
-				margin: 60px 0;
-				width: 80%;
-				max-width: 200px;
 				height: 40px;
-				padding: 5px 10px;
-				background-color: #fff;
-				border-radius: 4px;
+				padding: 10px 20px;
+				background: transparent;
+				border: 0;
+				outline: none;
 				font-size: 1.1em;
 				text-align: center;
+				color: #fff;
 			}
 		}
 	}
 	#page5 {
 		.choose-container {
+			margin: 50px 0; 
 			width: 90%;
 			max-width: 1500px;
 			position: relative;
 			@media screen and (max-width: $mobile-breakpoint ) {
+				margin: 30px 0 10px 0;
 				width: 100%;
 				&::before {
 					content: "";
@@ -495,11 +508,13 @@ main {
 	}
 	#page6 {
 		.quiz-container {
+			margin: 100px 0; 
 			display: flex;
 			flex-direction: column;
 			justify-content: center;
 			align-items: center;
 			@media screen and (max-width: $mobile-breakpoint ) {
+				margin: 30px; 
 				font-size: 0.8em;
 				width: 90%;
 				max-width: 400px;
@@ -508,6 +523,7 @@ main {
 			.quiz-title {
 				font-size: 1.5em;
 				color: #ffe6c5;
+				padding-bottom: 20px;
 			} 
 			.quiz-option-list {
 				padding: 50px 0;
@@ -558,11 +574,13 @@ main {
 	}
 	#page7 {
 		.final-img {
+			margin: 50px 0;
 			width: 90%;
 			max-width: 800px;
 			img {
 				width: 100%;
 			}
+
 		}
 		.btn-list {
 			display: flex;
