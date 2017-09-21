@@ -1,7 +1,7 @@
 var form = new Vue({
     el: '#form',
     data: {
-        show: false
+        show: true
     },
     methods: {
         closeForm: function () {

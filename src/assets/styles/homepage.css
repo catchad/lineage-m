@@ -63,19 +63,22 @@ header {
   width: 100%;
   color: #FFFFFF;
   box-sizing: border-box;
-  padding: 15px 30px;
+  padding: 12px 24px;
   z-index: 1000; }
   header ul {
-    font-size: 1.1em;
-    font-weight: 500;
+    font-size: 1.2em;
+    font-weight: 100;
     color: #ffe6c5;
     margin-left: auto; }
   header li {
     display: inline-block;
-    background: linear-gradient(to bottom, #ffbc6e, #ffe8cb, #ffe6c5, #ffe6c5);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin: 0 15px; }
+    text-shadow: 1px 1px 2px black;
+    margin: 0 15px;
+    vertical-align: middle; }
+    header li:first-child {
+      margin-left: 0; }
+    header li:last-child {
+      margin-right: 0; }
 
 a {
   color: inherit;
@@ -93,7 +96,7 @@ div.lightbox {
   border: none;
   z-index: 1010;
   box-sizing: border-box;
-  padding: 20px;
+  padding: 40px 20px;
   color: #FFFFFF;
   opacity: 0;
   visibility: hidden;
