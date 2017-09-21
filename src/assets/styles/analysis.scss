@@ -57,12 +57,13 @@ main {
 	.page {
 		position: relative;
 		width: 100%;
-		height: calc(85% - 75px);
+		// height: calc(85% - 75px);
 		display: none;
 		flex-direction: column;
-		justify-content: space-between;
+		// justify-content: space-between;
+		justify-content: flex-start;
 		align-items: center;
-		overflow: hidden;
+		// overflow: scroll;
 		@media screen and (max-width: $mobile-breakpoint ) {
 			height: calc(90% - 40px);
 		}
@@ -143,6 +144,7 @@ main {
 	}
 	#page1 {
 		.tel-container {
+			margin: 100px 0; 
 			display: flex;
 			flex-direction: column;
 			justify-content: center;
@@ -176,15 +178,16 @@ main {
 	}
 	#page2 {
 		.choose-container {
+			margin: 20px 0;
 			display: flex;
 			justify-content: space-around;
 			align-items: center;
 			flex-wrap: wrap;
 			width: 85%;
 			@media screen and (max-width: $mobile-breakpoint ) {
+				margin: 20px 0;
 				width: 75%;
 				max-width: 650px;
-				margin-top: -30px;
 			}
 			.choose-frame {
 				position: relative;
@@ -257,6 +260,7 @@ main {
 	}
 	#page3 {
 		.char-table {
+			margin: 100px 0; 
 			display: flex;
 			flex-direction: column;
 			justify-content: center;
@@ -264,6 +268,7 @@ main {
 			width: 90%;
 			max-width: 600px;
 			@media screen and (max-width: $mobile-breakpoint ) {
+				margin: 30px 0;
 				font-size: 0.8em;
 			}
 			.row {
@@ -324,6 +329,7 @@ main {
 	}
 	#page4 {
 		.name-container {
+			margin: 100px; 
 			display: flex;
 			flex-direction: column;
 			justify-content: center;
@@ -351,10 +357,12 @@ main {
 	}
 	#page5 {
 		.choose-container {
+			margin: 50px 0; 
 			width: 90%;
 			max-width: 1500px;
 			position: relative;
 			@media screen and (max-width: $mobile-breakpoint ) {
+				margin: 30px 0 10px 0;
 				width: 100%;
 				&::before {
 					content: "";
@@ -495,11 +503,13 @@ main {
 	}
 	#page6 {
 		.quiz-container {
+			margin: 100px 0; 
 			display: flex;
 			flex-direction: column;
 			justify-content: center;
 			align-items: center;
 			@media screen and (max-width: $mobile-breakpoint ) {
+				margin: 30px; 
 				font-size: 0.8em;
 				width: 90%;
 				max-width: 400px;
@@ -558,11 +568,13 @@ main {
 	}
 	#page7 {
 		.final-img {
+			margin: 50px 0;
 			width: 90%;
 			max-width: 800px;
 			img {
 				width: 100%;
 			}
+
 		}
 		.btn-list {
 			display: flex;

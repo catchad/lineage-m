@@ -155,12 +155,10 @@ main {
   main .page {
     position: relative;
     width: 100%;
-    height: calc(85% - 75px);
     display: none;
     flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    overflow: hidden; }
+    justify-content: flex-start;
+    align-items: center; }
     @media screen and (max-width: 1000px) {
       main .page {
         height: calc(90% - 40px); } }
@@ -227,6 +225,7 @@ main {
         main .page .btn .btn-container p {
           color: #ffe6c5; }
   main #page1 .tel-container {
+    margin: 100px 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -253,6 +252,7 @@ main {
   main #page1 .btn-login {
     margin-bottom: 100px; }
   main #page2 .choose-container {
+    margin: 20px 0;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -260,9 +260,9 @@ main {
     width: 85%; }
     @media screen and (max-width: 1000px) {
       main #page2 .choose-container {
+        margin: 20px 0;
         width: 75%;
-        max-width: 650px;
-        margin-top: -30px; } }
+        max-width: 650px; } }
     main #page2 .choose-container .choose-frame {
       position: relative;
       width: 50%;
@@ -319,6 +319,7 @@ main {
     main #page2 .choose-container .new {
       background-image: url("../images/analysis/new.png"); }
   main #page3 .char-table {
+    margin: 100px 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -327,6 +328,7 @@ main {
     max-width: 600px; }
     @media screen and (max-width: 1000px) {
       main #page3 .char-table {
+        margin: 30px 0;
         font-size: 0.8em; } }
     main #page3 .char-table .row {
       display: flex;
@@ -368,6 +370,7 @@ main {
       main #page3 .char-table .row .name {
         width: 27%; }
   main #page4 .name-container {
+    margin: 100px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -390,11 +393,13 @@ main {
       font-size: 1.1em;
       text-align: center; }
   main #page5 .choose-container {
+    margin: 50px 0;
     width: 90%;
     max-width: 1500px;
     position: relative; }
     @media screen and (max-width: 1000px) {
       main #page5 .choose-container {
+        margin: 30px 0 10px 0;
         width: 100%; }
         main #page5 .choose-container::before {
           content: "";
@@ -504,12 +509,14 @@ main {
       main #page5 .mobile-job-switch-list .job-switch.selected {
         background-color: #ffe6c5; }
   main #page6 .quiz-container {
+    margin: 100px 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center; }
     @media screen and (max-width: 1000px) {
       main #page6 .quiz-container {
+        margin: 30px;
         font-size: 0.8em;
         width: 90%;
         max-width: 400px; } }
@@ -555,6 +562,7 @@ main {
         main #page6 .quiz-container .quiz-progress-bar .quiz-progress.done {
           background-color: #ffe6c5; }
   main #page7 .final-img {
+    margin: 50px 0;
     width: 90%;
     max-width: 800px; }
     main #page7 .final-img img {
