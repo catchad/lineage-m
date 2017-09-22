@@ -18,6 +18,9 @@ main {
 }
 
 #form {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 
 	text-align: center;
 
@@ -25,9 +28,13 @@ main {
 		width: 600px;
 		margin: 0 auto;
 	}
-	// .title {
-
-	// }
+	.btn {
+		margin-top: 30px;
+	}
+	a {
+		color: #FFFFFF;
+		text-decoration: underline;
+	}
 	table {
 		// width: 100%;
 		// max-width: 450px;
@@ -47,7 +54,7 @@ main {
 			padding-left: 20px;
 			font-size: 0;
 			width: 220px;
-			* {
+			> * {
 				font-size: 1rem;
 			}
 		}
@@ -64,13 +71,22 @@ main {
 				input {
 					flex: 1;
 					width: 100%;
+					border-left: 1px solid #7c7c7c;
 				}
 			}
 		}
 		&:nth-child(2) {
 			td:nth-child(2) > div {
 				display: inline-block;
-				vertical-align: middle;
+				vertical-align: top;
+
+				&:nth-child(2) {
+					margin-left: 10px;
+					p {
+					    margin-bottom: 10px;
+					    font-size: 1.1em;
+					}
+				}
 			}
 			
 		}
@@ -100,6 +116,7 @@ main {
 		color: #7c7c7c;
 		font-size: 1rem;
 		text-align: center;
+		font-family: 'Noto Sans TC';
 	}
 
 	ul {
@@ -143,6 +160,7 @@ main {
 		display: flex;
 		align-items: center;
 		background-color: rgba(0,0,0,0.7);
+		height: 40px;
 		input {
 			flex: 1;
 			align-self: stretch;
@@ -154,12 +172,23 @@ main {
 		    font-family: 'Noto Sans TC';
 		}
 		.icon {
-			height: 30px;
+			height: 100%;
 			cursor: pointer;
 		}
 	}
 }
 
+
+#register-btn {
+	position: fixed;
+	bottom: 40px;
+	left: 50%;
+	transform: translateX(-50%);
+	display: none;
+	&.btn--active {
+		display: block;
+	}
+}
 #test {
 	position: fixed;
 	bottom: 30px;
@@ -169,3 +198,4 @@ main {
 		display: none;
 	}
 }
+

@@ -65,8 +65,11 @@ header {
   box-sizing: border-box;
   padding: 12px 24px;
   z-index: 1000; }
+  header .logo {
+    width: 100px;
+    height: auto; }
   header ul {
-    font-size: 1.2em;
+    font-size: 1.1em;
     font-weight: 100;
     color: #ffe6c5;
     margin-left: auto; }
@@ -106,8 +109,8 @@ div.lightbox {
     visibility: visible; }
   div.lightbox .close {
     position: fixed;
-    top: 10px;
-    right: 10px;
+    top: 30px;
+    right: 30px;
     cursor: pointer; }
 
 .btn {
@@ -122,12 +125,18 @@ div.lightbox {
   font-size: 1.1em;
   background-color: transparent;
   outline: none;
-  border: none; }
+  border: none;
+  user-select: none;
+  transition: filter 0.15s linear; }
   .btn::before {
     content: "";
     display: block;
     width: 100%;
     padding-bottom: 30.42%; }
+  .btn:hover {
+    filter: brightness(1.5); }
+  .btn:active {
+    filter: brightness(2.2); }
   .btn__container {
     display: flex;
     justify-content: center;
@@ -163,10 +172,18 @@ main {
   height: 100vh; }
 
 #form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center; }
   #form .wrapper {
     width: 600px;
     margin: 0 auto; }
+  #form .btn {
+    margin-top: 30px; }
+  #form a {
+    color: #FFFFFF;
+    text-decoration: underline; }
   #form table {
     margin: 0 auto;
     border-collapse: separate;
@@ -181,7 +198,7 @@ main {
       padding-left: 20px;
       font-size: 0;
       width: 220px; }
-      #form td:nth-child(2) * {
+      #form td:nth-child(2) > * {
         font-size: 1rem; }
   #form tr:nth-child(1) td:nth-child(2) {
     display: flex; }
@@ -189,10 +206,16 @@ main {
       width: 75px; }
     #form tr:nth-child(1) td:nth-child(2) input {
       flex: 1;
-      width: 100%; }
+      width: 100%;
+      border-left: 1px solid #7c7c7c; }
   #form tr:nth-child(2) td:nth-child(2) > div {
     display: inline-block;
-    vertical-align: middle; }
+    vertical-align: top; }
+    #form tr:nth-child(2) td:nth-child(2) > div:nth-child(2) {
+      margin-left: 10px; }
+      #form tr:nth-child(2) td:nth-child(2) > div:nth-child(2) p {
+        margin-bottom: 10px;
+        font-size: 1.1em; }
   #form tr:nth-child(3) input {
     width: 100%; }
   #form tr:nth-child(4) img {
@@ -209,7 +232,8 @@ main {
     padding: 5px;
     color: #7c7c7c;
     font-size: 1rem;
-    text-align: center; }
+    text-align: center;
+    font-family: 'Noto Sans TC'; }
   #form ul {
     text-align: left; }
     #form ul li {
@@ -231,7 +255,8 @@ main {
   #info .search {
     display: flex;
     align-items: center;
-    background-color: rgba(0, 0, 0, 0.7); }
+    background-color: rgba(0, 0, 0, 0.7);
+    height: 40px; }
     #info .search input {
       flex: 1;
       align-self: stretch;
@@ -242,8 +267,17 @@ main {
       color: #FFFFFF;
       font-family: 'Noto Sans TC'; }
     #info .search .icon {
-      height: 30px;
+      height: 100%;
       cursor: pointer; }
+
+#register-btn {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: none; }
+  #register-btn.btn--active {
+    display: block; }
 
 #test {
   position: fixed;

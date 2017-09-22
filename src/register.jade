@@ -16,17 +16,20 @@ block content
 		section
 			canvas(id="pixiCanvas")
 			div(id="info")
-				div(class="count")
-					p 目前登錄: 13,658人
+				//- div(class="count")
+				//- 	p 目前登錄: 13,658人
 				div(class="search")
 					input(type="text", placeholder="輸入電話號碼找自己")
-					img(class="icon", src="http://fakeimg.pl/30x30/", alt="search")
+					img(class="icon", src="assets/images/register/search.png", alt="search")
 
-			button(id="test") 參加排隊
-			#form.lightbox(v-bind:class="{active: show}")
-				img(class="close", src="http://fakeimg.pl/60x60/", alt="close", v-on:click="closeForm")
+			//- button(id="test") 參加排隊
+			a(id="register-btn", class="btn btn--large btn--active")
+				div(class="btn__container")
+					p 前往登錄
+			#form.lightbox
+				img(class="close", src="assets/images/close.png", alt="close", v-on:click="closeForm")
 				.wrapper
-					img(class="block", src="http://fakeimg.pl/250x100/", alt="預先登錄")
+					img(class="block", src="assets/images/register/title.png", alt="預先登錄")
 					form
 						table
 							tbody
@@ -35,37 +38,40 @@ block content
 										p STEP1
 										p 電話號碼
 									td
-										select
-											option +886
-											option +886
-											option +886
-										input(type="text", placeholder="電話號碼")
+										select(id="form-location")
+											option(value="TW") +886
+											option(value="HK") +852
+											option(value="MAC") +853
+										input(id="form-phone", type="text", placeholder="電話號碼")
 								tr
 									td
 										p STEP2
 										p 粉絲團按讚
 									td
 										div
-											img(src="http://fakeimg.pl/50x50/")
+											img(src="assets/images/register/fanpage.png")
 										div
 											p 天堂M 粉絲專頁
-											div(class="fb-like", data-href="https://developers.facebook.com/docs/plugins/", data-width="200", data-layout="button", data-action="like", data-size="small", data-show-faces="false", data-share="false")
+											div(class="fb-like", data-href="https://www.facebook.com/Gamania.Lineage.M/", data-width="200", data-layout="button_count", data-action="like", data-size="small", data-show-faces="false", data-share="false")
 
 								tr
 									td
 										p STEP3
 										p 留言板
 									td
-										input(type="text", placeholder="限制輸入10個字以內")
+										input(id="form-memo", type="text", placeholder="限制輸入10個字以內")
 								tr
 									td
 										p STEP4
 										p 完成獎勵
 									td
-										img(src="http://fakeimg.pl/200x100/")
+										img(src="assets/images/register/treasure.png")
 						div
-							input(type="checkbox")
-							label 我同意遊戲橘子『隱私權政策』履行您個人資料的搜集與運用
+							input(id="rule-checkbox", type="checkbox")
+							label(for="rule-checkbox")
+								| 我同意遊戲橘子『
+								a 隱私權政策
+								| 』履行您個人資料的搜集與運用
 						//- p 注意事項
 						//- ul
 						//- 	li 每個手機號碼，僅限參與本活動一次
@@ -75,36 +81,15 @@ block content
 						//- 	li 本公司將保留變更獎項內容及核准兌換與否之權利，詳細內容及異動說明均以本活動網頁最後一次公佈為準，請玩家密切注意網頁公布訊息
 						//- 	li 活動開始後，所有參與活動玩家將視同同意最後公告之內容
 
-						a(class="btn")
-							div(class="btn__container")
-								img(class="btn__icon", src="http://fakeimg.pl/64x64/")
-								p 立即登入
-
-						div(class="btn")
-							div(class="btn__container")
-								img(class="btn__icon", src="http://fakeimg.pl/64x64/")
-								p 立即登入
-						button(class="btn")
-							div(class="btn__container")
-								img(class="btn__icon", src="http://fakeimg.pl/64x64/")
-								p 立即登入
-
-
-						a(class="btn")
-							div(class="btn__container")
-								p 測試
-
-						a(class="btn btn--block")
+						a(id="register-send-btn", class="btn btn--block")
 							div(class="btn__container")
 								p 立即登入
+						a 注意事項
 
-						a(class="btn btn--block btn--large")
-							div(class="btn__container")
-								img(class="btn__icon", src="http://fakeimg.pl/64x64/")
-								p 分享到Facebook
 
 								
 block script
-	script(src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.5.5/pixi.min.js")
-	script(src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.2/TweenMax.min.js")
+	script(src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js")
+	script(src="//cdnjs.cloudflare.com/ajax/libs/pixi.js/4.5.5/pixi.min.js")
+	script(src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.20.2/TweenMax.min.js")
 	script(src="assets/scripts/register.js")

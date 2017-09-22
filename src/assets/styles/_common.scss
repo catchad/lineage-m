@@ -22,9 +22,12 @@ header {
 	box-sizing: border-box;
 	padding: 12px 24px;
 	z-index: 1000;
-
+	.logo {
+		width: 100px;
+		height: auto;
+	}
 	ul {
-		font-size: 1.2em;
+		font-size: 1.1em;
 		font-weight: 100;
 		color: #ffe6c5;
 		margin-left: auto;
@@ -80,8 +83,8 @@ div.lightbox {
 	}
 	.close {
 		position: fixed;
-		top: 10px;
-		right: 10px;
+		top: 30px;
+		right: 30px;
 		cursor: pointer;
 	}
 }
@@ -100,12 +103,22 @@ div.lightbox {
 	background-color: transparent;
 	outline: none;
 	border: none;
+	user-select: none;
+	transition: filter 0.15s linear;
 
 	&::before {
 	    content: "";
 	    display: block;
 	    width: 100%;
 	    padding-bottom: 30.42%;
+	}
+
+	&:hover {
+		filter: brightness(1.5);
+	}
+
+	&:active {
+		filter: brightness(2.2);
 	}
 
 	// 元素
