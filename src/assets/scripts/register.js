@@ -32,7 +32,7 @@ loader.add('mapf1', 'assets/images/register/map/f1.png');
 loader.add('mapf2', 'assets/images/register/map/f2.png');
 loader.add('mapf3', 'assets/images/register/map/f3.png');
 
-for( var i=1; i<=36; i++ ) {
+for( var i=1; i<=39; i++ ) {
     loader.add('map'+i, 'assets/images/register/map/'+i+'.png');
 }
 // for( var i=1; i<=39; i++ ) {
@@ -56,9 +56,9 @@ loader.load((loader, resources) => {
 
     var chatSpeed = 600;
 
-    var mapNum = 11; // 地圖數量11行 (33張)
+    var mapNum = 13; // 地圖數量11行 (33張)
     var frontNum = 2; // 地圖有2行 (6張) 不加入迴圈
-    var characterNum = 12; // 每張地圖上人物12行 (36個)
+    var characterNum = 10; // 每張地圖上人物10行 (30個)
     var pageSize = mapNum*3*characterNum;
 
     console.log('總參加量:' + fakeData.length);
@@ -196,7 +196,7 @@ loader.load((loader, resources) => {
             map.anchor.set(0.5);
             map.x = pageCenter.x + rowCenter.x;
             map.y = pageCenter.y + rowCenter.y;
-            map.scale.set(1.01, 1.01);
+            // map.scale.set(1.01, 1.01);
             // map.scale.set(0.98, 0.98);
             // if( i==0 ) map.alpha = 0.5;
             // map.scale.set(mapWidth/map.width+0.01, mapWidth/map.width +0.01);
@@ -206,7 +206,7 @@ loader.load((loader, resources) => {
             map2.anchor.set(0.5);
             map2.x = pageCenter.x + rowCenter.x + mapWidth/2;
             map2.y = pageCenter.y + rowCenter.y + mapHeight/2;
-            map2.scale.set(1.01, 1.01);
+            // map2.scale.set(1.01, 1.01);
             // map2.scale.set(0.98, 0.98);
             // map2.scale.set(mapWidth/map2.width+0.01, mapWidth/map2.width +0.01);
             pageMapContainer.addChild(map2);
@@ -215,7 +215,7 @@ loader.load((loader, resources) => {
             map3.anchor.set(0.5);
             map3.x = pageCenter.x + rowCenter.x - mapWidth/2;
             map3.y = pageCenter.y + rowCenter.y - mapHeight/2;
-            map3.scale.set(1.01, 1.01);
+            // map3.scale.set(1.01, 1.01);
             // map3.scale.set(0.98, 0.98);
             // map3.scale.set(mapWidth/map3.width+0.01, mapWidth/map3.width +0.01);
             pageMapContainer.addChild(map3);
@@ -232,8 +232,8 @@ loader.load((loader, resources) => {
 
                 var r = j * mapDistance/characterNum + (mapDistance/characterNum/2) - mapDistance/2;
                 var characterCenter = getPoint(angle, r);
-                characterCenter.x -= 30;
-                characterCenter.y -= 30;
+                characterCenter.x -= 20;
+                characterCenter.y -= 20;
 
                 if( characterData[id] !== undefined ) {
                     var p = getPoint(-angle + Math.PI, 80);
@@ -241,7 +241,7 @@ loader.load((loader, resources) => {
                     newCharacter1.anchor.set(0.5, 1);
                     newCharacter1.x = pageCenter.x + rowCenter.x + characterCenter.x + p.x;
                     newCharacter1.y = pageCenter.y + rowCenter.y + characterCenter.y + p.y;
-                    newCharacter1.scale.set(0.7, 0.7);
+                    newCharacter1.scale.set(0.9, 0.9);
                     newCharacter1.interactive = true;
                     newCharacter1.buttonMode = true;
                     newCharacter1.on('pointerdown', characterClick);
@@ -264,7 +264,7 @@ loader.load((loader, resources) => {
                     newCharacter2.anchor.set(0.5, 1);
                     newCharacter2.x = pageCenter.x + rowCenter.x + characterCenter.x; // 40
                     newCharacter2.y = pageCenter.y + rowCenter.y + characterCenter.y;
-                    newCharacter2.scale.set(0.7, 0.7);
+                    newCharacter2.scale.set(0.9, 0.9);
                     // if( j == 0 ) newCharacter1.scale.set(1, 1);
                     newCharacter2.interactive = true;
                     newCharacter2.buttonMode = true;
@@ -289,7 +289,7 @@ loader.load((loader, resources) => {
                     newCharacter3.anchor.set(0.5, 1);
                     newCharacter3.x = pageCenter.x + rowCenter.x + characterCenter.x + p.x;
                     newCharacter3.y = pageCenter.y + rowCenter.y + characterCenter.y + p.y;
-                    newCharacter3.scale.set(0.7, 0.7);
+                    newCharacter3.scale.set(0.9, 0.9);
                     newCharacter3.interactive = true;
                     newCharacter3.buttonMode = true;
                     newCharacter3.on('pointerdown', characterClick);
@@ -453,7 +453,7 @@ loader.load((loader, resources) => {
 
     function updateCamera() {
         var a = Math.floor(-mapPosition+mapDistance/2);
-        var b = Math.floor(mapDistance*12);
+        var b = Math.floor(mapDistance*13);
 
         console.log( a/b );
         var c = Math.floor(a/b);
@@ -532,7 +532,7 @@ loader.load((loader, resources) => {
             newCharacter.anchor.set(0.5, 1);
             newCharacter.x = pageCenter.x + rowCenter.x + characterCenter.x + p.x;
             newCharacter.y = pageCenter.y + rowCenter.y + characterCenter.y + p.y;
-            newCharacter.scale.set(0.7, 0.7);
+            newCharacter.scale.set(0.9, 0.9);
             // newCharacter.scale.set(1, 1);
             newCharacter.interactive = true;
             newCharacter.buttonMode = true;

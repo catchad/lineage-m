@@ -110,6 +110,47 @@ div.lightbox {
     right: 10px;
     cursor: pointer; }
 
+.btn {
+  display: inline-block;
+  position: relative;
+  width: 200px;
+  background-image: url(../images/btn.png);
+  background-size: 100% 100%;
+  cursor: pointer;
+  text-decoration: none;
+  color: #ffe6c5;
+  font-size: 1.1em;
+  background-color: transparent;
+  outline: none;
+  border: none; }
+  .btn::before {
+    content: "";
+    display: block;
+    width: 100%;
+    padding-bottom: 30.42%; }
+  .btn__container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%; }
+  .btn__icon {
+    width: 20px;
+    height: auto;
+    margin-right: 5px; }
+  .btn--block {
+    display: block;
+    margin: 0 auto; }
+  .btn--large {
+    width: 300px;
+    font-size: 1.3em; }
+    .btn--large .btn__icon {
+      width: 30px;
+      margin-right: 10px; }
+
 main {
   position: relative;
   width: 100%;

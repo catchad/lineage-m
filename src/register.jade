@@ -7,6 +7,11 @@ block head
 	link(rel="stylesheet", href="assets/styles/register.css")
 
 block content
+	input(type="hidden", id="apikey", value="ewewpohewjhpwejh")
+
+	//- input(type="hidden", id="ma", value="ewewpohewjhpwejh")
+	//- input(type="hidden", id="ut", value="ewewpohewjhpwejh")
+
 	main
 		section
 			canvas(id="pixiCanvas")
@@ -40,7 +45,11 @@ block content
 										p STEP2
 										p 粉絲團按讚
 									td
-										.fb-like(data-href="https://developers.facebook.com/docs/plugins/", data-width="200", data-layout="button", data-action="like", data-size="small", data-show-faces="false", data-share="false")
+										div
+											img(src="http://fakeimg.pl/50x50/")
+										div
+											p 天堂M 粉絲專頁
+											div(class="fb-like", data-href="https://developers.facebook.com/docs/plugins/", data-width="200", data-layout="button", data-action="like", data-size="small", data-show-faces="false", data-share="false")
 
 								tr
 									td
@@ -57,15 +66,43 @@ block content
 						div
 							input(type="checkbox")
 							label 我同意遊戲橘子『隱私權政策』履行您個人資料的搜集與運用
-						p 注意事項
-						ul
-							li 每個手機號碼，僅限參與本活動一次
-							li 本活動僅限台港澳手機號碼參與
-							li 每個遊戲帳號僅能獲得一次預先登錄獎勵
-							li 完成預先登錄之獎勵將於活動結束後統一以簡訊的方式發送序號，序號發送時間將另行通知
-							li 本公司將保留變更獎項內容及核准兌換與否之權利，詳細內容及異動說明均以本活動網頁最後一次公佈為準，請玩家密切注意網頁公布訊息
-							li 活動開始後，所有參與活動玩家將視同同意最後公告之內容
-						img(class="block", src="http://fakeimg.pl/250x100/")
+						//- p 注意事項
+						//- ul
+						//- 	li 每個手機號碼，僅限參與本活動一次
+						//- 	li 本活動僅限台港澳手機號碼參與
+						//- 	li 每個遊戲帳號僅能獲得一次預先登錄獎勵
+						//- 	li 完成預先登錄之獎勵將於活動結束後統一以簡訊的方式發送序號，序號發送時間將另行通知
+						//- 	li 本公司將保留變更獎項內容及核准兌換與否之權利，詳細內容及異動說明均以本活動網頁最後一次公佈為準，請玩家密切注意網頁公布訊息
+						//- 	li 活動開始後，所有參與活動玩家將視同同意最後公告之內容
+
+						a(class="btn")
+							div(class="btn__container")
+								img(class="btn__icon", src="http://fakeimg.pl/64x64/")
+								p 立即登入
+
+						div(class="btn")
+							div(class="btn__container")
+								img(class="btn__icon", src="http://fakeimg.pl/64x64/")
+								p 立即登入
+						button(class="btn")
+							div(class="btn__container")
+								img(class="btn__icon", src="http://fakeimg.pl/64x64/")
+								p 立即登入
+
+
+						a(class="btn")
+							div(class="btn__container")
+								p 測試
+
+						a(class="btn btn--block")
+							div(class="btn__container")
+								p 立即登入
+
+						a(class="btn btn--block btn--large")
+							div(class="btn__container")
+								img(class="btn__icon", src="http://fakeimg.pl/64x64/")
+								p 分享到Facebook
+
 								
 block script
 	script(src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.5.5/pixi.min.js")
