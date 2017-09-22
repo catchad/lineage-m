@@ -39,19 +39,19 @@ main {
 	#title {
 		position: relative;
 		width: 100%;
-		height: calc(15% + 75px);
+		// height: calc(15% + 75px);
 		padding-top: 75px;
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		flex: 0 0 auto;
 		@media screen and (max-width: $mobile-breakpoint ) {
-			height: calc(10% + 40px);
+			// height: calc(10% + 40px);
 			padding-top: 40px;
 		}
 		img {
-			height: 100%;
-			max-height: 126px;
+			width: 80%;
+			max-width: 300px;
 		}
 	}
 	.page {
@@ -65,7 +65,7 @@ main {
 		align-items: center;
 		// overflow: scroll;
 		@media screen and (max-width: $mobile-breakpoint ) {
-			height: calc(90% - 40px);
+			// height: calc(90% - 40px);
 		}
 		&.show {
 			display: flex;
@@ -142,47 +142,6 @@ main {
 		}
 	}
 	#page1 {
-		.tel-container {
-			margin: 100px 0; 
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			align-items: center;
-			.input-container {
-				display: flex;
-				justify-content: flex-start;
-				align-items: center;
-				margin-top: 20px;
-				.tel-header-selecter {
-					width: 70px;
-					height: 40px;
-					background-color: rgba(#000,0.5);
-					border-radius: 0px;
-					border: 0;
-					outline: 1px solid #000;
-					outline-offset: -1px;
-					margin-right: 5px;
-					font-size: 1em;
-					color: #aaa;
-				}
-				.tel-input {
-					width: 150px;
-					height: 40px;
-					padding: 5px 10px;
-					background-color: rgba(#000,0.5);
-					border: 0;
-					border-left: 1px solid rgba(#fff,0.5);
-					outline: none;
-					font-size: 1.1em;
-					color: #aaa;
-				}
-			}
-		}
-		.btn-login {
-			margin-bottom: 100px;
-		}
-	}
-	#page2 {
 		.choose-container {
 			margin: 20px 0;
 			display: flex;
@@ -264,29 +223,34 @@ main {
 			}
 		}
 	}
-	#page3 {
+	#page2 {
 		.char-table {
 			margin: 100px 0; 
 			display: flex;
 			flex-direction: column;
 			justify-content: center;
-			align-items: center;
-			width: 90%;
-			max-width: 600px;
+			align-items: flex-start;
+			// width: 90%;
+			// max-width: 600px;
 			@media screen and (max-width: $mobile-breakpoint ) {
 				margin: 30px 0;
 				font-size: 0.8em;
 			}
 			.row {
 				display: flex;
-				justify-content: center;
+				justify-content: flex-start;
 				align-items: center;
 				width: 100%;
-				padding: 20px 0;
+				padding: 20px;
 				font-size: 1.2em;
 				position: relative;
+				cursor: pointer;
+				outline: none;
 				@media screen and (max-width: $mobile-breakpoint ) {
-					padding: 10px 0;
+					padding: 10px 20px;
+				}
+				&.selected {
+					// background-color: rgba(#ffe6c5,0.3);
 				}
 				.left {
 					display: flex;
@@ -340,8 +304,11 @@ main {
 				display: none;
 			}
 		}
+		.btn-char-submit {
+			margin-bottom: 50px;
+		}
 	}
-	#page4 {
+	#page3 {
 		.name-container {
 			margin: 150px 0; 
 			display: flex;
@@ -359,8 +326,11 @@ main {
 				color: #fff;
 			}
 		}
+		.btn-name-submit {
+			margin-bottom: 50px;
+		}
 	}
-	#page5 {
+	#page4 {
 		.choose-container {
 			margin: 50px 0; 
 			width: 90%;
@@ -505,8 +475,11 @@ main {
 				}
 			}
 		}
+		.btn-job-submit {
+			margin-bottom: 50px;
+		}
 	}
-	#page6 {
+	#page5 {
 		.quiz-container {
 			margin: 100px 0; 
 			display: flex;
@@ -571,8 +544,11 @@ main {
 				}
 			}
 		}
+		.btn-quiz-submit {
+			margin-bottom: 50px;
+		}
 	}
-	#page7 {
+	#page6 {
 		.final-img {
 			margin: 50px 0;
 			width: 90%;
@@ -592,8 +568,10 @@ main {
 
 			.btn {
 				width: 300px;
+				margin-bottom: 50px;
 				@media screen and (max-width: $mobile-breakpoint ) {
 					width: 200px;
+					margin-bottom: 20px;
 					font-size: 0.7em;
 				}
 				.btn-container {

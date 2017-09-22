@@ -1,3 +1,142 @@
+var APIKey;
+var mainAccount;
+var userType; //1:new,2:old
+var setImgId;
+
+//角色資訊
+var charName;
+var job;
+var jobIndex;
+var score;
+var rank;
+
+//圖片base64
+var imgDataURL;
+
+// 老玩家角色資訊
+var playerLog = [];
+// 玩家角色列表模板
+var playerLogLayout = '<div class="row" data-index={{index}}><div class="left"><div class="check-box"></div></div><div class="right"><div class="top"><div class="server"><p>{{server}}</p></div></div><div class="bottom"><div class="job"><p>{{job}}</p></div><div class="name"><p>{{name}}</p></div></div></div></div><div class="hr"></div>';
+
+//-----------------------------------------------------------------------
+//-------------------------------跳轉相關---------------------------------
+//-----------------------------------------------------------------------
+var isLogin = false;
+$(document).ready(function() {
+	getAPIKey();
+	isLogin = checkLogin();
+	if(isLogin) {
+		mainAccount = $("#ma").val();
+		userType = 2;
+		// 獲取玩家資料
+		getPlayerLog();
+		toPage(2);
+	} else {
+		userType = 1;
+		toPage(1);
+	}
+})
+
+function getAPIKey() {
+	APIKey = $("#APIKey").val();
+}
+
+function checkLogin() {
+	return $("#ma").length != 0;
+}
+
+// 呼叫api得到玩家資料後填入playerLog裡
+function getPlayerLog() {
+	var postObj = {"ma":mainAccount,"ut":userType};
+	console.log("api post: " + JSON.stringify(postObj));
+	// post OldPlayerLog API
+	// do something...
+
+	// $.ajax({
+	// 	url: 'http://localhost:6887/api/E20170921_5/OldplayerLog',
+	// 	type: 'POST',
+	// 	dataType: 'json',
+	// 	data: postObj,
+	// 	headers: {apikey: APIKey}
+	// })
+	// .always(function(request) {
+	// 	if(request.code == "0000") {
+	// 		//正常取得
+	// 		for(var i=0; i<request.data.length; i++) {
+	// 			playerLog.push(request.data[i]);
+	// 		}
+	// 		showPlayerLog();
+	// 	} else {
+	// 		//有錯誤，回到首頁
+	// 		alert(request.message);
+	// 		window.open(request.url);
+	// 	}		
+	// });
+	
+
+	// 模擬ajax非同步
+	setTimeout(function(){ 
+		// 得到api request
+		// 以下為模擬資料
+		var request = {
+		    "code": "0000",
+		    "message": "",
+		    "data": [
+		        {
+		            "ID": 26074379,
+		            "ServerType": "月服",
+		            "MainAccount": "320262320062",
+		            "GameServer": "月亮女神阿提密斯",
+		            "CharName": "古巴比倫王2",
+		            "Job": "王族",
+		            "Score": 28550
+		        },
+		        {
+		            "ID": 26074379,
+		            "ServerType": "月服",
+		            "MainAccount": "320262320062",
+		            "GameServer": "月亮女神阿提密斯",
+		            "CharName": "阿貴",
+		            "Job": "妖精",
+		            "Score": 28550
+		        }
+		    ],
+		    "url": "https://tw.beanfun.com/LineageM/"
+		}
+
+		if(request.code == "0000") {
+			//正常取得
+			for(var i=0; i<request.data.length; i++) {
+				playerLog.push(request.data[i]);
+			}
+			showPlayerLog();
+		} else {
+			//有錯誤，回到首頁
+			alert(request.message);
+			window.open(request.url);
+		}		
+	}, 300);
+}
+
+// 將playerLog裡的玩家資料呈現在page2上
+function showPlayerLog() {
+	for(var i=0; i<playerLog.length; i++) {
+		var layout = playerLogLayout.replace("{{index}}", i)
+									.replace("{{server}}", playerLog[i].GameServer)
+									.replace("{{job}}", playerLog[i].Job)
+									.replace("{{name}}", playerLog[i].CharName);
+		$(".char-table").append(layout);
+	}
+	$(".char-table .row").on("click", function() {
+		$(".row.selected").removeClass("selected");
+		$(this).addClass("selected");
+		$(".check-box.checked").removeClass("checked");
+		$(".row.selected .check-box").addClass("checked");
+	})
+}
+
+
+// 題庫
 var quiz = [
 	{
 		"title": "一、你會注重強化哪一項能力值呢？",
@@ -127,7 +266,9 @@ var quiz = [
 	}
 ]
 
-// mobile dectct
+//-----------------------------------------------------------------------
+//-------------------------------RWD相關---------------------------------
+//-----------------------------------------------------------------------
 $(document).ready(function() {
 	detect();
 	mobileClassToggle();
@@ -147,40 +288,57 @@ $(window).on("resize", function() {
 
 function mobileClassToggle() {
 	if(isMobile) {
-		$("#page5 .choose-container").addClass("mobile");
+		$("#page4 .choose-container").addClass("mobile");
 	} else {
-		$("#page5 .choose-container").removeClass("mobile");
+		$("#page4 .choose-container").removeClass("mobile");
 	}
 }
 
-// debug
-$(".debug button").on("click", function(){
-	toPage($(this).data("to"));
-})
 
+//-----------------------------------------------------------------------
+//-------------------------------頁面邏輯---------------------------------
+//-----------------------------------------------------------------------
 
-// page 1
-var tel;
-$(".btn-tel-submit").on("click", function() {
-	tel = $(".tel-header-selecter").val() + $(".tel-input").val();
-	console.log(tel);
-
-	//post tel to API
-	toPage(2);
-})
-
-//page 2
-var stat;
+// page 1 （選擇老手或新手）------------------------------------------------
 $(".choose-frame").on("click", function(){
-	stat = $(this).data("stat");
-	console.log(stat);
-	//post stat to API
+	var stat = $(this).data("stat");
 	if(stat=="old") {
-		toPage(3);
+		// 選擇老手，進行畫面跳轉
+		// do something...
 	} else {
-		toPage(4);
+		// 選擇新手
+		// post NewPlayerLog API
+		// do something...
+
+		// 模擬ajax非同步
+		setTimeout(function(){ 
+			// 得到api request
+			// 以下為模擬資料
+			var request = {
+			    "code": "0000",
+			    "message": "",
+			    "data": [
+			        {
+			            "ma": "320262320062"
+			        }
+			    ],
+			    "url": "https://tw.beanfun.com/LineageM/"
+			}
+			if(request.code == "0000") {
+				//正常取得
+				mainAccount = request.data[0].ma;
+				userType = 1;
+				toPage(3);
+			} else {
+				//有錯誤，回到首頁
+				alert(request.message);
+				window.open(request.url);
+			}
+		}, 300)
 	}
 })
+
+//動畫
 $(".choose-frame").on("mouseover", function() {
 	var tempStat = $(this).data("stat");
 	if(tempStat == "old") {
@@ -201,34 +359,89 @@ $(".choose-frame").on("mouseout", function() {
 		$(".new").removeClass("not-selected");
 	}
 })
+//-----------------------------------------------------------------------
 
-// page 3
 
-// get player log and show
-
+// page 2 （老手選擇角色）-------------------------------------------------
 $(".btn-char-submit").on("click", function() {
-	// post character to API
-	// get score
-	drawFinal(3,"卍煞氣a漢克卍","1216666","2359011");
-	toPage(7);
+	if($(".row.selected").length) {
+		var index = $(".row.selected").data("index");
+		job = playerLog[index].Job;
+		jobIndex = jobNameToIndex(job);
+		charName = playerLog[index].CharName;
+		var postObj = {"ma":mainAccount,"ut":userType,"un":charName,"j":job};
+		console.log("api post: " + JSON.stringify(postObj));
+		// post SavePlayerLog API
+		// do something...
+
+		// 模擬ajax非同步
+		setTimeout(function(){
+			// 得到api request
+			var request = {
+			    "code": "0000",
+			    "message": "",
+			    "data": [
+			        {
+			            "ID": "3",
+			            "Score": 64100,
+			            "Ranking": 9930
+			        }
+			    ],
+			    "url": "https://tw.beanfun.com/LineageM/"
+			}
+			if(request.code == "0000") {
+				//正常取得
+				drawFinal(jobIndex,charName,request.data[0].Score,request.data[0].Ranking);
+				toPage(6);
+			} else {
+				//有錯誤，回到首頁
+				alert(request.message);
+				window.open(request.url);
+			}
+		}, 300)
+	}
 })
 
-// page 4
-var charName;
+function jobNameToIndex(job) {
+	var index;
+	switch(job) {
+		case "王族":
+			index = 0;
+			break;
+		case "騎士":
+			index = 1;
+			break;
+		case "妖精":
+			index = 2;
+			break;
+		case "法師":
+			index = 3;
+			break;
+	}
+	return index;
+}
+
+//-----------------------------------------------------------------------
+
+// page 3 （新手輸入名字）-------------------------------------------------
 $(".btn-name-submit").on("click", function() {
-	charName = $(".name-input").val();
-	console.log(charName);
-	toPage(5);
+	if($(".name-input").val()) {
+		charName = $(".name-input").val();
+		console.log(charName);
+		toPage(4);
+	}
 })
+//-----------------------------------------------------------------------
 
-// page 5
+
+// page 4 （新手選擇職業）-------------------------------------------------
 var jobList = ["king","knight","elf","wizard"];
-var jobIndex = 0;
 
 $(".btn-job-submit").on("click", function() {
 	jobIndex = jobList.indexOf($(".job.selected").data("job"));
+	job = jobIndexToName(jobIndex);
 	console.log($(".job.selected").data("job"));
-	toPage(6);
+	toPage(5);
 })
 
 $(".job-clicker").on("click", function() {
@@ -238,7 +451,7 @@ $(".job-clicker").on("click", function() {
 	jobScroll(index);
 })
 
-var mc = new Hammer($("#page5 .choose-container")[0]);
+var mc = new Hammer($("#page4 .choose-container")[0]);
 mc.on("swipeleft", function(ev) {
 	var nowJob = $(".job.selected").data("job");
 	console.log(nowJob);
@@ -266,7 +479,27 @@ function jobScroll(index) {
 	$(".job-switch."+jobList[index]).addClass("selected");
 }
 
-// page 6
+function jobIndexToName(jobIndex) {
+	var name;
+	switch(jobIndex) {
+		case 0:
+			name = "王族";
+			break;
+		case 1:
+			name = "騎士";
+			break;
+		case 2:
+			name = "妖精";
+			break;
+		case 3:
+			name = "法師";
+			break;
+	}
+	return name;
+}
+//-----------------------------------------------------------------------
+
+// page 5 （新手寫題目）---------------------------------------------------
 $(".quiz-option").on("click", function() {
 	$(".quiz-option.selected").removeClass("selected");
 	$(this).addClass("selected");
@@ -283,12 +516,37 @@ $(".btn-quiz-submit").on("click", function() {
 		} else {
 			// 答題完畢
 			console.log(answer);
-			// post answer to API
-			// get score and rank
-			var score = 3578910;
-			var rank = 23576;
-			drawFinal(jobIndex,charName,score,rank);
-			toPage(7);
+			var postObj = {"ma":mainAccount,"ut":userType,"un":charName,"j":job,"t1":answer[0],"t2":answer[1],"t3":answer[2],"t4":answer[3],"t5":answer[4],"t6":answer[5]};
+			console.log("api post: " + JSON.stringify(postObj));
+			// post SavePlayerLog API
+			// do something...
+
+			// 模擬ajax非同步
+			setTimeout(function(){
+				// 得到api request
+				var request = {
+				    "code": "0000",
+				    "message": "",
+				    "data": [
+				        {
+				            "ID": "3",
+				            "Score": 64100,
+				            "Ranking": 9930
+				        }
+				    ],
+				    "url": "https://tw.beanfun.com/LineageM/"
+				}
+				if(request.code == "0000") {
+					//正常取得
+					setImgId = request.data[0].ID;
+					drawFinal(jobIndex,charName,request.data[0].Score,request.data[0].Ranking);
+					toPage(6);
+				} else {
+					//有錯誤，回到首頁
+					alert(request.message);
+					window.open(request.url);
+				}
+			}, 300)
 		}
 	}
 })
@@ -308,12 +566,14 @@ function quizGenerator(quizIndex) {
 		$(".btn-quiz-submit .btn-container p").html("觀看結果");
 	}
 }
+//-----------------------------------------------------------------------
 
-// page 7
-function drawFinal(jobIndex,name,score,rank) {
+// page 6 （最後結果）-----------------------------------------------------
+function drawFinal(job,name,score,rank) {
+
 	console.log(jobList[jobIndex]+", "+name+", "+score+", "+rank);
 	var img = new Image();
-	img.src = "assets/images/analysis/final"+(jobIndex+1)+".png";
+	img.src = "assets/images/analysis/final"+(parseInt(jobIndex)+1)+".png";
 
 	img.onload = function() {
 		var canvas = document.createElement('canvas');
@@ -330,14 +590,55 @@ function drawFinal(jobIndex,name,score,rank) {
 		ctx.font = "30pt Arial";
 		ctx.fillText(name, 633, 375);
 
-		var dataURL = canvas.toDataURL("image/png");
+		imgDataURL = canvas.toDataURL("image/png");
 		$(".final-img").html("");
-		$(".final-img").append($('<img/>',{ src: dataURL }));
+		$(".final-img").append($('<img/>',{ src: imgDataURL }));
 	}
 }
 
 // share btn
+var hasCalledImgAPI = false;
+var shareURL;
+$(".btn-fb-share").on("click", function() {
+	if(!hasCalledImgAPI) {
+		hasCalledImgAPI = true;
+		//post SetImage api
+		var postObj = {"ma":mainAccount,"id":setImgId,"ut":userType,"ib":imgDataURL.substring(imgDataURL.indexOf(",")+1)};
 
+		// 模擬ajax非同步
+		setTimeout(function(){
+			// 得到api request
+			var request = {
+			    "code": "0000",
+			    "message": "",
+			    "data": [
+			        {
+			            "ImageUrl": "1505374469_DtWhE"
+			        }
+			    ],
+			    "url": "https://tw.beanfun.com/LineageM/"
+			}
+			if(request.code == "0000") {
+				//正常取得
+				shareURL = request.data[0].ImageUrl;
+				console.log(shareURL);
+				window.open("http://www.facebook.com/sharer/sharer.php?u="+shareURL, "_blank");
+			} else {
+				//有錯誤，回到首頁
+				alert(request.message);
+				window.open(request.url);
+			}
+		}, 300)
+	} else {
+		window.open("http://www.facebook.com/sharer/sharer.php?u="+shareURL, "_blank");
+	}
+})
+//-----------------------------------------------------------------------
+
+// debug用
+$(".debug button").on("click", function(){
+	toPage($(this).data("to"));
+})
 
 // change page
 function toPage(pageIndex) {
