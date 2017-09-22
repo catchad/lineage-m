@@ -7,36 +7,37 @@ block head
 	link(rel="stylesheet", href="assets/styles/analysis.css")
 
 block content
+	input#APIKey(type="hidden", value="替換這裡")
+	input#ma(type="hidden", value="替換這裡")
 	main
 		.debug
-			button.selected(data-to="1") page1
+			button(data-to="1") page1
 			button(data-to="2") page2
 			button(data-to="3") page3
 			button(data-to="4") page4
 			button(data-to="5") page5
 			button(data-to="6") page6
-			button(data-to="7") page7
 		//- .canvas-test
 		section#title
 			img(src="assets/images/analysis/title.png", alt="")
-		section#page1.page.show
-			.subtitle
-				p 想了解你有多少戰力，
-				p 並且超越多少人嗎？
-			.tel-container
-				p 輸入手機號碼
-				.input-container
-					select.tel-header-selecter
-						option(value="+886") +886
-						option(value="+86") +86
-						option(value="+852") +852
-						option(value="+853") +853
-					input.tel-input(placeholder="手機號碼") 
-			.btn.btn-tel-submit
-				.btn-container
-					p 立即登入
+		//- section#page1.page
+		//- 	.subtitle
+		//- 		p 想了解你有多少戰力，
+		//- 		p 並且超越多少人嗎？
+		//- 	.tel-container
+		//- 		p 輸入手機號碼
+		//- 		.input-container
+		//- 			select.tel-header-selecter
+		//- 				option(value="+886") +886
+		//- 				option(value="+86") +86
+		//- 				option(value="+852") +852
+		//- 				option(value="+853") +853
+		//- 			input.tel-input(placeholder="手機號碼") 
+		//- 	.btn.btn-tel-submit
+		//- 		.btn-container
+		//- 			p 立即登入
 			
-		section#page2.page
+		section#page1.page
 			.subtitle
 				p 請選擇資深玩家
 				p 或天堂新血
@@ -51,66 +52,27 @@ block content
 						p 接受測驗了解自身潛力
 			
 			
-		section#page3.page
+		section#page2.page
 			
 			.char-table
-				.row
-					.left
-						.check-box.checked
-					.right
-						.top
-							.server
-								p 月亮女神阿提密斯
-						.bottom
-							.job
-								p 黑暗妖精
-							.name
-								p 齊天大聖孫孫孫悟空
-				.hr
-				.row
-					.left
-						.check-box
-					.right
-						.top
-							.server
-								p 月亮女神阿提密斯
-						.bottom
-							.job
-								p 黑暗妖精
-							.name
-								p 齊天大聖孫孫孫悟空
-				.hr
-				.row
-					.left
-						.check-box
-					.right
-						.top
-							.server
-								p 月亮女神阿提密斯
-						.bottom
-							.job
-								p 黑暗妖精
-							.name
-								p 齊天大聖孫孫孫悟空
-				.hr
-				.row
-					.left
-						.check-box
-					.right
-						.top
-							.server
-								p 月亮女神阿提密斯
-						.bottom
-							.job
-								p 黑暗妖精
-							.name
-								p 齊天大聖孫孫孫悟空
-				.hr
+				//- .row
+				//- 	.left
+				//- 		.check-box.checked
+				//- 	.right
+				//- 		.top
+				//- 			.server
+				//- 				p 月亮女神阿提密斯
+				//- 		.bottom
+				//- 			.job
+				//- 				p 黑暗妖精
+				//- 			.name
+				//- 				p 齊天大聖孫孫孫悟空
+				//- .hr
 			.btn.btn-char-submit
 				.btn-container
 					p 確認
 			
-		section#page4.page
+		section#page3.page
 			
 			.name-container
 				input.name-input(placeholder="請輸入您的角色暱稱")
@@ -120,7 +82,7 @@ block content
 				.btn-container
 					p 確認
 			
-		section#page5.page
+		section#page4.page
 			.subtitle
 				p 請選擇喜愛的職業
 				p 並進入測驗
@@ -152,7 +114,7 @@ block content
 				.btn-container
 					p 進入測驗
 			
-		section#page6.page
+		section#page5.page
 			
 			.quiz-container
 				.quiz-title
@@ -177,7 +139,7 @@ block content
 			.btn.btn-quiz-submit
 				.btn-container
 					p 下一題
-		section#page7.page
+		section#page6.page
 			.subtitle
 				p 測驗結果
 			.final-img
