@@ -506,7 +506,9 @@ main {
           transform: translate(0%, -50%); } }
       main #page4 .choose-container .clicker-container .job-clicker {
         width: 25%;
-        cursor: pointer; }
+        cursor: pointer;
+        background-color: rgba(0, 0, 0, 0.01);
+        opacity: 0; }
         main #page4 .choose-container .clicker-container .job-clicker::before {
           content: "";
           display: block;

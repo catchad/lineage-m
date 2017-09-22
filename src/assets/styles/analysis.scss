@@ -447,6 +447,8 @@ main {
 				.job-clicker {
 					width: 25%;
 					cursor: pointer;
+					background-color: rgba(#000,0.01);
+					opacity: 0;
 					&::before {
 						content: "";
 						display: block;
