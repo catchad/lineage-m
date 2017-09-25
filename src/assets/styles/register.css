@@ -71,6 +71,9 @@ header {
   header .logo {
     width: 100px;
     height: auto; }
+    @media screen and (max-width: 768px) {
+      header .logo {
+        display: none; } }
   header .nav-switch {
     display: none;
     margin-left: auto;
@@ -97,8 +100,8 @@ header {
     header .nav .close {
       display: none;
       position: fixed;
-      top: 30px;
-      right: 30px;
+      top: 20px;
+      right: 20px;
       cursor: pointer; }
       @media screen and (max-width: 768px) {
         header .nav .close {
@@ -324,18 +327,18 @@ main {
       height: 100%;
       cursor: pointer; }
 
-#register-btn {
+#registerBtn {
   position: fixed;
   bottom: 40px;
   left: 50%;
   transform: translateX(-50%);
   display: none; }
-  #register-btn.btn--active {
+  #registerBtn.btn--active {
     display: block; }
 
 #test {
   position: fixed;
-  bottom: 30px;
+  bottom: 200px;
   left: 50%;
   transform: translateX(-50%); }
   #test.hide {

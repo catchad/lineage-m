@@ -71,6 +71,9 @@ header {
   header .logo {
     width: 100px;
     height: auto; }
+    @media screen and (max-width: 768px) {
+      header .logo {
+        display: none; } }
   header .nav-switch {
     display: none;
     margin-left: auto;
@@ -97,8 +100,8 @@ header {
     header .nav .close {
       display: none;
       position: fixed;
-      top: 30px;
-      right: 30px;
+      top: 20px;
+      right: 20px;
       cursor: pointer; }
       @media screen and (max-width: 768px) {
         header .nav .close {

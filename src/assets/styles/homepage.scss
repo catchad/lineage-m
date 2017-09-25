@@ -1,10 +1,86 @@
 @import "_common.scss";
 
+$breakpoint: 768px;
+
+body {
+	color: #ffe6c5;
+}
 main {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	position: relative;
 	width: 100%;
 	height: 100vh;
 	background-image: url(../images/homepage/bg.jpg);
 	background-size: cover;
 	background-position: center;
+	text-align: center;
+}
+section {
+	width: 100%;
+}
+.homepage {
+	&__logo {
+		margin-bottom: 40px;
+		width: 100%;
+		max-width: 651px;
+	}
+	&__info {
+	    font-size: 1.2em;
+	    line-height: 1.6em;
+	    margin-top: 10px;
+	    margin-bottom: 40px;
+	}
+	&__menu {
+		width: 100%;
+		max-width: 780px;
+		font-size: 0;
+		margin: 0 auto;
+		li {
+			display: inline-block;
+			width: 20%;
+			font-size: 1rem;
+		}
+	}
+}
+
+.diamondBtn {
+	position: relative;
+	display: inline-block;
+	width: 100%;
+	background-image: url(../images/diamon-btn.png);
+	background-size: 100% 100%;
+	font-size: 1em;
+	cursor: pointer;
+	transition: filter 0.15s linear;
+	user-select: none;
+	&::before {
+		content: '';
+		display: block;
+		padding-top: 100.02962963%;
+	}
+	&:hover {
+		filter: brightness(1.5);
+	}
+
+	&:active {
+		filter: brightness(2.2);
+	}
+	
+	p:nth-child(2) {
+		font-size: 0.8em;
+	}
+
+	&__container {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+	}
+
 }

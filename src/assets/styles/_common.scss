@@ -32,6 +32,9 @@ header {
 	.logo {
 		width: 100px;
 		height: auto;
+		@media screen and (max-width: $breakpoint ) {
+			display: none;
+		}
 	}
 	.nav-switch {
 		display: none;
@@ -67,8 +70,8 @@ header {
 		.close {
 			display: none;
 			position: fixed;
-			top: 30px;
-			right: 30px;
+			top: 20px;
+			right: 20px;
 			cursor: pointer;
 
 			@media screen and (max-width: $breakpoint ) {

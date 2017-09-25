@@ -5,11 +5,43 @@ block variables
 
 block head
 	link(rel="stylesheet", href="assets/styles/homepage.css")
-	
+
 block content
 	main
-		section
-			p homepage
+		section(class="homepage")
+			img(class="homepage__logo", src="assets/images/logo.png")
+			a(class="btn btn--large btn--block", href="./register.html")		
+				div(class="btn__container")
+					p 預先登錄
+			p(class="homepage__info")
+				| 輸入正確電話號碼完成事先登錄
+				br
+				| 即可獲得事先登錄獎勵
+			ul(class="homepage__menu")
+				li
+					a(class="diamondBtn")
+						div(class="diamondBtn__container")
+							div
+								p 預創血盟
+								p coming soon
+				li
+					a(class="diamondBtn", href="./treasure.html")
+						div(class="diamondBtn__container")
+							p 狂抽奪寶
+				li
+					a(class="diamondBtn", href="./analysis.html")
+						div(class="diamondBtn__container")
+							p 戰力評比
+				li
+					a(class="diamondBtn")
+						div(class="diamondBtn__container")
+							p 最新消息
+				li
+					a(class="diamondBtn")
+						div(class="diamondBtn__container")
+							div
+								p 預先創角
+								p coming soon
 
 block script
 	script(src="assets/scripts/homepage.js")
