@@ -8,8 +8,79 @@ block head
 
 block content
 	main
-		section
-			p treasure
+		.debug
+			button(data-to="1") page1
+			button(data-to="2") page2
+		section#title
+			img(src="assets/images/treasure/title.png", alt="")
+		section#page1.page.show
+			.subtitle
+				p 天天登入，累積抽獎機會，
+				p 週週狂抽「M」好禮
+			.gift-container
+				p.gift-title 本週大獎
+				p.gift-name TOYOTA Prius C 1名
+				img.gift-img(src="http://fakeimg.pl/350x200", alt="")
+			.tel-container
+				p 輸入手機號碼
+				.input-container
+					select.tel-header-selecter
+						option(value="+886") +886
+						option(value="+86") +86
+						option(value="+852") +852
+						option(value="+853") +853
+					input.tel-input(placeholder="手機號碼") 
+			.btn.btn-login
+				.btn__container
+					p 立即登入
+			
+		section#page2.page
+			.subtitle
+				p 完成登入，恭喜獲得一張抽獎券
+			.ticket-container
+				img.ticket-img(src="assets/images/treasure/ticket.png", alt="")
+				.ticket-amount-container
+					.dot
+					p 您累積抽獎券數量 x 
+					p.ticket-amount 1
+				.friend-amount-container
+					.dot
+					p 您成功邀請人數 x 
+					p.friend-amount 0
+				.hr
+			.invite-container
+				p 我的邀請連結
+				.invite-link-container
+					p#invite-link https://goo.gl/G8VDFv
+					#btn-copy(data-clipboard-target="#invite-link") 複製
+				p 邀請好友來參加活動，即可累積更多中獎機會
+			.btn.btn-info
+				.btn__container
+					p 活動辦法
+		.lightbox
+			img.close(src="assets/images/close.png", alt="close")
+			
+			#title
+				img(src="assets/images/treasure/title.png", alt="")
+			.gift-container
+				p.gift-title 本週大獎
+				p.gift-name TOYOTA Prius C 1名
+				img.gift-img(src="http://fakeimg.pl/350x200", alt="")
+				.hr
+			.info-container
+				.info-title
+					p 活動辦法
+				.info-content
+					p STEP1. 每日登入網頁獲得一張抽獎券
+					p STEP2. 發送邀請碼，每成功邀請一人，可額外獲得一張抽獎券
+					br
+					p - 獎勵每週進行更換，抽獎券數量持續累積。
+					p - 得獎名單於隔週三公布。
+					p - 得獎者將依據事先登錄資料（電話、EMAIL）為準，資料提供錯誤或空號者視同放棄獎勵。
+
+
 
 block script
+	script(src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js")
+	script(src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js")
 	script(src="assets/scripts/treasure.js")

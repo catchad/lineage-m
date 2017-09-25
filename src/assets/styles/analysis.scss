@@ -107,39 +107,39 @@ main {
 				background-image: linear-gradient(left ,rgba(#ffe6c5,0) 1%, rgba(#ffe6c5,0.7) 50%, rgba(#ffe6c5,0) 99%);
 			}
 		}
-		.btn {
-			position: relative;
-			width: 200px;
-			background-image: url("../images/analysis/btn.png");
-			background-origin: center;
-			background-size: 100% 100%;
-			cursor: pointer;
-			transition: 0.2s;
-			&:hover {
-				filter: brightness(50%);
-			}
-			&::before {
-				content: "";
-				display: block;
-				width: 100%;
-				padding-bottom: 30.42%;
-			}
-			.btn-container {
-				position: absolute;
-				top: 0;
-				left: 0;
-				width: 100%;
-				height: 100%;
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				font-size: 1.3em;
-				p {
-					color: #ffe6c5;
-				}
-			}
+		// .btn {
+		// 	position: relative;
+		// 	width: 200px;
+		// 	background-image: url("../images/analysis/btn.png");
+		// 	background-origin: center;
+		// 	background-size: 100% 100%;
+		// 	cursor: pointer;
+		// 	transition: 0.2s;
+		// 	&:hover {
+		// 		filter: brightness(50%);
+		// 	}
+		// 	&::before {
+		// 		content: "";
+		// 		display: block;
+		// 		width: 100%;
+		// 		padding-bottom: 30.42%;
+		// 	}
+		// 	.btn-container {
+		// 		position: absolute;
+		// 		top: 0;
+		// 		left: 0;
+		// 		width: 100%;
+		// 		height: 100%;
+		// 		display: flex;
+		// 		justify-content: center;
+		// 		align-items: center;
+		// 		font-size: 1.3em;
+		// 		p {
+		// 			color: #ffe6c5;
+		// 		}
+		// 	}
 			
-		}
+		// }
 	}
 	#page1 {
 		.choose-container {
@@ -555,6 +555,9 @@ main {
 			margin: 50px 0;
 			width: 90%;
 			max-width: 800px;
+			@media screen and (max-width: $mobile-breakpoint ) {
+				margin: 20px 0 30px 0;
+			}
 			img {
 				width: 100%;
 			}
@@ -569,14 +572,13 @@ main {
 			}
 
 			.btn {
-				width: 300px;
 				margin-bottom: 50px;
 				@media screen and (max-width: $mobile-breakpoint ) {
-					width: 200px;
+					width: 250px;
 					margin-bottom: 20px;
-					font-size: 0.7em;
+					font-size: 0.9em;
 				}
-				.btn-container {
+				.btn__container {
 					img {
 						margin-right: 10px;
 						@media screen and (max-width: $mobile-breakpoint ) {
