@@ -65,23 +65,77 @@ header {
   box-sizing: border-box;
   padding: 12px 24px;
   z-index: 1000; }
+  @media screen and (max-width: 768px) {
+    header {
+      padding: 10px 15px; } }
   header .logo {
     width: 100px;
     height: auto; }
-  header ul {
-    font-size: 1.1em;
-    font-weight: 100;
-    color: #ffe6c5;
+  header .nav-switch {
+    display: none;
+    margin-left: auto;
+    cursor: pointer;
+    width: 40px; }
+    @media screen and (max-width: 768px) {
+      header .nav-switch {
+        display: block; } }
+  header .nav {
     margin-left: auto; }
-  header li {
-    display: inline-block;
-    text-shadow: 1px 1px 2px black;
-    margin: 0 15px;
-    vertical-align: middle; }
-    header li:first-child {
-      margin-left: 0; }
-    header li:last-child {
-      margin-right: 0; }
+    @media screen and (max-width: 768px) {
+      header .nav {
+        display: none;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #150f0f; }
+        header .nav--active {
+          display: flex; } }
+    header .nav .close {
+      display: none;
+      position: fixed;
+      top: 30px;
+      right: 30px;
+      cursor: pointer; }
+      @media screen and (max-width: 768px) {
+        header .nav .close {
+          display: block; } }
+    header .nav ul {
+      font-size: 1.1em;
+      font-weight: 100;
+      color: #ffe6c5; }
+      @media screen and (max-width: 768px) {
+        header .nav ul {
+          text-align: center;
+          font-size: 1.8em;
+          line-height: 1em;
+          padding: 0 25px;
+          box-sizing: border-box; } }
+    header .nav li {
+      display: inline-block;
+      text-shadow: 1px 1px 2px black;
+      margin: 0 15px;
+      vertical-align: middle; }
+      header .nav li:first-child {
+        display: none; }
+        header .nav li:first-child img {
+          width: 100%; }
+      header .nav li:nth-child(2) {
+        margin-left: 0; }
+      header .nav li:last-child {
+        margin-right: 0; }
+      @media screen and (max-width: 768px) {
+        header .nav li {
+          display: block;
+          margin: 20px 0; }
+          header .nav li:first-child {
+            display: block;
+            margin-bottom: 40px; }
+          header .nav li:last-child {
+            margin-top: 40px; } }
 
 a {
   color: inherit;
