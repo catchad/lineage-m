@@ -142,7 +142,9 @@ loader.load((loader, resources) => {
             }
 
             updatePixi();
-            if( addUser ) dropUser();
+            if( addUser ) {
+                dropUser();
+            }
 
         });
 
@@ -378,7 +380,7 @@ loader.load((loader, resources) => {
             dropUser();
         }
 
-        if( activePages[currentPage] !== undefined && activePages[currentPage+1] !== undefined && activePages[currentPage-1] !== undefined) dropUser();
+        if( addUser && activePages[currentPage] !== undefined && activePages[currentPage+1] !== undefined && activePages[currentPage-1] !== undefined) dropUser();
 
 
 
@@ -473,7 +475,6 @@ loader.load((loader, resources) => {
             newCharacter.y = pageCenter.y + rowCenter.y + characterCenter.y + p.y;
         }
 
-        console.log( newCharacter.x, newCharacter.y);
         newCharacter.anchor.set(0.5, 1);
         newCharacter.scale.set(0.9, 0.9);
         newCharacter.interactive = true;
@@ -527,9 +528,6 @@ loader.load((loader, resources) => {
         
     });
 
-
-
-    // checkVisible();
 });
 
 

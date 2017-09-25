@@ -20,19 +20,26 @@ html(lang="zh-tw")
 		header
 			a(href="/")
 				img(class="logo", src="assets/images/logo.png")
-			ul
-				li
-					a(href="./") 活動首頁
-				li
-					a(href="register.html") 預先登錄
-				li
-					a(href="treasure.html") 狂抽奪寶
-				li
-					a(href="analysis.html") 戰力評比
-				li
-					img(src="assets/images/googleplay.png", alt="Google Play")
+			img(class="nav-switch", src="assets/images/nav-switch.png")
+			nav(class="nav")
+				img(class="close", src="assets/images/close.png")
+				ul
+					li
+						img(src="assets/images/logo.png")
+					li
+						a(href="./") 活動首頁
+					li
+						a(href="register.html") 預先登錄
+					li
+						a(href="treasure.html") 狂抽奪寶
+					li
+						a(href="analysis.html") 戰力評比
+					li
+						img(src="assets/images/googleplay.png", alt="Google Play")
 		block content
 
 		//- script(src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.4.3/vue.min.js")
+		script(src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js")
+		script(src="assets/scripts/common.js")
 		block script
 		
