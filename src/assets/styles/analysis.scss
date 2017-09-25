@@ -9,7 +9,7 @@ $small-mobile-breakpoint: 350px;
 main {
 	position: relative;
 	width: 100%;
-	height: 100vh;
+	min-height: 100vh;
 	background-image: url(../images/analysis/analysis-bg.jpg);
 	background-size: cover;
 	background-position: center;
@@ -63,6 +63,7 @@ main {
 		// justify-content: space-between;
 		justify-content: flex-start;
 		align-items: center;
+		overflow: hidden;
 		// overflow: scroll;
 		@media screen and (max-width: $mobile-breakpoint ) {
 			// height: calc(90% - 40px);

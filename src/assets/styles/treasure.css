@@ -418,9 +418,8 @@ main {
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      margin: 40px;
-      font-size: 1.2em;
-      width: 100%; }
+      margin: 40px 0;
+      font-size: 1.2em; }
       main .lightbox .gift-container .gift-img {
         margin: 30px 0;
         width: 100%;
