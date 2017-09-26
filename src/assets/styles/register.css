@@ -228,6 +228,26 @@ main {
   width: 100%;
   height: 100vh; }
 
+#edit {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center; }
+  #edit .title {
+    margin-bottom: 15px;
+    font-size: 1.4em; }
+  #edit input {
+    border: none;
+    background-color: #1b1b1b;
+    outline: none;
+    box-sizing: border-box;
+    padding: 5px;
+    color: #7c7c7c;
+    font-size: 1rem;
+    text-align: center;
+    font-family: 'Noto Sans TC';
+    margin-bottom: 10px; }
+
 #form {
   display: flex;
   justify-content: center;
@@ -299,7 +319,8 @@ main {
 #info {
   position: fixed;
   top: 90px;
-  left: 20px; }
+  left: 20px;
+  width: 280px; }
   #info .count {
     position: relative;
     box-sizing: border-box;
@@ -314,6 +335,18 @@ main {
     align-items: center;
     background-color: rgba(0, 0, 0, 0.7);
     height: 40px; }
+    #info .search select {
+      flex: 0 0 75px;
+      border: none;
+      background-color: transparent;
+      outline: none;
+      box-sizing: border-box;
+      padding: 5px;
+      color: #7c7c7c;
+      font-size: 1rem;
+      text-align: center;
+      font-family: 'Noto Sans TC';
+      min-width: 0; }
     #info .search input {
       flex: 1;
       align-self: stretch;
@@ -321,15 +354,16 @@ main {
       border: none;
       text-align: center;
       outline: none;
-      color: #FFFFFF;
-      font-family: 'Noto Sans TC'; }
+      color: #7c7c7c;
+      font-family: 'Noto Sans TC';
+      min-width: 0; }
     #info .search .icon {
       height: 100%;
       cursor: pointer; }
 
 #registerBtn {
   position: fixed;
-  bottom: 40px;
+  bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
   display: none; }

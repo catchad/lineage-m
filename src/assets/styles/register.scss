@@ -17,13 +17,36 @@ main {
 	// background-position: center;
 }
 
+#edit {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	.title {
+		margin-bottom: 15px;
+		font-size: 1.4em;
+	}
+	input {
+		border: none;
+		background-color: #1b1b1b;
+		outline: none;
+		box-sizing: border-box;
+		padding: 5px;
+		color: #7c7c7c;
+		font-size: 1rem;
+		text-align: center;
+		font-family: 'Noto Sans TC';
+		margin-bottom: 10px;
+	}
+
+
+}
+
 #form {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-
 	text-align: center;
-
 	.wrapper {
 		width: 600px;
 		margin: 0 auto;
@@ -136,6 +159,7 @@ main {
     position: fixed;
     top: 90px;
     left: 20px;
+    width: 280px;
 
 	.count {
 		position: relative;
@@ -161,6 +185,19 @@ main {
 		align-items: center;
 		background-color: rgba(0,0,0,0.7);
 		height: 40px;
+		select {
+			flex: 0 0 75px;
+			border: none;
+			background-color: transparent;
+			outline: none;
+			box-sizing: border-box;
+			padding: 5px;
+			color: #7c7c7c;
+			font-size: 1rem;
+			text-align: center;
+			font-family: 'Noto Sans TC';
+			min-width: 0;
+		}
 		input {
 			flex: 1;
 			align-self: stretch;
@@ -168,8 +205,9 @@ main {
 		    border: none;
 		    text-align: center;
 		    outline: none;
-		    color: #FFFFFF;
+		    color: #7c7c7c;
 		    font-family: 'Noto Sans TC';
+		    min-width: 0;
 		}
 		.icon {
 			height: 100%;
@@ -181,7 +219,7 @@ main {
 
 #registerBtn {
 	position: fixed;
-	bottom: 40px;
+	bottom: 20px;
 	left: 50%;
 	transform: translateX(-50%);
 	display: none;

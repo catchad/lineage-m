@@ -9,8 +9,11 @@ block head
 block bodyStart
 	input(type="hidden", id="apikey", value="abcdefg")
 	script.
-		var getdataAPIurl = "/api/E20170921_3/GetData";
-		var lineupAPIurl = "/api/E20170921_3/lineup";
+		var setting = {
+			getdataAPIurl: '/api/E20170921_3/GetData',
+			lineupAPIurl: '/api/E20170921_3/lineup',
+			writetodayAPIurl: '/api/E20170921_3/writetoday'
+		}
 block content
 	main
 		section
@@ -20,16 +23,31 @@ block content
 				//- div(class="count")
 				//- 	p 目前登錄: 13,658人
 				div(class="search")
-					input(id="searchID", type="text", placeholder="輸入電話號碼找自己")
+					
+					select(id="searchLocation")
+						option(value="TW") +886
+						option(value="HK") +852
+						option(value="MAC") +853
+					input(id="searchPhone", type="text", placeholder="輸入電話號碼找自己")
 					img(class="icon", src="assets/images/register/search.png", alt="search")
 
 			//- button(id="test") 參加排隊
 			a(id="registerBtn", class="btn btn--large btn--active")
 				div(class="btn__container")
 					p 前往登錄
-			#form.lightbox
-				img(class="close", src="assets/images/close.png", alt="close", v-on:click="closeForm")
-				.wrapper
+
+			div(id="edit", class="lightbox")
+				img(class="close", src="assets/images/close.png", alt="close")
+				div(class="wrapper")
+					p(class="title") 編輯留言
+					input(id="editMemo", type="text", value="1234")
+					a(id="editBtn", class="btn btn--block")
+						div(class="btn__container")
+							p 確定送出
+
+			div(id="form", class="lightbox")
+				img(class="close", src="assets/images/close.png", alt="close")
+				div(class="wrapper")
 					img(class="block", src="assets/images/register/title.png", alt="預先登錄")
 					form
 						table
@@ -39,11 +57,11 @@ block content
 										p STEP1
 										p 電話號碼
 									td
-										select(id="form-location")
+										select(id="formLocation")
 											option(value="TW") +886
 											option(value="HK") +852
 											option(value="MAC") +853
-										input(id="form-phone", type="text", placeholder="電話號碼")
+										input(id="formPhone", type="text", placeholder="電話號碼")
 								tr
 									td
 										p STEP2
@@ -60,7 +78,7 @@ block content
 										p STEP3
 										p 留言板
 									td
-										input(id="form-memo", type="text", placeholder="限制輸入10個字以內")
+										input(id="formMemo", type="text", placeholder="限制輸入10個字以內")
 								tr
 									td
 										p STEP4
