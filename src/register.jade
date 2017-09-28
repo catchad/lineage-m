@@ -32,7 +32,7 @@ block content
 						option(value="TW") +886
 						option(value="HK") +852
 						option(value="MAC") +853
-					input(id="searchPhone", type="text", placeholder="輸入電話號碼找自己")
+					input(id="searchPhone", type="text", placeholder="輸入電話號碼找自己", maxlength="10", onkeypress='return event.charCode >= 48 && event.charCode <= 57')
 					img(class="icon", src="assets/images/register/search.png", alt="search")
 				div(class="fb-like", data-href="https://www.facebook.com/Gamania.Lineage.M/", data-width="200", data-layout="button_count", data-action="like", data-size="small", data-show-faces="false", data-share="true")
 
