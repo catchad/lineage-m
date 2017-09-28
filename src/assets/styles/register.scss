@@ -1,4 +1,6 @@
 @import "_common.scss";
+$breakpoint: 768px;
+
 
 body {
 	overflow: hidden;
@@ -6,6 +8,9 @@ body {
 header {
 	background-color: rgba(0,0,0,0.7);
 	// box-shadow: 0px 3px 20px 7px rgba(0, 0, 0, 0.6);
+	@media screen and (max-width: $breakpoint ) {
+		background-color: transparent;
+	}
 }
 
 main {
@@ -42,21 +47,50 @@ main {
 
 }
 
+#rule {
+	z-index: 1011;
+	.wrapper {
+		width: 100%;
+		max-width: 1000px;
+		margin: 0 auto;
+	}
+}
+
 #form {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	text-align: center;
+	@media screen and (max-width: $breakpoint ) {
+	    align-items: flex-start;
+	    overflow: auto;
+	    padding-top: 70px;
+	}
+	
+	.close {
+		@media screen and (max-width: $breakpoint ) {
+		    position: absolute;
+		    top: 20px;
+		}
+	}
 	.wrapper {
-		width: 600px;
-		margin: 0 auto;
+		width: 100%;
+		max-width: 600px;
+		// margin: 0 auto;
+
+		@media screen and (max-width: $breakpoint ) {
+			font-size: 0.6em;
+		}
+		
 	}
 	.btn {
 		margin-top: 30px;
 	}
+
 	a {
 		color: #FFFFFF;
 		text-decoration: underline;
+		cursor: pointer;
 	}
 	table {
 		// width: 100%;
@@ -72,11 +106,18 @@ main {
 		&:nth-child(1) {
 			width: 120px;
 			text-align: left;
+			@media screen and (max-width: $breakpoint ) {
+				width: 60px;
+			}
 		}
 		&:nth-child(2) {
 			padding-left: 20px;
 			font-size: 0;
 			width: 220px;
+			@media screen and (max-width: $breakpoint ) {
+				width: 200px;
+			}
+
 			> * {
 				font-size: 1rem;
 			}
@@ -102,12 +143,24 @@ main {
 			td:nth-child(2) > div {
 				display: inline-block;
 				vertical-align: top;
+				
+				&:nth-child(1) {
+					img {
+						@media screen and (max-width: $breakpoint ) {
+							width: 55px;
+						}
+					}
+				}
 
 				&:nth-child(2) {
 					margin-left: 10px;
 					p {
 					    margin-bottom: 10px;
 					    font-size: 1.1em;
+						@media screen and (max-width: $breakpoint ) {
+							font-size: 0.8em;
+						    margin-bottom: 5px;
+						}
 					}
 				}
 			}
@@ -129,6 +182,10 @@ main {
 	img.block {
 		display: block;
 		margin: 0 auto;
+	}
+	img.title {
+	    width: 100%;
+	    max-width: 314px;
 	}
 	input, select {
 		border: none;
@@ -160,6 +217,12 @@ main {
     top: 90px;
     left: 20px;
     width: 280px;
+    z-index: 1001;
+	@media screen and (max-width: $breakpoint ) {
+	    top: 12px;
+	    left: 10px;
+	    width: 220px;
+	}
 
 	.count {
 		position: relative;
@@ -185,6 +248,9 @@ main {
 		align-items: center;
 		background-color: rgba(0,0,0,0.7);
 		height: 40px;
+		@media screen and (max-width: $breakpoint ) {
+		    height: 35px;
+		}
 		select {
 			flex: 0 0 75px;
 			border: none;
@@ -197,6 +263,10 @@ main {
 			text-align: center;
 			font-family: 'Noto Sans TC';
 			min-width: 0;
+			@media screen and (max-width: $breakpoint ) {
+			    font-size: 0.8rem;
+			    flex: 0 0 60px;
+			}
 		}
 		input {
 			flex: 1;
@@ -208,6 +278,9 @@ main {
 		    color: #7c7c7c;
 		    font-family: 'Noto Sans TC';
 		    min-width: 0;
+		    @media screen and (max-width: $breakpoint ) {
+			    font-size: 0.8rem;
+			}
 		}
 		.icon {
 			height: 100%;
@@ -226,6 +299,14 @@ main {
 	&.btn--active {
 		display: block;
 	}
+	@media screen and (max-width: $breakpoint ) {
+	    &.btn--large {
+			width: 200px;
+			font-size: 1.1em;
+			bottom: 10px;
+	    }
+	}
+
 }
 #test {
 	position: fixed;
@@ -237,3 +318,66 @@ main {
 	}
 }
 
+.arrow {
+	position: absolute;
+	top: 50%;
+	width: 40px;
+	// height: 50px;
+	// border: 1px solid #000000;
+	transform: translateY(-50%);
+	// cursor: pointer;
+	user-select: none;
+	background-image: url(../images/register/arrow.png);
+	background-size: 100% 100%;
+	&::before {
+		content: '';
+		display: block;
+		padding-top: 132.258065%
+	}
+	&.left {
+		left: 10px;
+		transform: translateY(-50%) scaleX(-1);
+	}
+	&.right {
+		right: 10px;
+	}
+}
+
+.loading {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: #000000;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 1100;
+	color: #FFFFFF;
+	text-align: center;
+
+	opacity: 0;
+	visibility: hidden;
+	transition: all 0.25s linear;
+	&--active {
+		opacity: 1;
+		visibility: visible;
+	}
+	img {
+		width: 100%;
+		max-width: 300px;
+	}
+}
+
+.lightbox {
+	.fb-like {
+		display: none;
+	}
+
+	&.active {
+		.fb-like {
+			display: block;
+		}
+	}
+}

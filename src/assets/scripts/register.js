@@ -1,8 +1,12 @@
 var apiKey = $("#apikey").val();
 
-
+String.prototype.bLength = function() { 
+    var arr = this.match(/[^\x00-\xff]/ig); 
+    return  arr == null ? this.length : this.length + arr.length; 
+}
 var ww = window.innerWidth;
 var wh = window.innerHeight;
+var isAjaxing = false;
 var mapPosition = 0;
 var app = new PIXI.Application(ww, wh, { forceCanvas:false, backgroundColor: 0x000000, view: document.getElementById('pixiCanvas') });
 var activePages = {};
@@ -10,7 +14,7 @@ var container = new PIXI.Container();
 var editData = {};
 var fakeData = [];
 var fakeText = ['賣+10屠龍刀 密我出價 鳥價不回', '賣帳號 99等女妖 密我', '老公我兵單來了 >"<', '幹好lag = =', '靠邀 超多人...', '我要下線了 881', '8口口口口D', '媽我上電視了 ^0^', '徵婆 會養 會疼 要真心 ^^', '收月卡70w 無限收 意密 ^^', '阿貴代練工作室 3天99等 有興趣請密', '血盟【天上人間】收人 歡迎新手 有老手會帶', '貴大師 死白目 搶怪開紅 見一次殺一次'];
-for( var i=0; i<1000; i++ ) {    
+for( var i=0; i<1000; i++ ) {
     fakeData.push({memo: fakeText[Math.floor(Math.random()*fakeText.length)], userwear:(Math.floor(Math.random()*16)+1), guid:i });
 }
 
@@ -27,7 +31,7 @@ for( var i=1; i<=16; i++ ) {
     loader.add('character'+i, 'assets/images/register/character/'+i+'.png')
 }
 
-loader.load((loader, resources) => {
+loader.load(function(loader, resources) {
     var mapWidth = 2048; // 1280
     var mapHeight = 1024; // 640
 
@@ -37,13 +41,15 @@ loader.load((loader, resources) => {
     var registerCharacter;
     var mapNum = 13; // 地圖數量13行 (39張)
     var frontNum = 2; // 地圖有2行 (6張) 不加入迴圈
+    var pageMapNum = 4;
     var characterNum = 9; // 每張地圖上人物10行 (30個)
-    var pageSize = mapNum*3*characterNum;
+    var pageSize = pageMapNum*3*characterNum;
+    var cameraOffset = {x:0, y:50};
     // console.log( pageSize );
 
     container.pivot.set(0.5, 0.5);
-    container.x = window.innerWidth/2;
-    container.y = window.innerHeight/2;
+    // container.x = window.innerWidth/2 + cameraOffset.x;
+    // container.y = window.innerHeight/2 + cameraOffset.y;
     app.stage.addChild(container);
 
     var mapContainer = new PIXI.Container();
@@ -67,8 +73,8 @@ loader.load((loader, resources) => {
 
     mapPosition = mapDistance/2;
     var p = getPoint(angle, mapPosition);
-    container.x = window.innerWidth/2 + p.x;
-    container.y = window.innerHeight/2 + p.y;
+    container.x = window.innerWidth/2 + p.x + cameraOffset.x;
+    container.y = window.innerHeight/2 + p.y + cameraOffset.y;
     // TweenMax.to(container, 0.5, {x:window.innerWidth/2 + p.x, y:window.innerHeight/2 + p.y} );
     // var page = 1;
 
@@ -120,28 +126,30 @@ loader.load((loader, resources) => {
         container.addChild(map3);
     }
     function addMapEnd() {
-        console.log('addmap: '+totalPage);
+        // console.log('addmap: '+totalPage);
         
         page = totalPage+1;
         var pageMapContainer = new PIXI.Container();
         var pageCharacterContainer = new PIXI.Container();
         var pageTextContainer = new PIXI.Container();
 
-        for( var i=0; i<mapNum; i++ ) {
+        for( var i=0; i<pageMapNum; i++ ) {
 
             var rowCenter = {x: mapWidth/2*i, y: -mapHeight/2*i };
-            var pageCenter = {x: mapWidth/2*page*mapNum, y: -mapHeight/2*page*mapNum };
+            var pageCenter = {x: mapWidth/2*page*pageMapNum, y: -mapHeight/2*page*pageMapNum };
             // console.log( 'map'+((i*3+(mapNum*3)*(page-1)+1)%39+1) );
 
-            var m1 = ((page*mapNum*3) + (i*3)) +1;
-            var m2 = ((page*mapNum*3) + (i*3+1)) +1;
-            var m3 = ((page*mapNum*3) + (i*3+2)) +1;
+            var m1 = ((page*pageMapNum*3) + (i*3)) +1;
+            var m2 = ((page*pageMapNum*3) + (i*3+1)) +1;
+            var m3 = ((page*pageMapNum*3) + (i*3+2)) +1;
 
-            if( m1 > mapNum*3 ) m1 = (((page-1)*mapNum*3) + (i*3))%(mapNum*3-frontNum*3) +1 +frontNum*3;
-            if( m2 > mapNum*3 ) m2 = (((page-1)*mapNum*3) + (i*3+1))%(mapNum*3-frontNum*3) +1 +frontNum*3;
-            if( m3 > mapNum*3 ) m3 = (((page-1)*mapNum*3) + (i*3+2))%(mapNum*3-frontNum*3) +1 +frontNum*3;
-
-
+            // if( m1 > mapNum*3 ) m1 = (((page-1)*mapNum*3) + (i*3))%(mapNum*3-frontNum*3) +1 +frontNum*3;
+            // if( m2 > mapNum*3 ) m2 = (((page-1)*mapNum*3) + (i*3+1))%(mapNum*3-frontNum*3) +1 +frontNum*3;
+            // if( m3 > mapNum*3 ) m3 = (((page-1)*mapNum*3) + (i*3+2))%(mapNum*3-frontNum*3) +1 +frontNum*3;
+            if( m1 > mapNum*3 ) m1 = Math.round((((page-mapNum/pageMapNum)*pageMapNum*3) + (i*3))%(mapNum*3-frontNum*3) +1 +frontNum*3);
+            if( m2 > mapNum*3 ) m2 = Math.round((((page-mapNum/pageMapNum)*pageMapNum*3) + (i*3+1))%(mapNum*3-frontNum*3) +1 +frontNum*3);
+            if( m3 > mapNum*3 ) m3 = Math.round((((page-mapNum/pageMapNum)*pageMapNum*3) + (i*3+2))%(mapNum*3-frontNum*3) +1 +frontNum*3);
+                    
             var map = new PIXI.Sprite(resources['map'+m2].texture);
             map.anchor.set(0.5);
             map.x = pageCenter.x + rowCenter.x;
@@ -170,15 +178,8 @@ loader.load((loader, resources) => {
             // map3.scale.set(0.99, 0.99);
             mapEndContainer.addChild(map3);
 
-
         }
 
-        mapContainer.addChild(pageMapContainer);
-        characterContainer.addChild(pageCharacterContainer);
-        characterContainer.addChild(pageTextContainer);
-
-        activePages[page] = {content:[pageMapContainer, pageCharacterContainer, pageTextContainer]}
-        // activePages.push({page:page, content:[pageMapContainer, pageCharacterContainer]});
     }
     function addMap(page, completeFn) {
         if( page < 0 || page > totalPage) {
@@ -187,23 +188,18 @@ loader.load((loader, resources) => {
             }
             return;
         }
-
         
         activePages[page] = {};
-
         var characterData = [];
 
         $.ajax({
             url: setting.getdataAPIurl,
             type: 'POST',
+            contentType: 'application/json; charset=UTF-8',
             dataType: 'json',
-            data: {pagecount: pageSize, page:page}
+            data: JSON.stringify({pagecount: pageSize, page:page})
         })
         .always(function(response) {
-
-            console.log(response);
-
-
 
             if( response.data == undefined ) {
                 // 測試用
@@ -214,21 +210,24 @@ loader.load((loader, resources) => {
                     // firsttime
                     totalPage = Math.ceil(fakeData.length/pageSize)-1;
                     totalCount = fakeData.length;
+
                     addMapEnd();
                 }
                 console.log("addMap(測試): " +page);
             } else {
                 // 正式用
-                characterData = response.data.data;
-                if( totalPage == undefined ) {
-                    totalPage = response.data.totalpage;
-                    totalCount = response.data.totalcount;
-                    addMapEnd();
-                }
-                console.log("addMap(正式): " +page);
-                
+                if( response.code == "0000" ) {
+                    characterData = response.data.data;
+                    if( totalPage == undefined ) {
+                        totalPage = response.data.totalpage;
+                        totalCount = response.data.totalcount;
+                        addMapEnd();
+                    }
+                    console.log("addMap(正式): " +page);
+                } else {
+                    alert(response.message);
+                }              
             }
-
             if( characterData.length == 0 || characterData == undefined) {
                 console.log("no data");
                 if( completeFn !== undefined ) completeFn();
@@ -249,20 +248,21 @@ loader.load((loader, resources) => {
             var pageMapContainer = new PIXI.Container();
             var pageCharacterContainer = new PIXI.Container();
             var pageTextContainer = new PIXI.Container();
-
-            for( var i=0; i<mapNum; i++ ) {
+            console.log("---------------");
+            for( var i=0; i<pageMapNum; i++ ) {
 
                 var rowCenter = {x: mapWidth/2*i, y: -mapHeight/2*i };
-                var pageCenter = {x: mapWidth/2*page*mapNum, y: -mapHeight/2*page*mapNum };
+                var pageCenter = {x: mapWidth/2*page*pageMapNum, y: -mapHeight/2*page*pageMapNum };
                 // console.log( 'map'+((i*3+(mapNum*3)*(page-1)+1)%39+1) );
 
-                var m1 = ((page*mapNum*3) + (i*3)) +1;
-                var m2 = ((page*mapNum*3) + (i*3+1)) +1;
-                var m3 = ((page*mapNum*3) + (i*3+2)) +1;
+                var m1 = ((page*pageMapNum*3) + (i*3)) +1;
+                var m2 = ((page*pageMapNum*3) + (i*3+1)) +1;
+                var m3 = ((page*pageMapNum*3) + (i*3+2)) +1;
 
-                if( m1 > mapNum*3 ) m1 = (((page-1)*mapNum*3) + (i*3))%(mapNum*3-frontNum*3) +1 +frontNum*3;
-                if( m2 > mapNum*3 ) m2 = (((page-1)*mapNum*3) + (i*3+1))%(mapNum*3-frontNum*3) +1 +frontNum*3;
-                if( m3 > mapNum*3 ) m3 = (((page-1)*mapNum*3) + (i*3+2))%(mapNum*3-frontNum*3) +1 +frontNum*3;
+                if( m1 > mapNum*3 ) m1 = Math.round((((page-mapNum/pageMapNum)*pageMapNum*3) + (i*3))%(mapNum*3-frontNum*3) +1 +frontNum*3);
+                if( m2 > mapNum*3 ) m2 = Math.round((((page-mapNum/pageMapNum)*pageMapNum*3) + (i*3+1))%(mapNum*3-frontNum*3) +1 +frontNum*3);
+                if( m3 > mapNum*3 ) m3 = Math.round((((page-mapNum/pageMapNum)*pageMapNum*3) + (i*3+2))%(mapNum*3-frontNum*3) +1 +frontNum*3);
+                console.log(m1, m2, m3);
 
 
                 var map = new PIXI.Sprite(resources['map'+m2].texture);
@@ -327,10 +327,10 @@ loader.load((loader, resources) => {
                             }
 
                             newCharacter.scale.set(0.9, 0.9);
-                            newCharacter.interactive = true;
-                            newCharacter.buttonMode = true;
+                            // newCharacter.interactive = true;
+                            // newCharacter.buttonMode = true;
                             // newCharacter.alpha = 0.2;
-                            newCharacter.on('pointerdown', characterClick);
+                            // newCharacter.on('pointerdown', characterClick);
                             newCharacter.data = {};
                             newCharacter.data.guid = characterData[id+k].guid;
                             newCharacter.data.memo = characterData[id+k].memo;
@@ -390,10 +390,18 @@ loader.load((loader, resources) => {
 
 
         if( isMoveActive ) {
+            if( totalCount == undefined ) return;
             // console.log( moveDist );
-            mapPosition = mapPosition + (moveDist*0.03);
 
+
+            if( moveDirection == 1 ) {
+                mapPosition-=mapDistance/100; //60 30
+            } else {
+                mapPosition+=mapDistance/100;
+            }
             mapPosition = Math.max(Math.min(mapPosition, mapDistance/2), getCharacterMapPosition(totalCount)-200);
+
+            // mapPosition = Math.max( mapPosition, getCharacterMapPosition(totalCount) );
 
             updateCamera();
         }
@@ -425,30 +433,26 @@ loader.load((loader, resources) => {
         return Math.atan2( point2.x - point1.x, point2.y - point1.y );
     }
 
-
     function getPoint(theta, r) {
         var x = (r *Math.sin(theta));
         var y = (r *Math.cos(theta));
         return {x:x, y:y};
     }
 
-
-
-    window.addEventListener('mousewheel', function(event) {
+    $("#pixiCanvas").on('mousewheel', function(event) {
         if( totalCount == undefined ) return;
-
-        if( event.deltaY < 0 ) {
-            mapPosition-=mapDistance/5; //60 30
+        // console.log(event);
+        if( event.deltaY > 0 ) {
+            mapPosition-=mapDistance/20; //60 30
         } else {
-            mapPosition+=mapDistance/5;
+            mapPosition+=mapDistance/20;
         }
         mapPosition = Math.max(Math.min(mapPosition, mapDistance/2), getCharacterMapPosition(totalCount)-200);
 
         // mapPosition = Math.max( mapPosition, getCharacterMapPosition(totalCount) );
 
         updateCamera();
-    })
-
+    });
 
     function updateCamera(parameter) {
 
@@ -460,13 +464,13 @@ loader.load((loader, resources) => {
         }
         
         var a = Math.floor(-mapPosition+mapDistance/2);
-        var b = Math.floor(mapDistance*13);
+        var b = Math.floor(mapDistance*pageMapNum);
         var c = Math.floor(a/b);
-        // console.log(c, c-1, c+1);
+        console.log(a/b);
 
         var currentPage = Math.floor(a/b);
         // console.log(currentPage)
-        console.log(mapPosition);
+        // console.log(mapPosition);
         
         if( activePages[currentPage] == undefined ) {
             if( parameter !== undefined ) {
@@ -487,11 +491,6 @@ loader.load((loader, resources) => {
             addMap(currentPage-1);
         }
 
-        // if( parameter && activePages[currentPage] == undefined ) {
-
-        // }
-
-
         for (var key in activePages) {
             if( Number(key) !== currentPage && Number(key) !== currentPage+1 && Number(key) !== Math.max(currentPage-1, 0) ) {
                 removeMap(key);
@@ -499,91 +498,50 @@ loader.load((loader, resources) => {
 
         }
 
-        // console.log(activePages);
         var p = getPoint(angle, mapPosition);
         if( parameter !== undefined ) {
-            container.x = window.innerWidth/2 + p.x;
-            container.y = window.innerHeight/2 + p.y;
+            container.x = window.innerWidth/2 + p.x + cameraOffset.x;
+            container.y = window.innerHeight/2 + p.y + cameraOffset.y;
         } else {
-            TweenMax.to(container, 0.5, {x:window.innerWidth/2 + p.x, y:window.innerHeight/2 + p.y} );
+            TweenMax.to(container, 0.5, {x:window.innerWidth/2 + p.x + cameraOffset.x, y:window.innerHeight/2 + p.y +cameraOffset.y} );
         }
 
-        // 檢查UI
-
-        console.log( "UIC:" + uiContainer.children.length );
 
         if( uiContainer.children.length > 0 ) {
             
             var uiPosition = -distanceBetween({x:uiContainer.children[2].x, y: uiContainer.children[2].y}, {x:0, y:0});
             var d = Math.abs(mapPosition - uiPosition);
-            console.log(d);
+            // console.log(d);
             if( d > 1500 ) {
                 removeEditMemoUI();
             }
 
         }
-        // if( parameter !== undefined && activePages[Math.min(Math.max(currentPage, 0), totalPage)] !== undefined && activePages[Math.min(Math.max(currentPage+1, 0), totalPage)] !== undefined && activePages[Math.min(Math.max(currentPage-1, 0), totalPage)] !== undefined ) {
-        //     console.log("1111");
-        //     parameter.completeFn();
-        // }
 
-        // if( parameter !== undefined && activePages[currentPage] !== undefined && activePages[currentPage+1] !== undefined && activePages[currentPage-1] !== undefined) {
-        //     console.log("2222");
-        //     parameter.completeFn();
-        // }
-
-
-
-        // container.x = window.innerWidth/2 + p.x;
-        // container.y = window.innerHeight/2 + p.y;
     }
-    // var aa = 0;
-    $("#info .search .icon").on('click', function(event) {
-        event.preventDefault();
-        // searchCharacter(709);
-        // $("#searchID").val()
-        // updateCamera({targetID: 0, completeFn:function(){
-        //     console.log("OK");
-        // }})
 
+    $("#info .search .icon").on('click', function(event) {
+        if( isAjaxing ) return;
+        isAjaxing = true;
         $.ajax({
             url: setting.getdataAPIurl,
             type: 'POST',
             dataType: 'json',
-            data: {pagecount: 1, location:$("#searchLocation").val(), phone:$("#searchPhone").val()}
+            contentType: 'application/json; charset=UTF-8',
+            data: JSON.stringify({pagecount: 1, location:$("#searchLocation").val(), phone:$("#searchPhone").val()})
         })
         .always(function(response) {
-
-            console.log(response);
+            isAjaxing = false;
 
             if( response.data == undefined ) {
                 // 測試用
-                // for( var i=page*pageSize; i<(page*pageSize)+pageSize; i++ ) {
-                //     if( fakeData[i] !== undefined ) characterData.push(fakeData[i]);       
-                // }
-                // if( totalPage == undefined ) {
-                //     // firsttime
-                //     totalPage = Math.ceil(fakeData.length/pageSize)-1;
-                //     totalCount = fakeData.length;
-                //     addMapEnd();
-                // }
-                // console.log("addMap(測試): " +page);
-                var guid = 500;
+                var guid = 100;
                 updateCamera({targetID: guid, completeFn:function(){
                     console.log("search complete");
-
                     addEditMemoUI(guid);
                 }})
             } else {
                 // 正式用
-                // characterData = response.data.data;
-                // if( totalPage == undefined ) {
-                //     totalPage = response.data.totalpage;
-                //     totalCount = response.data.totalcount;
-                //     addMapEnd();
-                // }
-                // console.log("addMap(正式): " +page);
-
                 if( response.code == "0000" ) {
                     updateCamera({targetID: response.data.data[0].guid, completeFn:function(){
                         console.log("search complete");
@@ -591,20 +549,14 @@ loader.load((loader, resources) => {
                 } else {
                     alert( response.message );
                 }
-
-
             }
-
         });
-
-
     });
     
     function addEditMemoUI(guid) {
         if( uiContainer.children.length > 0 ) {
             removeEditMemoUI();
         }
-
         var character;
         var characterText;
         for (var key in activePages) {
@@ -619,14 +571,12 @@ loader.load((loader, resources) => {
             }
         }
         characterText.visible = false;
-
         editData.memo = characterText.text;
         editData.phone = $("#searchPhone").val();
         editData.location = $("#searchLocation").val();
         editData.textObject = characterText;
         editData.characterObject = character;
 
-        // character.alpha = 0.9;
         var textPadding = 10;
         var boxPaddingWidth = 30;
         var boxPaddingHeight = 20;
@@ -644,8 +594,6 @@ loader.load((loader, resources) => {
         editBtn.interactive = true;
         editBtn.buttonMode = true;
         editBtn.on('pointerdown', editBtnClick);
-
-
 
         var graphics = new PIXI.Graphics();
         var textBoxWidth = text.width + editBtn.width + textPadding + boxPaddingWidth;
@@ -696,7 +644,7 @@ loader.load((loader, resources) => {
         characterCenter.y -= 30;
 
         var rowCenter = {x: mapWidth/2*rowNum, y: -mapHeight/2*rowNum };
-        var pageCenter = {x: mapWidth/2*page*mapNum, y: -mapHeight/2*page*mapNum };
+        var pageCenter = {x: mapWidth/2*page*pageMapNum, y: -mapHeight/2*page*pageMapNum };
 
         var lastCharacterCenter = {x: rowCenter.x + pageCenter.x + characterCenter.x, y: rowCenter.y + pageCenter.y + characterCenter.y};
         // var lastCharacterCenter = {x: rowCenter.x + pageCenter.x, y: rowCenter.y + pageCenter.y};
@@ -725,7 +673,7 @@ loader.load((loader, resources) => {
         characterCenter.x -= 30;
         characterCenter.y -= 30;
         var rowCenter = {x: mapWidth/2*lastRowNum, y: -mapHeight/2*lastRowNum };
-        var pageCenter = {x: mapWidth/2*page*mapNum, y: -mapHeight/2*page*mapNum };
+        var pageCenter = {x: mapWidth/2*page*pageMapNum, y: -mapHeight/2*page*pageMapNum };
 
         var lastCharacterCenter = {x: rowCenter.x + pageCenter.x + characterCenter.x, y: rowCenter.y + pageCenter.y + characterCenter.y};
         mapPosition = -distanceBetween(lastCharacterCenter, {x:0, y:0});
@@ -750,7 +698,6 @@ loader.load((loader, resources) => {
             newCharacter.y = pageCenter.y + rowCenter.y + characterCenter.y;
         }
 
-
         if( lastPosition == 2 ) {
             var p = getPoint(-angle, 80);
             newCharacter.x = pageCenter.x + rowCenter.x + characterCenter.x + p.x;
@@ -767,6 +714,7 @@ loader.load((loader, resources) => {
         newCharacter.data.memo = parameter.memo;
         registerContainer.addChild(newCharacter);
 
+        console.log(parameter.memo);
         var text = new PIXI.Text(parameter.memo, style);
         text.x = newCharacter.x;
         text.y = newCharacter.y - 120;
@@ -775,9 +723,7 @@ loader.load((loader, resources) => {
         text.data = {fixedPosition:{x:text.x ,y:text.y}, time:Math.floor(Math.random()*chatSpeed)};
         registerContainer.addChild(text);
 
-
         TweenMax.from(newCharacter, 1, {y:"-=150", alpha:0, ease:Bounce.easeOut, delay:1});
-
         registerCharacter = {character: newCharacter, text: text};
         // fakeData.push({memo:$("#form-memo").val(), guid: fakeData.length, userwear:parameter.userwear});
         // totalCount+=1;
@@ -791,32 +737,46 @@ loader.load((loader, resources) => {
 
 
     $("#editBtn").on('click', function(event) {
+        if( isAjaxing ) return;
+        isAjaxing = true;
+
+        var data = {
+            location: editData.location,
+            phone: editData.phone,
+            memo: $("#editMemo").val()
+        }
         $.ajax({
             url: setting.writetodayAPIurl,
             type: 'POST',
+            contentType: 'application/json; charset=UTF-8',
             headers: {
                 apikey: apiKey
             },
             dataType: 'json',
-            data: {
-                location: editData.location,
-                phone: editData.phone,
-                memo: $("#editMemo").val()
-            }
+            data: JSON.stringify(data)
         })
         .always(function(response) {
+            isAjaxing = false;
             if( response.data == undefined ) {
                 // 測試
+                editData.characterObject.data.memo = $("#editMemo").val();
+                editData.textObject.text = $("#editMemo").val();
+                $("#edit").removeClass('active');
+
+                removeEditMemoUI();
 
             } else {
                 // 正式
+                if( response.code == "0000" ) {
+                    editData.characterObject.data.memo = $("#editMemo").val();
+                    editData.textObject.text = $("#editMemo").val();
+                    $("#edit").removeClass('active');
+                    removeEditMemoUI();
+                } else {
+                    alert(response.message)
+                }
 
             }
-            editData.characterObject.data.memo = $("#editMemo").val();
-            editData.textObject.text = $("#editMemo").val();
-            $("#edit").removeClass('active');
-
-            removeEditMemoUI();
 
         });
     });
@@ -827,84 +787,117 @@ loader.load((loader, resources) => {
     });
 
     $("#registerSendBtn").on('click', function(event) {
+        if( isAjaxing ) return;
+        
+        if( !$("#ruleCheckbox").prop("checked") ) {
+            alert("請同意隱私權政策");
+            return;
+        }
+
+        var data = {
+            location: $("#formLocation").val(),
+            phone: $("#formPhone").val(),
+            memo: $("#formMemo").val(),
+            pageCount: pageSize
+        }
+
+        if (!/^[09]{2}[0-9]{8}$/.test(data.phone)) {
+            alert("手機號碼格式不正確");
+            return;
+        }
+
+        if (data.memo.bLength() > 10) {
+            alert("留言字數超過限制(10字)");
+            return;
+        }
+
+        if (data.memo.bLength() == 0) {
+            alert("請輸入留言");
+            return;
+        }
+ 
+        isAjaxing = true;
         $.ajax({
             url: setting.lineupAPIurl,
             type: 'POST',
             headers: {
                 apikey: apiKey
             },
+            contentType: 'application/json; charset=UTF-8',
             dataType: 'json',
-            data: {
-                location: $("#formLocation").val(),
-                phone: $("#formPhone").val(),
-                memo: $("#formMemo").val(),
-                pageCount: pageSize
-            }
+            data: JSON.stringify(data)
         })
         .always(function(response) {
+            isAjaxing = false;
             $("#form").removeClass("active");
             $("#registerBtn").removeClass("btn--active");
-            if( response.data !== undefined ) {
-                updateCamera({targetID: response.data.data.guid, completeFn:function(){
-                    console.log("OK");
-                    dropUser({memo: response.data.data.memo, userwear: response.data.data.userwear, guid:response.data.data.guid});
-                }})
-            } else {
-                console.log("update camera")
+            if( response.data == undefined ) {
                 updateCamera({targetID: totalCount, completeFn:function(){
-                    console.log("OK test");                    
                     dropUser({memo: $("#form-memo").val(), userwear: '7', guid:totalCount});
                 }})
+            } else {
+                if( response.code == "0000" ) {
+                    updateCamera({targetID: response.data.data.guid, completeFn:function(){
+                        dropUser({memo: response.data.data.memo, userwear: response.data.data.userwear, guid:response.data.data.guid});
+                    }}) 
+                } else {
+                    alert(response.message);
+                }
             }
             
-            // updateCamera({targetID: 700, completeFn:function(){
-            //     console.log("OK");
-            //     dropUser();
-            // }})
         });        
     });
 
 
     var isMoveActive = false;
-    var moveOriginPosition = {x:0, y:0};
-    var moveDist = 0;
-    $("#pixiCanvas").on('touchstart', function(event) {
+    var moveDirection = 0;
+
+    $(".arrow").on('touchstart mousedown', function(event) {
+        
         isMoveActive = true;
-        // console.log(event.touches[0]);
-        moveOriginPosition = {x:event.touches[0].pageX, y:event.touches[0].pageY};
+        if( $(this).hasClass('left') ) {
+            moveDirection = 0;
+        } else {
+            moveDirection = 1;
+        }
+
     });
 
-    $("#pixiCanvas").on('touchend', function(event) {
+    $(".arrow").on('touchend mouseup mouseleave', function(event) {
         isMoveActive = false;
     });
 
-    $("#pixiCanvas").on('touchmove', function(event) {
-        if( isMoveActive ) {
+    $('.arrow').on('dragstart mousemove touchmove', function(event) { event.preventDefault(); });
 
-            moveDist = distanceBetween(moveOriginPosition, {x:event.touches[0].pageX, y:event.touches[0].pageY});
-            if( moveOriginPosition.x > event.touches[0].pageX ) {
-                moveDist *= -1;
-            }
-            // var dist = {x: moveOriginPosition.x - event.pageX, y:moveOriginPosition.y - event.pageY};
-            // console.log(dist);
-            // mapPosition = mapPosition + (dist*0.5);
-
-            // mapPosition = Math.max(Math.min(mapPosition, mapDistance/2), getCharacterMapPosition(totalCount)-200);
-
-            // updateCamera();
-
-        }
+    $(".ruleBtn").on('click', function(event) {
+        event.preventDefault();
+        $("#rule").addClass("active");
+        /* Act on the event */
     });
+    // $(".arrow").on('mouseleave', function(event) {
+    //     isMoveActive = false;
+    // });
 
+    resizeHandler();
+    $(window).on('resize', resizeHandler);
 
-    $(window).on('resize', function(event) {
+    function resizeHandler() {
         ww = window.innerWidth;
         wh = window.innerHeight;
+        if( ww < 1024 ) {
+            cameraOffset.y = 120;
+        } else {
+            cameraOffset.y = 50;
+        }
         app.renderer.resize(ww, wh);
         updateCamera();
-    });
+    }
 
-
+    setTimeout(loadComplete, 300);
+    // loadComplete();
+    function loadComplete() {
+        $(".loading").removeClass("loading--active");
+    }    
 });
 
 function distanceBetween(point1, point2) {
