@@ -8,9 +8,9 @@ block head
 
 block content
 	main
-		.debug
-			button(data-to="1") page1
-			button(data-to="2") page2
+		//- .debug
+		//- 	button(data-to="1") page1
+		//- 	button(data-to="2") page2
 		section#title
 			img(src="assets/images/treasure/title.png", alt="")
 		section#page1.page.show
@@ -26,10 +26,9 @@ block content
 				.input-container
 					select.tel-header-selecter
 						option(value="+886") +886
-						option(value="+86") +86
 						option(value="+852") +852
 						option(value="+853") +853
-					input.tel-input(placeholder="手機號碼") 
+					input.tel-input(placeholder="手機號碼" type="tel" onkeypress='return event.charCode >= 48 && event.charCode <= 57' maxlength="10") 
 			.btn.btn-login
 				.btn__container
 					p 立即登入
@@ -51,13 +50,14 @@ block content
 			.invite-container
 				p 我的邀請連結
 				.invite-link-container
-					p#invite-link https://goo.gl/G8VDFv
-					#btn-copy(data-clipboard-target="#invite-link") 複製
+					p.invite-link https://goo.gl/G8VDFv
+					p.copy-complete 已複製至剪貼簿！
+					.btn-copy(data-clipboard-target=".invite-link") 複製
 				p 邀請好友來參加活動，即可累積更多中獎機會
 			.btn.btn-info
 				.btn__container
 					p 活動辦法
-		.lightbox
+		.info-box.lightbox
 			img.close(src="assets/images/close.png", alt="close")
 			
 			#title
