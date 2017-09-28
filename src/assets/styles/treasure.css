@@ -269,8 +269,8 @@ main {
       main #title {
         padding-top: 40px; } }
     main #title img {
-      width: 80%;
-      max-width: 300px; }
+      width: 70%;
+      max-width: 250px; }
   main .hr {
     width: 100%;
     height: 1px;
@@ -307,25 +307,23 @@ main {
       flex-wrap: wrap; }
       @media screen and (max-width: 1000px) {
         main .page .subtitle {
-          margin: 0 0 30px 0;
+          margin: 0 0 20px 0;
           font-size: 1.3em; } }
       @media screen and (max-width: 350px) {
         main .page .subtitle {
+          margin: 0 0 10px 0;
           font-size: 1em; } }
-      main .page .subtitle p {
-        padding: 5px 0; }
+      main .page .subtitle p:first-child {
+        padding-bottom: 5px; }
   main #page1 .gift-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: 40px;
+    margin: 15px;
     font-size: 1.2em; }
-    @media screen and (max-width: 1000px) {
-      main #page1 .gift-container {
-        margin: 20px; } }
     main #page1 .gift-container .gift-img {
-      margin-top: 30px;
+      margin-top: 15px;
       width: 90%;
       max-width: 350px; }
   main #page1 .tel-container {
@@ -395,66 +393,68 @@ main {
       display: flex;
       justify-content: center;
       align-items: center;
+      position: relative;
       margin: 10px 0; }
-      main #page2 .invite-container .invite-link-container #invite-link {
+      main #page2 .invite-container .invite-link-container .invite-link {
         padding: 5px 10px;
         font-size: 1.2em;
         color: #ffe6c5;
         position: relative; }
-        main #page2 .invite-container .invite-link-container #invite-link::after {
-          content: "已複製至剪貼簿！";
-          text-align: center;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          width: 100%;
-          height: 100%;
-          position: absolute;
-          top: 0;
-          left: 0;
-          background-color: #ffe6c5;
-          color: black;
-          opacity: 0;
-          transition: 0.5s; }
-        main #page2 .invite-container .invite-link-container #invite-link.copyed::after {
+      main #page2 .invite-container .invite-link-container .copy-complete {
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: #ffe6c5;
+        color: black;
+        font-size: 1.2em;
+        opacity: 0;
+        transition: 0.5s;
+        pointer-events: none; }
+        main #page2 .invite-container .invite-link-container .copy-complete.copyed {
           opacity: 1; }
-      main #page2 .invite-container .invite-link-container #btn-copy {
+      main #page2 .invite-container .invite-link-container .btn-copy {
         margin-left: 10px;
         padding: 3px 7px;
         background-color: rgba(0, 0, 0, 0.7);
         font-size: 0.5em;
         cursor: pointer;
         transition: 0.2s; }
-        main #page2 .invite-container .invite-link-container #btn-copy:hover {
+        main #page2 .invite-container .invite-link-container .btn-copy:hover {
           background-color: rgba(0, 0, 0, 0.5); }
-  main .lightbox {
+  main .info-box {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center; }
-    main .lightbox .close {
+    main .info-box .close {
       z-index: 10; }
-    main .lightbox .gift-container {
+    main .info-box .gift-container {
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       margin: 40px 0;
       font-size: 1.2em; }
-      main .lightbox .gift-container .gift-img {
+      main .info-box .gift-container .gift-img {
         margin: 30px 0;
         width: 100%;
         max-width: 350px; }
-    main .lightbox .info-container {
+    main .info-box .info-container {
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center; }
-      main .lightbox .info-container .info-title {
+      main .info-box .info-container .info-title {
         font-size: 1.3em;
         margin: 20px 0;
         flex: 0 0 auto; }
-      main .lightbox .info-container .info-content {
+      main .info-box .info-container .info-content {
         display: flex;
         flex-direction: column;
         justify-content: center;

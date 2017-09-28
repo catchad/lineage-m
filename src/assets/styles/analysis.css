@@ -276,8 +276,8 @@ main {
       main #title {
         padding-top: 40px; } }
     main #title img {
-      width: 80%;
-      max-width: 300px; }
+      width: 70%;
+      max-width: 250px; }
   main .page {
     position: relative;
     width: 100%;
@@ -289,7 +289,7 @@ main {
     main .page.show {
       display: flex; }
     main .page .subtitle {
-      margin: 0 0 50px 0;
+      margin: 0 0 40px 0;
       max-width: 80%;
       font-size: 1.5em;
       color: #ffe6c5;
@@ -477,7 +477,7 @@ main {
     position: relative; }
     @media screen and (max-width: 1000px) {
       main #page4 .choose-container {
-        margin: 30px 0 10px 0;
+        margin: 0px 0 10px 0;
         width: 100%; }
         main #page4 .choose-container::before {
           content: "";
@@ -647,14 +647,24 @@ main {
   main #page5 .btn-quiz-submit {
     margin-bottom: 50px; }
   main #page6 .final-img {
-    margin: 50px 0;
+    margin: 10px 0 20px 0;
     width: 90%;
-    max-width: 800px; }
-    @media screen and (max-width: 1000px) {
-      main #page6 .final-img {
-        margin: 20px 0 30px 0; } }
-    main #page6 .final-img img {
-      width: 100%; }
+    max-width: 800px;
+    position: relative; }
+    main #page6 .final-img::before {
+      content: "";
+      display: block;
+      width: 100%;
+      padding-bottom: 52.25%; }
+    main #page6 .final-img .img-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%; }
+      main #page6 .final-img .img-container img {
+        width: 100%;
+        height: 100%; }
   main #page6 .btn-list {
     display: flex;
     justify-content: center;
@@ -675,3 +685,8 @@ main {
           main #page6 .btn-list .btn .btn__container img {
             margin-right: 5px;
             width: 20px; } }
+    main #page6 .btn-list .btn-line-share {
+      display: none; }
+      @media screen and (max-width: 1000px) {
+        main #page6 .btn-list .btn-line-share {
+          display: block; } }

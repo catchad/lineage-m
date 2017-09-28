@@ -1,9 +1,9 @@
-var clipboard = new Clipboard('#btn-copy');
+var clipboard = new Clipboard('.btn-copy');
 clipboard.on('success', function(e) {
     e.clearSelection();
-    $("#invite-link").addClass('copyed');
+    $(".copy-complete").addClass('copyed');
     setTimeout(function() {
-    	$("#invite-link").removeClass('copyed');
+    	$(".copy-complete").removeClass('copyed');
     },800);
 });
 
@@ -13,16 +13,20 @@ $(".debug button").on("click", function(){
 })
 
 $(".btn-login").on("click", function() {
-	toPage(2);
+	if($(".tel-input").val().length && /^[09]{2}[0-9]{8}$/.test($(".tel-input").val())) {
+		toPage(2);
+	} else {
+		alert("手機號碼格式不正確");
+	}
 })
 
 $(".btn-info").on("click", function() {
-	$(".lightbox").addClass('active');
+	$(".info-box").addClass('active');
 	$("html, body").animate({ scrollTop: 0 }, "fast");
 })
 
-$(".lightbox .close").on("click", function() {
-	$(".lightbox").removeClass('active');
+$(".info-box .close").on("click", function() {
+	$(".info-box").removeClass('active');
 	$("html, body").animate({ scrollTop: 0 }, "fast");
 })
 

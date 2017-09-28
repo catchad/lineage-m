@@ -429,6 +429,8 @@ $(".btn-name-submit").on("click", function() {
 		charName = $(".name-input").val();
 		console.log(charName);
 		toPage(4);
+	} else {
+		alert("請輸入名字！");
 	}
 })
 //-----------------------------------------------------------------------
@@ -548,6 +550,8 @@ $(".btn-quiz-submit").on("click", function() {
 				}
 			}, 300)
 		}
+	} else {
+		alert("請選擇選項！");
 	}
 })
 
@@ -563,7 +567,7 @@ function quizGenerator(quizIndex) {
 	$(".quiz-progress.done").removeClass("done");
 	$(".quiz-progress[data-qNum="+quizIndex+"]").addClass("done");
 	if(quizIndex == quiz.length) {
-		$(".btn-quiz-submit .btn-container p").html("觀看結果");
+		$(".btn-quiz-submit .btn__container p").html("觀看結果");
 	}
 }
 //-----------------------------------------------------------------------
@@ -581,18 +585,24 @@ function drawFinal(job,name,score,rank) {
 		canvas.height = img.height;
 		var ctx = canvas.getContext("2d");
 		ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-		ctx.font = "20pt Arial";
+		ctx.font = "30pt Arial";
 		ctx.fillStyle = "white";
-		ctx.textBaseline = "middle";
-		ctx.fillText(score.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"), 820, 460);
-		ctx.fillText(rank.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")+"名", 820, 518);
+		ctx.textAlign="start"; 
+		ctx.textBaseline = "alphabetic";
+		ctx.fillText(score.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"), 255, 465);
+		ctx.fillText(rank.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"), 255, 540);
+		var rankWidth = ctx.measureText(rank.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")).width;
+		ctx.font = "20pt Arial";
+		ctx.fillText("名", 258+rankWidth, 540);
 
 		ctx.font = "30pt Arial";
-		ctx.fillText(name, 633, 375);
+		ctx.textAlign="center"; 
+		ctx.textBaseline = "middle";
+		ctx.fillText(name, 228, 372);
 
 		imgDataURL = canvas.toDataURL("image/png");
-		$(".final-img").html("");
-		$(".final-img").append($('<img/>',{ src: imgDataURL }));
+		$(".final-img .img-container").html("");
+		$(".final-img .img-container").append($('<img/>',{ src: imgDataURL }));
 	}
 }
 
@@ -633,6 +643,7 @@ $(".btn-fb-share").on("click", function() {
 		window.open("http://www.facebook.com/sharer/sharer.php?u="+shareURL, "_blank");
 	}
 })
+
 //-----------------------------------------------------------------------
 
 // debug用
