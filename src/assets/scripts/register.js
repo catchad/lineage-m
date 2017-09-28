@@ -8,9 +8,26 @@ var ww = window.innerWidth;
 var wh = window.innerHeight;
 var isAjaxing = false;
 var mapPosition = 0;
+var textAnimateTimer = 0;
 var app = new PIXI.Application(ww, wh, { forceCanvas:false, backgroundColor: 0x000000, view: document.getElementById('pixiCanvas') });
 var activePages = {};
+var animSpeed = 0.075;
 var container = new PIXI.Container();
+var mapWidth = 2048; // 1280
+var mapHeight = 1024; // 640
+var chatSpeed = 480; // 文字出現的速度 60=1秒
+var totalPage;
+var totalCount;
+var registerCharacter;
+
+var mapNum = 13; // 地圖數量13行 (39張)
+var frontNum = 2; // 地圖有2行 (6張) 不加入迴圈
+var pageMapNum = 4; // 一頁4行地圖 (12張)
+var characterNum = 9; // 每張地圖上人物9行 (30個)
+var pageSize = pageMapNum*3*characterNum;
+var cameraOffset = {x:0, y:50};
+var isMoveActive = false;
+var moveDirection = 0;
 var editData = {};
 var fakeData = [];
 var fakeText = ['賣+10屠龍刀 密我出價 鳥價不回', '賣帳號 99等女妖 密我', '老公我兵單來了 >"<', '幹好lag = =', '靠邀 超多人...', '我要下線了 881', '8口口口口D', '媽我上電視了 ^0^', '徵婆 會養 會疼 要真心 ^^', '收月卡70w 無限收 意密 ^^', '阿貴代練工作室 3天99等 有興趣請密', '血盟【天上人間】收人 歡迎新手 有老手會帶', '貴大師 死白目 搶怪開紅 見一次殺一次'];
@@ -23,6 +40,12 @@ loader.add('mapf1', 'assets/images/register/map/f1.png');
 loader.add('mapf2', 'assets/images/register/map/f2.png');
 loader.add('mapf3', 'assets/images/register/map/f3.png');
 loader.add('edit', 'assets/images/register/edit.png');
+loader.add('anim1', 'assets/images/register/animate/anim1.json');
+loader.add('anim2', 'assets/images/register/animate/anim2.json');
+loader.add('anim3', 'assets/images/register/animate/anim3.json');
+loader.add('anim4', 'assets/images/register/animate/anim4.json');
+loader.add('anim5', 'assets/images/register/animate/anim5.json');
+loader.add('anim6', 'assets/images/register/animate/anim6.json');
 for( var i=1; i<=39; i++ ) {
     loader.add('map'+i, 'assets/images/register/map/'+i+'.png');
 }
@@ -32,24 +55,11 @@ for( var i=1; i<=16; i++ ) {
 }
 
 loader.load(function(loader, resources) {
-    var mapWidth = 2048; // 1280
-    var mapHeight = 1024; // 640
 
-    var chatSpeed = 600;
-    var totalPage;
-    var totalCount;
-    var registerCharacter;
-    var mapNum = 13; // 地圖數量13行 (39張)
-    var frontNum = 2; // 地圖有2行 (6張) 不加入迴圈
-    var pageMapNum = 4;
-    var characterNum = 9; // 每張地圖上人物10行 (30個)
-    var pageSize = pageMapNum*3*characterNum;
-    var cameraOffset = {x:0, y:50};
+
     // console.log( pageSize );
 
     container.pivot.set(0.5, 0.5);
-    // container.x = window.innerWidth/2 + cameraOffset.x;
-    // container.y = window.innerHeight/2 + cameraOffset.y;
     app.stage.addChild(container);
 
     var mapContainer = new PIXI.Container();
@@ -86,19 +96,67 @@ loader.load(function(loader, resources) {
         strokeThickness: 3
     });
 
-    // 地圖分成兩大種, 就是上面能站人的, 跟上面不能站人的
-    // 能站人的, 再分兩種, 只出現一次的, 跟不斷出現再回圈的
     addMap(0);
     addMap(1);
     addMapFront();
     // addMapEnd();
-    // addMap(3);
-    // addMap(4);
-    // addMap(5);
 
-    // for( var i=1; i<5; i++ ) {
-    //     addMap(i);
-    // }
+    // var anim1= new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim1']));
+    // anim1.x = -700;
+    // anim1.y = 150;
+    // anim1.anchor.set(0.5);
+    // anim1.animationSpeed = animSpeed;
+    // anim1.play();
+    // container.addChild(anim1);
+
+    // var anim2 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim2']));
+    // anim2.x = -550;
+    // anim2.y = 250;
+    // anim2.anchor.set(0.5);
+    // anim2.animationSpeed = animSpeed;
+    // anim2.play();
+    // container.addChild(anim2);
+
+    // var anim3 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim3']));
+    // anim3.x = -450;
+    // anim3.y = 350;
+    // anim3.anchor.set(0.5);
+    // anim3.animationSpeed = animSpeed;
+    // anim3.play();
+    // container.addChild(anim3);
+
+    // var anim4 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim4']));
+    // anim4.x = -320;
+    // anim4.y = 220;
+    // anim4.anchor.set(0.5);
+    // anim4.animationSpeed = animSpeed;
+    // anim4.play();
+    // container.addChild(anim4);
+
+    // var anim5 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim5']));
+    // anim5.x = -100;
+    // anim5.y = 160;
+    // anim5.anchor.set(0.5);
+    // anim5.animationSpeed = animSpeed;
+    // anim5.play();
+    // container.addChild(anim5);
+
+    // var anim6 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim6']));
+    // anim6.x = -950;
+    // anim6.y = 150;
+    // anim6.anchor.set(0.5);
+    // anim6.animationSpeed = animSpeed;
+    // anim6.play();
+    // container.addChild(anim6);
+
+
+    function getAnimTextureArr(target) {
+        var arr = [];
+        for (var key in target.textures) {
+            arr.push(target.textures[key]);
+        }
+        return arr;
+    }
 
     function addMapFront() {
         var rowCenter = {x: mapWidth/2*-1, y: -mapHeight/2*-1 };
@@ -181,6 +239,7 @@ loader.load(function(loader, resources) {
         }
 
     }
+
     function addMap(page, completeFn) {
         if( page < 0 || page > totalPage) {
             if( completeFn !== undefined ) {
@@ -248,6 +307,8 @@ loader.load(function(loader, resources) {
             var pageMapContainer = new PIXI.Container();
             var pageCharacterContainer = new PIXI.Container();
             var pageTextContainer = new PIXI.Container();
+            var pageAnimContainer = new PIXI.Container();
+
             console.log("---------------");
             for( var i=0; i<pageMapNum; i++ ) {
 
@@ -290,6 +351,238 @@ loader.load(function(loader, resources) {
                 // map3.scale.set(0.99, 0.99);
                 pageMapContainer.addChild(map3);
 
+                if( m2 == 8 ) {
+                    var anim1 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim1']));
+                    anim1.x = map.x + 100;
+                    anim1.y = map.y + 100;
+                    anim1.anchor.set(0.5);
+                    anim1.animationSpeed = animSpeed;
+                    anim1.play();
+                    pageAnimContainer.addChild(anim1);
+
+                    var anim4 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim4']));
+                    anim4.x = map.x -200;
+                    anim4.y = map.y - 200;
+                    anim4.anchor.set(0.5);
+                    anim4.animationSpeed = animSpeed;
+                    anim4.play();
+                    pageAnimContainer.addChild(anim4);
+
+                    var anim6 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim6']));
+                    anim6.x = map.x + 200;
+                    anim6.y = map.y - 500;
+                    anim6.anchor.set(0.5);
+                    anim6.animationSpeed = animSpeed;
+                    anim6.play();
+                    pageAnimContainer.addChild(anim6);
+
+                }
+
+                if( m2 == 11 ) {
+                    var anim1 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim1']));
+                    anim1.x = map.x;
+                    anim1.y = map.y - 350;
+                    anim1.anchor.set(0.5);
+                    anim1.animationSpeed = animSpeed;
+                    anim1.play();
+                    pageAnimContainer.addChild(anim1);
+
+                    var anim4 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim4']));
+                    anim4.x = map.x -200;
+                    anim4.y = map.y + 250;
+                    anim4.anchor.set(0.5);
+                    anim4.animationSpeed = animSpeed;
+                    anim4.play();
+                    pageAnimContainer.addChild(anim4);
+
+                    var anim6 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim6']));
+                    anim6.x = map.x + 700;
+                    anim6.y = map.y - 200;
+                    anim6.anchor.set(0.5);
+                    anim6.animationSpeed = animSpeed;
+                    anim6.play();
+                    pageAnimContainer.addChild(anim6);
+
+                }
+
+                if( m2 == 14 ) {
+                    var anim2 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim2']));
+                    anim2.x = map.x;
+                    anim2.y = map.y - 350;
+                    anim2.anchor.set(0.5);
+                    anim2.animationSpeed = animSpeed;
+                    anim2.play();
+                    pageAnimContainer.addChild(anim2);
+
+                    var anim3 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim3']));
+                    anim3.x = map.x - 300;
+                    anim3.y = map.y - 200;
+                    anim3.anchor.set(0.5);
+                    anim3.animationSpeed = animSpeed;
+                    anim3.play();
+                    pageAnimContainer.addChild(anim3);
+
+                    var anim4 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim4']));
+                    anim4.x = map.x + 300;
+                    anim4.y = map.y + 100;
+                    anim4.anchor.set(0.5);
+                    anim4.animationSpeed = animSpeed;
+                    anim4.play();
+                    pageAnimContainer.addChild(anim4);
+
+                }
+
+                if( m2 == 17 ) {
+                    var anim1 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim1']));
+                    anim1.x = map.x - 350;
+                    anim1.y = map.y - 350;
+                    anim1.anchor.set(0.5);
+                    anim1.animationSpeed = animSpeed;
+                    anim1.play();
+                    pageAnimContainer.addChild(anim1);
+
+                    var anim2 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim2']));
+                    anim2.x = map.x - 150;
+                    anim2.y = map.y - 550;
+                    anim2.anchor.set(0.5);
+                    anim2.animationSpeed = animSpeed;
+                    anim2.play();
+                    pageAnimContainer.addChild(anim2);
+
+                    var anim4 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim4']));
+                    anim4.x = map.x + 550;
+                    anim4.y = map.y + 100;
+                    anim4.anchor.set(0.5);
+                    anim4.animationSpeed = animSpeed;
+                    anim4.play();
+                    pageAnimContainer.addChild(anim4);
+                }
+
+                if( m2 == 20 ) {
+                    var anim1 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim1']));
+                    anim1.x = map.x - 400;
+                    anim1.y = map.y - 300;
+                    anim1.anchor.set(0.5);
+                    anim1.animationSpeed = animSpeed;
+                    anim1.play();
+                    pageAnimContainer.addChild(anim1);
+                }
+
+                if( m2 == 23 ) {
+                    var anim3 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim3']));
+                    anim3.x = map.x + 320;
+                    anim3.y = map.y + 220;
+                    anim3.anchor.set(0.5);
+                    anim3.animationSpeed = animSpeed;
+                    anim3.play();
+                    pageAnimContainer.addChild(anim3);
+                }
+
+                if( m2 == 26 ) {
+                    var anim1 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim1']));
+                    anim1.x = map.x + 250;
+                    anim1.y = map.y + 150;
+                    anim1.anchor.set(0.5);
+                    anim1.animationSpeed = animSpeed;
+                    anim1.play();
+                    pageAnimContainer.addChild(anim1);
+
+                    var anim2 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim2']));
+                    anim2.x = map.x + 50;
+                    anim2.y = map.y + 250;
+                    anim2.anchor.set(0.5);
+                    anim2.animationSpeed = animSpeed;
+                    anim2.play();
+                    pageAnimContainer.addChild(anim2);
+
+                    var anim4 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim4']));
+                    anim4.x = map.x - 700;
+                    anim4.y = map.y - 50;
+                    anim4.anchor.set(0.5);
+                    anim4.animationSpeed = animSpeed;
+                    anim4.play();
+                    pageAnimContainer.addChild(anim4);
+                }
+
+                if( m2 == 29 ) {
+                    var anim1 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim1']));
+                    anim1.x = map.x + 250;
+                    anim1.y = map.y + 50;
+                    anim1.anchor.set(0.5);
+                    anim1.animationSpeed = animSpeed;
+                    anim1.play();
+                    pageAnimContainer.addChild(anim1);
+
+                    var anim2 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim2']));
+                    anim2.x = map.x - 730;
+                    anim2.y = map.y - 80;
+                    anim2.anchor.set(0.5);
+                    anim2.animationSpeed = animSpeed;
+                    anim2.play();
+                    pageAnimContainer.addChild(anim2);
+
+                    var anim4 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim4']));
+                    anim4.x = map.x + 50;
+                    anim4.y = map.y + 150;
+                    anim4.anchor.set(0.5);
+                    anim4.animationSpeed = animSpeed;
+                    anim4.play();
+                    pageAnimContainer.addChild(anim4);
+                }
+
+                if( m2 == 32 ) {
+                    var anim3 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim3']));
+                    anim3.x = map.x;
+                    anim3.y = map.y - 420;
+                    anim3.anchor.set(0.5);
+                    anim3.animationSpeed = animSpeed;
+                    anim3.play();
+                    pageAnimContainer.addChild(anim3);
+                }
+
+                if( m2 == 35 ) {
+                    var anim1 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim1']));
+                    anim1.x = map.x + 250;
+                    anim1.y = map.y;
+                    anim1.anchor.set(0.5);
+                    anim1.animationSpeed = animSpeed;
+                    anim1.play();
+                    pageAnimContainer.addChild(anim1);
+
+                    var anim2 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim2']));
+                    anim2.x = map.x - 630;
+                    anim2.y = map.y - 80;
+                    anim2.anchor.set(0.5);
+                    anim2.animationSpeed = animSpeed;
+                    anim2.play();
+                    pageAnimContainer.addChild(anim2);
+                }
+
+                if( m2 == 38 ) {
+                    var anim1 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim1']));
+                    anim1.x = map.x - 150;
+                    anim1.y = map.y - 350;
+                    anim1.anchor.set(0.5);
+                    anim1.animationSpeed = animSpeed;
+                    anim1.play();
+                    pageAnimContainer.addChild(anim1);
+
+                    var anim2 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim2']));
+                    anim2.x = map.x - 250;
+                    anim2.y = map.y - 200;
+                    anim2.anchor.set(0.5);
+                    anim2.animationSpeed = animSpeed;
+                    anim2.play();
+                    pageAnimContainer.addChild(anim2);
+
+                    var anim4 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim4']));
+                    anim4.x = map.x - 550;
+                    anim4.y = map.y - 150;
+                    anim4.anchor.set(0.5);
+                    anim4.animationSpeed = animSpeed;
+                    anim4.play();
+                    pageAnimContainer.addChild(anim4);
+                }
 
                 for( var j=0; j<characterNum; j++) {
                     // console.log( ((page-1)*characterNum*3*mapNum) + (i*characterNum*3) + (j*3) + 1 );
@@ -354,14 +647,15 @@ loader.load(function(loader, resources) {
             mapContainer.addChild(pageMapContainer);
             characterContainer.addChild(pageCharacterContainer);
             characterContainer.addChild(pageTextContainer);
+            characterContainer.addChild(pageAnimContainer);
 
-            activePages[page] = {content:[pageMapContainer, pageCharacterContainer, pageTextContainer]}
+            activePages[page] = {content:[pageMapContainer, pageCharacterContainer, pageTextContainer, pageAnimContainer]}
             // activePages.push({page:page, content:[pageMapContainer, pageCharacterContainer]});
         }
 
     }
 
-    var textAnimateTimer = 0;
+    
     // var textAnimateTarget = [];
     app.ticker.add(function(delta) {
         textAnimateTimer ++;
@@ -395,9 +689,9 @@ loader.load(function(loader, resources) {
 
 
             if( moveDirection == 1 ) {
-                mapPosition-=mapDistance/100; //60 30
+                mapPosition-=mapDistance/50; //60 30
             } else {
-                mapPosition+=mapDistance/100;
+                mapPosition+=mapDistance/50;
             }
             mapPosition = Math.max(Math.min(mapPosition, mapDistance/2), getCharacterMapPosition(totalCount)-200);
 
@@ -443,9 +737,9 @@ loader.load(function(loader, resources) {
         if( totalCount == undefined ) return;
         // console.log(event);
         if( event.deltaY > 0 ) {
-            mapPosition-=mapDistance/20; //60 30
+            mapPosition-=mapDistance/3; //60 30
         } else {
-            mapPosition+=mapDistance/20;
+            mapPosition+=mapDistance/3;
         }
         mapPosition = Math.max(Math.min(mapPosition, mapDistance/2), getCharacterMapPosition(totalCount)-200);
 
@@ -706,8 +1000,8 @@ loader.load(function(loader, resources) {
 
         newCharacter.anchor.set(0.5, 1);
         newCharacter.scale.set(0.9, 0.9);
-        newCharacter.interactive = true;
-        newCharacter.buttonMode = true;
+        // newCharacter.interactive = true;
+        // newCharacter.buttonMode = true;
         newCharacter.on('pointerdown', characterClick);
         newCharacter.data = {};
         newCharacter.data.guid = parameter.guid;
@@ -720,7 +1014,7 @@ loader.load(function(loader, resources) {
         text.y = newCharacter.y - 120;
         text.anchor.set(0.5, 0.5);
         text.alpha = 0;
-        text.data = {fixedPosition:{x:text.x ,y:text.y}, time:Math.floor(Math.random()*chatSpeed)};
+        text.data = {fixedPosition:{x:text.x ,y:text.y}, time:(textAnimateTimer+90)%chatSpeed};
         registerContainer.addChild(text);
 
         TweenMax.from(newCharacter, 1, {y:"-=150", alpha:0, ease:Bounce.easeOut, delay:1});
@@ -761,6 +1055,8 @@ loader.load(function(loader, resources) {
                 // 測試
                 editData.characterObject.data.memo = $("#editMemo").val();
                 editData.textObject.text = $("#editMemo").val();
+                TweenMax.killTweensOf(editData.textObject.text);
+                editData.textObject.data.time = (textAnimateTimer+30)%chatSpeed;
                 $("#edit").removeClass('active');
 
                 removeEditMemoUI();
@@ -801,17 +1097,17 @@ loader.load(function(loader, resources) {
             pageCount: pageSize
         }
 
-        if (!/^[09]{2}[0-9]{8}$/.test(data.phone)) {
+        if(!/^(13[0-9]|14[0-9]|15[0-9]|17[0-9]|18[0-9])\d{8}$/i.test(data.phone)) {
             alert("手機號碼格式不正確");
             return;
         }
 
-        if (data.memo.bLength() > 10) {
+        if (data.memo.length > 10) {
             alert("留言字數超過限制(10字)");
             return;
         }
 
-        if (data.memo.bLength() == 0) {
+        if (data.memo.length == 0) {
             alert("請輸入留言");
             return;
         }
@@ -833,7 +1129,7 @@ loader.load(function(loader, resources) {
             $("#registerBtn").removeClass("btn--active");
             if( response.data == undefined ) {
                 updateCamera({targetID: totalCount, completeFn:function(){
-                    dropUser({memo: $("#form-memo").val(), userwear: '7', guid:totalCount});
+                    dropUser({memo: $("#formMemo").val(), userwear: '7', guid:totalCount});
                 }})
             } else {
                 if( response.code == "0000" ) {
@@ -849,8 +1145,7 @@ loader.load(function(loader, resources) {
     });
 
 
-    var isMoveActive = false;
-    var moveDirection = 0;
+
 
     $(".arrow").on('touchstart mousedown', function(event) {
         

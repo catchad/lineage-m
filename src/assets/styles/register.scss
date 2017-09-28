@@ -10,6 +10,9 @@ header {
 	// box-shadow: 0px 3px 20px 7px rgba(0, 0, 0, 0.6);
 	@media screen and (max-width: $breakpoint ) {
 		background-color: transparent;
+		width: 70px;
+		left: auto;
+		right: 0;
 	}
 }
 
@@ -49,6 +52,7 @@ main {
 
 #rule {
 	z-index: 1011;
+	overflow: auto;
 	.wrapper {
 		width: 100%;
 		max-width: 1000px;
@@ -78,9 +82,7 @@ main {
 		max-width: 600px;
 		// margin: 0 auto;
 
-		@media screen and (max-width: $breakpoint ) {
-			font-size: 0.6em;
-		}
+
 		
 	}
 	.btn {
@@ -99,7 +101,9 @@ main {
 		border-collapse: separate;
 		border-spacing: 0px 1em;
 		font-size: 1.2em;
-		
+		@media screen and (max-width: $breakpoint ) {
+			font-size: 0.6em;
+		}
 	}
 	td {
 		font-weight: 100;
@@ -115,7 +119,8 @@ main {
 			font-size: 0;
 			width: 220px;
 			@media screen and (max-width: $breakpoint ) {
-				width: 200px;
+				width: 180px;
+				padding-left: 15px;
 			}
 
 			> * {
@@ -217,7 +222,6 @@ main {
     top: 90px;
     left: 20px;
     width: 280px;
-    z-index: 1001;
 	@media screen and (max-width: $breakpoint ) {
 	    top: 12px;
 	    left: 10px;
@@ -366,7 +370,7 @@ main {
 	}
 	img {
 		width: 100%;
-		max-width: 300px;
+		max-width: 280px;
 	}
 }
 
