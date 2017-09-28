@@ -22,6 +22,10 @@ html(lang="zh-tw")
 			div
 				img(class="logo", src="assets/images/logo.png")
 				p 本站不支援IE10以下瀏覽器，建議使用Chrome以利最佳體驗
+		div(id="mobileLandscapeAlert", class="lightbox")
+			div
+				img(class="logo", src="assets/images/logo.png")
+				p 請使用直式瀏覽
 		header
 			a(href="./")
 				img(class="logo", src="assets/images/logo.png")
@@ -42,10 +46,12 @@ html(lang="zh-tw")
 					li
 						a(href="http://www.google.com.tw", target="_blank")
 							img(src="assets/images/googleplay.png", alt="Google Play")
+					li(class="audio")
+						a(class="audio-switch")
 		block content
-
-		//- script(src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.4.3/vue.min.js")
-		script(src="//cdnjs.cloudflare.com/ajax/libs/bowser/1.7.3/bowser.min.js")
+		
+		script(src="assets/scripts/lib/device.min.js")
+		script(src="assets/scripts/lib/bowser.min.js")
 		script.
 			if (bowser.msie && bowser.version <= 9) {
 				var el = document.getElementById("ieAlert");
@@ -54,7 +60,8 @@ html(lang="zh-tw")
 				else
 				  el.className += ' ' + 'active';
 			}
-		script(src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js")
+		script(src="assets/scripts/lib/jquery.min.js")
+		script(src="assets/scripts/lib/TweenMax.min.js")
 		script(src="assets/scripts/common.js")
 		block script
 		

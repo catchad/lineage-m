@@ -69,6 +69,21 @@ html {
   #ieAlert p {
     font-size: 1.2em; }
 
+#mobileLandscapeAlert {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background-color: #000000;
+  text-align: center;
+  opacity: 1;
+  visibility: visible; }
+  #mobileLandscapeAlert.active {
+    display: flex; }
+  #mobileLandscapeAlert .logo {
+    width: 400px;
+    max-width: 100%;
+    margin-bottom: 10px; }
+
 header {
   display: flex;
   align-items: center;
@@ -113,6 +128,15 @@ header {
         z-index: 1100; }
         header .nav--active {
           display: flex; } }
+    header .nav .audio-switch {
+      display: inline-block;
+      position: relative;
+      width: 24px;
+      height: 16px;
+      background-image: url(../images/audio-on.png);
+      cursor: pointer; }
+      header .nav .audio-switch.off {
+        background-image: url(../images/audio-off.png); }
     header .nav .close {
       display: none;
       position: fixed;
@@ -162,12 +186,12 @@ a {
   text-decoration: none; }
 
 div.lightbox {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.95);
+  background-color: rgba(0, 0, 0, 0.85);
   padding: 0;
   margin: 0;
   border: none;
@@ -276,8 +300,32 @@ main {
   overflow: auto; }
   #rule .wrapper {
     width: 100%;
-    max-width: 1000px;
-    margin: 0 auto; }
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: justify; }
+  #rule .mainTitle {
+    font-size: 2em;
+    font-weight: 400;
+    text-align: center;
+    margin-bottom: 0.5em;
+    margin-top: 1em; }
+    #rule .mainTitle:first-child {
+      margin-top: 0; }
+  #rule .title {
+    font-size: 1.4em;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    font-weight: 400; }
+  #rule ul {
+    list-style-type: disc;
+    margin-left: 1.5em; }
+  #rule ol {
+    list-style-type: decimal;
+    margin-left: 1.5em; }
+  #rule li {
+    line-height: 1.5em; }
+  #rule p {
+    line-height: 1.5em; }
 
 #form {
   display: flex;
@@ -297,7 +345,13 @@ main {
     width: 100%;
     max-width: 600px; }
   #form .btn {
-    margin-top: 30px; }
+    margin-top: 30px;
+    margin-bottom: 10px; }
+  #form label {
+    line-height: 1.5em; }
+    @media screen and (max-width: 768px) {
+      #form label {
+        font-size: 0.9em; } }
   #form a {
     color: #FFFFFF;
     text-decoration: underline;
@@ -306,10 +360,11 @@ main {
     margin: 0 auto;
     border-collapse: separate;
     border-spacing: 0px 1em;
-    font-size: 1.2em; }
+    font-size: 1.2em;
+    line-height: 1.5em; }
     @media screen and (max-width: 768px) {
       #form table {
-        font-size: 0.6em; } }
+        font-size: 0.75em; } }
   #form td {
     font-weight: 100; }
     #form td:nth-child(1) {
@@ -372,6 +427,9 @@ main {
     font-size: 1rem;
     text-align: center;
     font-family: 'Noto Sans TC'; }
+    @media screen and (max-width: 768px) {
+      #form input, #form select {
+        font-size: 0.9rem; } }
   #form ul {
     text-align: left; }
     #form ul li {
@@ -381,12 +439,16 @@ main {
   position: fixed;
   top: 90px;
   left: 20px;
-  width: 280px; }
+  width: 280px;
+  text-align: center; }
   @media screen and (max-width: 768px) {
     #info {
       top: 12px;
       left: 10px;
       width: 220px; } }
+  #info .fb-like {
+    display: inline-block !important;
+    margin-top: 7px; }
   #info .count {
     position: relative;
     box-sizing: border-box;

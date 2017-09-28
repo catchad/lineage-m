@@ -1,9 +1,5 @@
 var apiKey = $("#apikey").val();
 
-String.prototype.bLength = function() { 
-    var arr = this.match(/[^\x00-\xff]/ig); 
-    return  arr == null ? this.length : this.length + arr.length; 
-}
 var ww = window.innerWidth;
 var wh = window.innerHeight;
 var isAjaxing = false;
@@ -40,6 +36,8 @@ loader.add('mapf1', 'assets/images/register/map/f1.png');
 loader.add('mapf2', 'assets/images/register/map/f2.png');
 loader.add('mapf3', 'assets/images/register/map/f3.png');
 loader.add('edit', 'assets/images/register/edit.png');
+loader.add('close', 'assets/images/register/close.png');
+loader.add('fbshare', 'assets/images/register/fb.png');
 loader.add('anim1', 'assets/images/register/animate/anim1.json');
 loader.add('anim2', 'assets/images/register/animate/anim2.json');
 loader.add('anim3', 'assets/images/register/animate/anim3.json');
@@ -55,8 +53,6 @@ for( var i=1; i<=16; i++ ) {
 }
 
 loader.load(function(loader, resources) {
-
-
     // console.log( pageSize );
 
     container.pivot.set(0.5, 0.5);
@@ -73,6 +69,9 @@ loader.load(function(loader, resources) {
 
     var characterContainer = new PIXI.Container();
     container.addChild(characterContainer);
+
+    var characterTextContainer = new PIXI.Container();
+    container.addChild(characterTextContainer);
 
     var uiContainer = new PIXI.Container();
     container.addChild(uiContainer);
@@ -269,10 +268,9 @@ loader.load(function(loader, resources) {
                     // firsttime
                     totalPage = Math.ceil(fakeData.length/pageSize)-1;
                     totalCount = fakeData.length;
-
                     addMapEnd();
                 }
-                console.log("addMap(測試): " +page);
+                // console.log("addMap(測試): " +page);
             } else {
                 // 正式用
                 if( response.code == "0000" ) {
@@ -282,13 +280,13 @@ loader.load(function(loader, resources) {
                         totalCount = response.data.totalcount;
                         addMapEnd();
                     }
-                    console.log("addMap(正式): " +page);
+                    // console.log("addMap(正式): " +page);
                 } else {
                     alert(response.message);
                 }              
             }
             if( characterData.length == 0 || characterData == undefined) {
-                console.log("no data");
+                // console.log("no data");
                 if( completeFn !== undefined ) completeFn();
                 return;
             }
@@ -330,7 +328,9 @@ loader.load(function(loader, resources) {
                 map.anchor.set(0.5);
                 map.x = pageCenter.x + rowCenter.x;
                 map.y = pageCenter.y + rowCenter.y;
-                map.scale.set(1.01, 1.01);
+                map.width +=1;
+                map.height +=1;
+                // map.scale.set(1.01, 1.01);
                 // map.scale.set(0.99, 0.99);
 
                 pageMapContainer.addChild(map);
@@ -339,7 +339,9 @@ loader.load(function(loader, resources) {
                 map2.anchor.set(0.5);
                 map2.x = pageCenter.x + rowCenter.x + mapWidth/2;
                 map2.y = pageCenter.y + rowCenter.y + mapHeight/2;
-                map2.scale.set(1.01, 1.01);
+                map2.width +=1;
+                map2.height +=1;
+                // map2.scale.set(1.01, 1.01);
                 // map2.scale.set(0.99, 0.99);
                 pageMapContainer.addChild(map2);
 
@@ -347,7 +349,9 @@ loader.load(function(loader, resources) {
                 map3.anchor.set(0.5);
                 map3.x = pageCenter.x + rowCenter.x - mapWidth/2;
                 map3.y = pageCenter.y + rowCenter.y - mapHeight/2;
-                map3.scale.set(1.01, 1.01);
+                map3.width +=1;
+                map3.height +=1;
+                // map3.scale.set(1.01, 1.01);
                 // map3.scale.set(0.99, 0.99);
                 pageMapContainer.addChild(map3);
 
@@ -645,11 +649,13 @@ loader.load(function(loader, resources) {
             }
 
             mapContainer.addChild(pageMapContainer);
-            characterContainer.addChild(pageCharacterContainer);
-            characterContainer.addChild(pageTextContainer);
+            characterContainer.addChild(pageCharacterContainer);            
             characterContainer.addChild(pageAnimContainer);
+            characterTextContainer.addChild(pageTextContainer);
 
+            // characterContainer.setChildIndex(pageTextContainer, characterContainer.children.length-1);
             activePages[page] = {content:[pageMapContainer, pageCharacterContainer, pageTextContainer, pageAnimContainer]}
+            
             // activePages.push({page:page, content:[pageMapContainer, pageCharacterContainer]});
         }
 
@@ -737,9 +743,9 @@ loader.load(function(loader, resources) {
         if( totalCount == undefined ) return;
         // console.log(event);
         if( event.deltaY > 0 ) {
-            mapPosition-=mapDistance/3; //60 30
+            mapPosition-=mapDistance/10; //60 30
         } else {
-            mapPosition+=mapDistance/3;
+            mapPosition+=mapDistance/10;
         }
         mapPosition = Math.max(Math.min(mapPosition, mapDistance/2), getCharacterMapPosition(totalCount)-200);
 
@@ -749,18 +755,18 @@ loader.load(function(loader, resources) {
     });
 
     function updateCamera(parameter) {
-
+        if( parameter == undefined ) parameter = {};
         // parameter.targetID
         // parameter.completeFn
 
-        if( parameter !== undefined ) {
+        if( parameter.targetID !== undefined ) {
             mapPosition = getCharacterMapPosition(parameter.targetID);
         }
         
         var a = Math.floor(-mapPosition+mapDistance/2);
         var b = Math.floor(mapDistance*pageMapNum);
         var c = Math.floor(a/b);
-        console.log(a/b);
+        // console.log(a/b);
 
         var currentPage = Math.floor(a/b);
         // console.log(currentPage)
@@ -773,8 +779,7 @@ loader.load(function(loader, resources) {
                 addMap(currentPage);
             }            
         } else {
-            if( parameter !== undefined ) {
-                console.log("dssssssssssssssssss")
+            if( parameter.completeFn !== undefined ) {
                 parameter.completeFn();
             }   
         }
@@ -793,7 +798,7 @@ loader.load(function(loader, resources) {
         }
 
         var p = getPoint(angle, mapPosition);
-        if( parameter !== undefined ) {
+        if( parameter.noTween == true ) {
             container.x = window.innerWidth/2 + p.x + cameraOffset.x;
             container.y = window.innerHeight/2 + p.y + cameraOffset.y;
         } else {
@@ -830,15 +835,15 @@ loader.load(function(loader, resources) {
             if( response.data == undefined ) {
                 // 測試用
                 var guid = 100;
-                updateCamera({targetID: guid, completeFn:function(){
-                    console.log("search complete");
+                updateCamera({targetID: guid, noTween:true, completeFn:function(){
+                    // console.log("search complete");
                     addEditMemoUI(guid);
                 }})
             } else {
                 // 正式用
                 if( response.code == "0000" ) {
-                    updateCamera({targetID: response.data.data[0].guid, completeFn:function(){
-                        console.log("search complete");
+                    updateCamera({targetID: response.data.data[0].guid, noTween:true, completeFn:function(){
+                        // console.log("search complete");
                     }})
                 } else {
                     alert( response.message );
@@ -876,12 +881,14 @@ loader.load(function(loader, resources) {
         var boxPaddingHeight = 20;
         var text = new PIXI.Text(character.data.memo, style);
         var editBtn = new PIXI.Sprite(resources['edit'].texture);
+        var closeBtn = new PIXI.Sprite(resources['close'].texture);
+        var fbshareBtn = new PIXI.Sprite(resources['fbshare'].texture);
 
-        text.x = character.x - editBtn.width/2 - textPadding/2;
+        text.x = character.x - editBtn.width/2 - closeBtn.width/2 - fbshareBtn.width/2 - textPadding/2 - 3;
         text.y = character.y - 120;
         text.anchor.set(0.5, 0.5);
         
-        editBtn.x = character.x + text.width/2 + textPadding/2;
+        editBtn.x = text.x + text.width/2 + textPadding/2 + editBtn.width/2;
         editBtn.y = character.y -120;
         editBtn.anchor.set(0.5, 0.5);
         editBtn.scale.set(1, 1);
@@ -889,8 +896,25 @@ loader.load(function(loader, resources) {
         editBtn.buttonMode = true;
         editBtn.on('pointerdown', editBtnClick);
 
+        fbshareBtn.x = editBtn.x + editBtn.width/2 + textPadding/2 + fbshareBtn.width/2;
+        fbshareBtn.y = character.y -120;
+        fbshareBtn.anchor.set(0.5, 0.5);
+        fbshareBtn.scale.set(1, 1);
+        fbshareBtn.interactive = true;
+        fbshareBtn.buttonMode = true;
+        fbshareBtn.on('pointerdown', fbShareClick);
+
+        closeBtn.x = fbshareBtn.x + fbshareBtn.width/2 + textPadding/2 + closeBtn.width/2;
+        closeBtn.y = character.y -120;
+        closeBtn.anchor.set(0.5, 0.5);
+        closeBtn.scale.set(1, 1);
+        closeBtn.interactive = true;
+        closeBtn.buttonMode = true;
+        closeBtn.on('pointerdown', removeEditMemoUI);
+   
+
         var graphics = new PIXI.Graphics();
-        var textBoxWidth = text.width + editBtn.width + textPadding + boxPaddingWidth;
+        var textBoxWidth = text.width + editBtn.width + closeBtn.width + fbshareBtn.width + textPadding + boxPaddingWidth;
         var textBoxHeight = text.height + boxPaddingHeight;
         // graphics.anchor.set(0.5, 0.5);
         graphics.lineStyle(2, 0xCCCCCC, 1);
@@ -903,16 +927,30 @@ loader.load(function(loader, resources) {
         uiContainer.addChild(graphics);
         uiContainer.addChild(text);
         uiContainer.addChild(editBtn);
+        uiContainer.addChild(closeBtn);
+        uiContainer.addChild(fbshareBtn);
+        TweenMax.fromTo(uiContainer, 0.5, {alpha:0, y:50}, {alpha:1, y:0});
     }
 
     function removeEditMemoUI() {
-        uiContainer.removeChildren();
-        for (var key in activePages) {
-            if( activePages[key].content == undefined ) continue;
-            for( var i=0; i<activePages[key].content[2].children.length; i++) {
-                activePages[key].content[2].children[i].visible = true;                
+        // if( uiContainer.children.length > 0 ) {
+        //     remove();
+        // } else {
+
+        // }
+        // uiContainer.getChildAt(3).off('pointerdown');
+        // TweenMax.to(uiContainer, 0.5, {alpha:0, y:50, onComplete:remove});
+
+        // function remove() {
+            uiContainer.removeChildren();
+            for (var key in activePages) {
+                if( activePages[key].content == undefined ) continue;
+                for( var i=0; i<activePages[key].content[2].children.length; i++) {
+                    activePages[key].content[2].children[i].visible = true;                
+                }
             }
-        }
+        // }
+
 
     }
 
@@ -920,10 +958,6 @@ loader.load(function(loader, resources) {
         // id是玩家編號, 0是第一個
         // console.log(id);
         // id = id-1;
-        // console.log(pageSize);
-        // console.log('頁數:' + Math.floor(id/pageSize) );
-        // console.log('再該頁的位置:' + id%pageSize );
-
         var page = Math.floor(id/pageSize);
         var characterID = id%pageSize;
 
@@ -954,7 +988,7 @@ loader.load(function(loader, resources) {
         // parameter.memo
         // parameter.userwear
         // parameter.guid
-        console.log("drop");
+        // console.log("drop");
         var page = Math.floor(parameter.guid/pageSize);
         var lastCharacterNum = totalCount%pageSize; //殘數
         var lastRowNum = Math.floor(lastCharacterNum/(characterNum*3));
@@ -1008,7 +1042,7 @@ loader.load(function(loader, resources) {
         newCharacter.data.memo = parameter.memo;
         registerContainer.addChild(newCharacter);
 
-        console.log(parameter.memo);
+        // console.log(parameter.memo);
         var text = new PIXI.Text(parameter.memo, style);
         text.x = newCharacter.x;
         text.y = newCharacter.y - 120;
@@ -1021,6 +1055,10 @@ loader.load(function(loader, resources) {
         registerCharacter = {character: newCharacter, text: text};
         // fakeData.push({memo:$("#form-memo").val(), guid: fakeData.length, userwear:parameter.userwear});
         // totalCount+=1;
+    }
+
+    function fbShareClick() {
+        console.log("fbshare");
     }
 
     function editBtnClick() {
@@ -1058,9 +1096,8 @@ loader.load(function(loader, resources) {
                 TweenMax.killTweensOf(editData.textObject.text);
                 editData.textObject.data.time = (textAnimateTimer+30)%chatSpeed;
                 $("#edit").removeClass('active');
-
                 removeEditMemoUI();
-
+                isDraging = false;
             } else {
                 // 正式
                 if( response.code == "0000" ) {
@@ -1068,6 +1105,7 @@ loader.load(function(loader, resources) {
                     editData.textObject.text = $("#editMemo").val();
                     $("#edit").removeClass('active');
                     removeEditMemoUI();
+                    isDraging = false;
                 } else {
                     alert(response.message)
                 }
@@ -1080,6 +1118,7 @@ loader.load(function(loader, resources) {
 
     $(".lightbox .close").on('click', function(event) {
         $(this).parents(".lightbox").removeClass("active");
+        isDraging = false;
     });
 
     $("#registerSendBtn").on('click', function(event) {
@@ -1097,7 +1136,7 @@ loader.load(function(loader, resources) {
             pageCount: pageSize
         }
 
-        if(!/^(13[0-9]|14[0-9]|15[0-9]|17[0-9]|18[0-9])\d{8}$/i.test(data.phone)) {
+        if(!/((?=(09))[0-9]{10})$/g.test(String(data.phone))){
             alert("手機號碼格式不正確");
             return;
         }
@@ -1125,18 +1164,29 @@ loader.load(function(loader, resources) {
         })
         .always(function(response) {
             isAjaxing = false;
-            $("#form").removeClass("active");
-            $("#registerBtn").removeClass("btn--active");
+
             if( response.data == undefined ) {
-                updateCamera({targetID: totalCount, completeFn:function(){
+                $("#form").removeClass("active");
+                $("#registerBtn").removeClass("btn--active");
+                updateCamera({targetID: totalCount, noTween:true, completeFn:function(){
                     dropUser({memo: $("#formMemo").val(), userwear: '7', guid:totalCount});
                 }})
             } else {
                 if( response.code == "0000" ) {
-                    updateCamera({targetID: response.data.data.guid, completeFn:function(){
+                    $("#form").removeClass("active");
+                    $("#registerBtn").removeClass("btn--active");
+
+                    updateCamera({targetID: response.data.data.guid, noTween:true, completeFn:function(){
                         dropUser({memo: response.data.data.memo, userwear: response.data.data.userwear, guid:response.data.data.guid});
                     }}) 
                 } else {
+                    if(response.code == "9998" ) {
+                        $("#form").removeClass("active");
+                        $("#registerBtn").removeClass("btn--active");                 
+                        $("#searchPhone").val($("#formPhone").val());
+                        $("#searchLocation").val($("#formLocation").val());
+                        $("#info .search .icon").trigger('click');
+                    }
                     alert(response.message);
                 }
             }
@@ -1167,11 +1217,50 @@ loader.load(function(loader, resources) {
     $(".ruleBtn").on('click', function(event) {
         event.preventDefault();
         $("#rule").addClass("active");
-        /* Act on the event */
     });
-    // $(".arrow").on('mouseleave', function(event) {
-    //     isMoveActive = false;
-    // });
+
+
+    var isDraging = false;
+    var dragMapPosition = 0;
+    var dragPosition = {x:0, y:0};
+
+    $("#pixiCanvas").on('mousedown touchstart', function(event) {
+        // console.log(event);
+        isDraging = true;
+        if( event.touches ) {
+            dragPosition = {x:event.touches[0].pageX, y:event.touches[0].pageY};
+        } else {
+            dragPosition = {x:event.pageX, y:event.pageY};
+        }
+        
+        dragMapPosition = mapPosition;
+    });
+
+    $("#pixiCanvas").on('mouseup touchend', function(event) {
+        isDraging = false;
+    });
+
+    $("#pixiCanvas").on('mousemove touchmove', function(event) {
+        if( !isDraging ) return;
+        var nowPosition;
+        if( event.touches ) {
+            nowPosition = {x:event.touches[0].pageX, y:event.touches[0].pageY};
+        } else {
+            nowPosition = {x:event.pageX, y:event.pageY};
+        }
+
+        var value;
+        if( dragPosition.x > nowPosition.x ) {
+            value = -distanceBetween(dragPosition, nowPosition);
+        } else {
+            value = distanceBetween(dragPosition, nowPosition);
+        }
+        mapPosition = dragMapPosition + value;
+        mapPosition = Math.max(Math.min(mapPosition, mapDistance/2), getCharacterMapPosition(totalCount)-200);
+
+        updateCamera({noTween:true});
+    });
+
 
     resizeHandler();
     $(window).on('resize', resizeHandler);

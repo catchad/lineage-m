@@ -63,7 +63,7 @@ gulp.task('concat-js', function() {
 });
 
 gulp.task('js', ['clean-js', 'concat-js'], function() {
-    gulp.src('src/assets/scripts/*.js')
+    gulp.src('src/assets/scripts/**')
         .pipe(plumber())
         // .pipe(babel({
         //     presets: ['es2015']
@@ -88,6 +88,24 @@ gulp.task('html', ['clean-html'], function() {
         .pipe(gulp.dest('build/'))
 })
 
+// audio
+gulp.task('clean-audio', function() {
+    gulp.src('build/assets/audios/*', {
+            read: false
+        })
+        .pipe(clean());
+});
+
+gulp.task('audio', ['clean-audio'], function() {
+    gulp.src('src/assets/audios/**')
+        .pipe(plumber())
+        // .pipe(babel({
+        //     presets: ['es2015']
+        // }))
+        // .pipe(uglify())
+        .pipe(gulp.dest('build/assets/audios/'));
+});
+
 // 監聽檔案
 gulp.task('watch', function() {
     gulp.watch('src/assets/styles/*.scss', ['css']);
@@ -109,4 +127,4 @@ gulp.task('webserver', function() {
         }));
 });
 
-gulp.task('default', ['html', 'css', 'js', 'images', 'webserver', 'watch']);
+gulp.task('default', ['html', 'css', 'js', 'images', 'audio', 'webserver', 'watch']);

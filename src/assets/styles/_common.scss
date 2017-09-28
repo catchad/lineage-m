@@ -34,6 +34,36 @@ html {
 	}
 }
 
+#mobileLandscapeAlert {
+	display: none;
+	justify-content: center;
+	align-items: center;
+	background-color: #000000;
+	text-align: center;
+	opacity: 1;
+	visibility: visible;
+
+	&.active {
+		display: flex;
+	}
+	// @media screen and (max-width: 768px) and (min-aspect-ratio: 13/9) { 
+	// 	display: flex;
+	// }
+
+
+	.logo {
+		width: 400px;
+		max-width: 100%;
+		margin-bottom: 10px;
+	}
+}
+// html.landscape.mobile {
+// 	#mobileLandscapeAlert {
+// 		display: flex;
+
+// 	}
+// }
+
 header {
 	display: flex;
 	align-items: center;
@@ -86,7 +116,17 @@ header {
 			}
 
 		}
-		
+		.audio-switch {
+			display: inline-block;
+			position: relative;
+			width: 24px;
+			height: 16px;
+			background-image: url(../images/audio-on.png);
+			cursor: pointer;
+			&.off {
+				background-image: url(../images/audio-off.png);
+			}
+		}
 
 		.close {
 			display: none;
@@ -159,12 +199,12 @@ a {
 
 div.lightbox {
 	// display: none;
-	position: absolute;
+	position: fixed;
 	top: 0;
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background-color: rgba(0,0,0,0.95);
+	background-color: rgba(0,0,0,0.85);
     padding: 0;
     margin: 0;
     border: none;

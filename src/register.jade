@@ -27,14 +27,14 @@ block content
 			div(id="info")
 				//- div(class="count")
 				//- 	p 目前登錄: 13,658人
-				div(class="search")
-					
+				div(class="search")					
 					select(id="searchLocation")
 						option(value="TW") +886
 						option(value="HK") +852
 						option(value="MAC") +853
 					input(id="searchPhone", type="text", placeholder="輸入電話號碼找自己")
 					img(class="icon", src="assets/images/register/search.png", alt="search")
+				div(class="fb-like", data-href="https://www.facebook.com/Gamania.Lineage.M/", data-width="200", data-layout="button_count", data-action="like", data-size="small", data-show-faces="false", data-share="true")
 
 			//- button(id="test") 參加排隊
 			a(id="registerBtn", class="btn btn--large btn--active")
@@ -44,7 +44,7 @@ block content
 			div(id="rule", class="lightbox")
 				img(class="close", src="assets/images/close.png", alt="close")
 				div(class="wrapper")
-					p(class="title") 注意事項
+					p(class="mainTitle") 注意事項
 					ul
 						li 每個手機號碼，僅限參與本活動一次。
 						li 本活動僅限使用台港澳手機號碼參與。
@@ -52,11 +52,12 @@ block content
 						li 完成預先登錄之獎勵將於活動結束後統一以簡訊的方式發送序號，序號發送時間將另行公告。
 						li 本公司將保留變更獎項內容以及核准兌換與否之權利，詳細內容及異動說明均以本活動網頁最後一次公佈為準，請玩家密切注意網頁公佈訊息。
 						li 活動開始後，所有參與本活動玩家將視同同意最後公告之內容。
-					p 隱私權政策
+					
+					p(class="mainTitle") 隱私權政策
 					p 當您按下同意鍵時，即視為您已閱讀、瞭解並同意接受本隱私權政策。樂點股份有限公司（下稱本公司）有權於任何時間在本服務上公布經修改、變更之隱私權政策內容，當本服務公布上開修改、變更後，該更新內容即刻生效，建議您隨時注意該等修改、變更；若修訂版本有實質重大更動，本公司將會提前30日在本服務發布更新訊息，30日期間屆滿，本服務將正式施行前述之隱私權政策，若您繼續使用本服務所提供之商品或服務內容，您將被視為已閱讀、瞭解並同意接受所有修改。 
 					p 本隱私權政策描述了本公司如何蒐集、處理、利用您的個人資訊。
 
-					p 資訊之蒐集、處理及利用
+					p(class="title") 資訊之蒐集、處理及利用
 					ul
 						li 於本服務上的單純瀏覽及檔案下載行為，本服務並不會蒐集任何有關個人的識別資料。
 						li 本服務在蒐集會員的個人資料後，非經您本人同意、授權或因其他法律上的規定，不會擅自將非公開資料透露給無關之第三者知悉。
@@ -79,21 +80,20 @@ block content
 						li 如本服務因您進行購物或捐款，而有提供金流、物流服務必要，本服務有可能會提供您前述範圍內必要的個人識別資料給相關機關或合作、協力廠商作為交易驗證或商品、回饋項目送達之用。
 						li 本公司於提供服務或進行會員驗證、活動獎項頒發…等情形時，為確保您的帳戶安全，可能要求您協助提供可證明個人身份之證件正本、傳真或影本，以及郵寄地址、匯款帳戶等資料，以確定使用者為您本人。
 
-					p Cookie
+					p(class="title") Cookie
 					p 為了便利使用者的網頁瀏覽及操作，本服務可能使用cookie技術或其他類似技術，以提供更適合使用者個人需要的服務。cookie是本服務伺服器用來和使用者瀏覽器進行溝通的一種技術，它可能在使用者的電腦中儲存某些資訊。使用者可以經由瀏覽器的設定，取消或限制此項功能。 
 
-					p 保全
+					p(class="title") 保全
 					p 根據本政策所指之個人資料，係指得以具體指名特定人之相關資料，並不包括以匿名方式所提供之資料。您的個人資料將會儲存在本公司營運中心之電腦。為保障您的隱私及安全，您的個人資料會採用合理之保全系統加以保護，例如防火牆或密碼保護。本公司僅授權有職務上必要之雇員，方得接觸您的個人資料。
 
 					p 除本隱私權政策之規定內容外，本公司將不會出售或出租任何您的個人資料予第三方。
-
 					p 若相關法律之規定與本隱私權政策有所衝突，本公司將遵循該法律之規定。
 
 			div(id="edit", class="lightbox")
 				img(class="close", src="assets/images/close.png", alt="close")
 				div(class="wrapper")
 					p(class="title") 編輯留言
-					input(id="editMemo", type="text", value="1234")
+					input(id="editMemo", type="text", value="", maxlength="10")
 					a(id="editBtn", class="btn btn--block")
 						div(class="btn__container")
 							p 確定送出
@@ -114,7 +114,7 @@ block content
 											option(value="TW") +886
 											option(value="HK") +852
 											option(value="MAC") +853
-										input(id="formPhone", type="tel", placeholder="電話號碼", maxlength="10")
+										input(id="formPhone", type="tel", placeholder="電話號碼", maxlength="10", onkeypress='return event.charCode >= 48 && event.charCode <= 57')
 								tr
 									td
 										p STEP2
@@ -125,7 +125,6 @@ block content
 										div
 											p 天堂M 粉絲專頁
 											div(class="fb-like", data-href="https://www.facebook.com/Gamania.Lineage.M/", data-width="200", data-layout="button_count", data-action="like", data-size="small", data-show-faces="false", data-share="false")
-
 								tr
 									td
 										p STEP3
@@ -161,7 +160,6 @@ block content
 
 								
 block script
-	script(src="//cdnjs.cloudflare.com/ajax/libs/pixi.js/4.5.5/pixi.min.js")
-	script(src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.20.2/TweenMax.min.js")
-	script(src="//cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.min.js")
+	script(src="assets/scripts/lib/pixi.min.js")
+	script(src="assets/scripts/lib/jquery.mousewheel.min.js")
 	script(src="assets/scripts/register.js")

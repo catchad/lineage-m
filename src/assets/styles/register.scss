@@ -55,8 +55,41 @@ main {
 	overflow: auto;
 	.wrapper {
 		width: 100%;
-		max-width: 1000px;
+		max-width: 800px;
 		margin: 0 auto;
+		text-align: justify;
+	}
+	
+	.mainTitle {
+		font-size: 2em;
+		font-weight: 400;
+		text-align: center;
+		margin-bottom: 0.5em;
+		margin-top: 1em;
+
+		&:first-child {
+			margin-top: 0;
+		}
+	}
+	.title {
+		font-size: 1.4em;
+		margin-top: 1em;
+		margin-bottom: 0.5em;
+		font-weight: 400;
+	}
+	ul {
+		list-style-type: disc;
+		margin-left: 1.5em;
+	}
+	ol {
+		list-style-type: decimal;
+		margin-left: 1.5em;
+	}
+	li {
+		line-height: 1.5em;
+	}
+	p {
+		line-height: 1.5em;
 	}
 }
 
@@ -87,8 +120,14 @@ main {
 	}
 	.btn {
 		margin-top: 30px;
+		margin-bottom: 10px;
 	}
-
+	label {
+		line-height: 1.5em;
+		@media screen and (max-width: $breakpoint ) {
+		    font-size: 0.9em;
+		}
+	}
 	a {
 		color: #FFFFFF;
 		text-decoration: underline;
@@ -101,8 +140,9 @@ main {
 		border-collapse: separate;
 		border-spacing: 0px 1em;
 		font-size: 1.2em;
+		line-height: 1.5em;
 		@media screen and (max-width: $breakpoint ) {
-			font-size: 0.6em;
+			font-size: 0.75em;
 		}
 	}
 	td {
@@ -202,6 +242,10 @@ main {
 		font-size: 1rem;
 		text-align: center;
 		font-family: 'Noto Sans TC';
+		@media screen and (max-width: $breakpoint ) {
+		    font-size: 0.9rem;
+		}
+
 	}
 
 	ul {
@@ -222,12 +266,17 @@ main {
     top: 90px;
     left: 20px;
     width: 280px;
+    text-align: center;
 	@media screen and (max-width: $breakpoint ) {
 	    top: 12px;
 	    left: 10px;
 	    width: 220px;
 	}
-
+	
+	.fb-like {
+		display: inline-block !important;
+		margin-top: 7px;
+	}
 	.count {
 		position: relative;
 		// width: 300px;

@@ -69,6 +69,21 @@ html {
   #ieAlert p {
     font-size: 1.2em; }
 
+#mobileLandscapeAlert {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background-color: #000000;
+  text-align: center;
+  opacity: 1;
+  visibility: visible; }
+  #mobileLandscapeAlert.active {
+    display: flex; }
+  #mobileLandscapeAlert .logo {
+    width: 400px;
+    max-width: 100%;
+    margin-bottom: 10px; }
+
 header {
   display: flex;
   align-items: center;
@@ -113,6 +128,15 @@ header {
         z-index: 1100; }
         header .nav--active {
           display: flex; } }
+    header .nav .audio-switch {
+      display: inline-block;
+      position: relative;
+      width: 24px;
+      height: 16px;
+      background-image: url(../images/audio-on.png);
+      cursor: pointer; }
+      header .nav .audio-switch.off {
+        background-image: url(../images/audio-off.png); }
     header .nav .close {
       display: none;
       position: fixed;
@@ -162,12 +186,12 @@ a {
   text-decoration: none; }
 
 div.lightbox {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.95);
+  background-color: rgba(0, 0, 0, 0.85);
   padding: 0;
   margin: 0;
   border: none;

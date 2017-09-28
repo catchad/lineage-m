@@ -2,59 +2,59 @@
 
 "animate2-1.png":
 {
-	"frame": {"x":0,"y":0,"w":152,"h":103},
+	"frame": {"x":0,"y":0,"w":205,"h":139},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":152,"h":103},
-	"sourceSize": {"w":152,"h":103}
+	"spriteSourceSize": {"x":0,"y":0,"w":205,"h":139},
+	"sourceSize": {"w":205,"h":139}
 },
 "animate2-2.png":
 {
-	"frame": {"x":152,"y":0,"w":152,"h":103},
+	"frame": {"x":0,"y":139,"w":205,"h":139},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":152,"h":103},
-	"sourceSize": {"w":152,"h":103}
+	"spriteSourceSize": {"x":0,"y":0,"w":205,"h":139},
+	"sourceSize": {"w":205,"h":139}
 },
 "animate2-3.png":
 {
-	"frame": {"x":304,"y":0,"w":152,"h":103},
+	"frame": {"x":0,"y":278,"w":205,"h":139},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":152,"h":103},
-	"sourceSize": {"w":152,"h":103}
+	"spriteSourceSize": {"x":0,"y":0,"w":205,"h":139},
+	"sourceSize": {"w":205,"h":139}
 },
 "animate2-4.png":
 {
-	"frame": {"x":456,"y":0,"w":152,"h":103},
+	"frame": {"x":0,"y":417,"w":205,"h":139},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":152,"h":103},
-	"sourceSize": {"w":152,"h":103}
+	"spriteSourceSize": {"x":0,"y":0,"w":205,"h":139},
+	"sourceSize": {"w":205,"h":139}
 },
 "animate2-5.png":
 {
-	"frame": {"x":608,"y":0,"w":152,"h":103},
+	"frame": {"x":0,"y":556,"w":205,"h":139},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":152,"h":103},
-	"sourceSize": {"w":152,"h":103}
+	"spriteSourceSize": {"x":0,"y":0,"w":205,"h":139},
+	"sourceSize": {"w":205,"h":139}
 },
 "animate2-6.png":
 {
-	"frame": {"x":760,"y":0,"w":152,"h":103},
+	"frame": {"x":0,"y":695,"w":205,"h":140},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":152,"h":103},
-	"sourceSize": {"w":152,"h":103}
+	"spriteSourceSize": {"x":0,"y":0,"w":205,"h":140},
+	"sourceSize": {"w":205,"h":140}
 }},
 "meta": {
 	"app": "http://www.codeandweb.com/texturepacker",
 	"version": "1.0",
 	"image": "anim2.png",
 	"format": "RGBA8888",
-	"size": {"w":912,"h":103},
+	"size": {"w":205,"h":835},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:8c7d254a99bd6e0b01d54613ec4f462b:03a9e3b2fdf430bc820b4ddfbad343cc:367e4d1f3eab680d48bb68b2c8bea757$"
+	"smartupdate": "$TexturePacker:SmartUpdate:2860413398252d0df96f1adb706e7b58:9afc9ca319a8d5b4c6044b67e42486f5:367e4d1f3eab680d48bb68b2c8bea757$"
 }
 }
