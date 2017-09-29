@@ -16,31 +16,116 @@ main {
 	background-size: cover;
 	background-position: center;
 	text-align: center;
+	@media screen and (max-width: $breakpoint ) {
+		// background-image: url(../images/homepage/bg-m.jpg);
+		background: linear-gradient(top,rgba(#000,0),rgba(#000,0.7)), url(../images/homepage/bg-m.jpg);
+		background-size: cover, cover;
+		background-position: center, center;
+	}
 }
 section {
 	width: 100%;
 }
 .homepage {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	@media screen and (max-width: $breakpoint ) {
+		justify-content: flex-end;
+	}
+	// .placeholder {
+	// 	height: 20%;
+	// 	width: 100%;
+	// 	pointer-events: none;
+	// }
 	&__logo {
 		margin-bottom: 40px;
-		width: 100%;
+		width: 80%;
 		max-width: 651px;
+		@media screen and (max-width: $breakpoint ) {
+			position: absolute;
+			top: 60px;
+			left: 50%;
+			transform: translateX(-50%);
+		}
+		
+	}
+	.btn--large {
+		@media screen and (max-width: $breakpoint ) {
+			width: 250px;
+		}
 	}
 	&__info {
 	    font-size: 1.2em;
 	    line-height: 1.6em;
 	    margin-top: 10px;
 	    margin-bottom: 40px;
+	    @media screen and (max-width: $breakpoint ) {
+	    	margin-bottom: 10px;
+	    	font-size: 1em;
+	    	line-height: 1.3em;
+	    }
+	}
+	.menu-wrapper {
+		width: 100%;
+		overflow: hidden;
+		position: relative;
 	}
 	&__menu {
-		width: 100%;
+		// width: 100%;
 		max-width: 780px;
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
 		font-size: 0;
 		margin: 0 auto;
+		transition: 0.2s;
+		@media screen and (max-width: $breakpoint ) {
+			&.focus1 {
+				transform: translateX(33.33%);
+			}
+			&.focus2 {
+				transform: translateX(0%);
+			}
+			&.focus3 {
+				transform: translateX(-33.33%);
+			}
+			&.focus4 {
+				transform: translateX(-66.66%);
+			}
+			&.focus5 {
+				transform: translateX(-100%);
+			}
+		}
 		li {
 			display: inline-block;
 			width: 20%;
 			font-size: 1rem;
+			flex: 0 0 auto;
+			@media screen and (max-width: $breakpoint ) {
+				width: 33.33%;
+			}
+		}
+	}
+	.menu-dot-list {
+		display: none;
+		margin: 10px 0 20px 0; 
+		@media screen and (max-width: $breakpoint ) {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+		.menu-dot {
+			width: 9px;
+			height: 9px;
+			background-color: #666;
+			margin: 0 10px;
+			transform: rotate(45deg);
+			&.selected {
+				background-color: #ffe6c5;
+			}
 		}
 	}
 }
@@ -49,12 +134,20 @@ section {
 	position: relative;
 	display: inline-block;
 	width: 100%;
+	
 	background-image: url(../images/diamon-btn.png);
 	background-size: 100% 100%;
 	font-size: 1em;
 	cursor: pointer;
 	transition: filter 0.15s linear;
 	user-select: none;
+	@media screen and (max-width: $breakpoint ) {
+		transform: scale(0.75);
+		&.selected {
+			transform: scale(1);
+		}
+	}
+	
 	&::before {
 		content: '';
 		display: block;

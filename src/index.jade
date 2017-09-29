@@ -10,6 +10,7 @@ block content
 	main
 		section(class="homepage")
 			img(class="homepage__logo", src="assets/images/logo.png")
+			.placeholder
 			a(class="btn btn--large btn--block", href="./register.html")
 				div(class="btn__container")
 					p 預先登錄
@@ -17,31 +18,39 @@ block content
 				| 輸入正確電話號碼完成事先登錄
 				br
 				| 即可獲得事先登錄獎勵
-			ul(class="homepage__menu")
-				li
-					a(class="diamondBtn")
-						div(class="diamondBtn__container")
-							div
-								p 預創血盟
-								p coming soon
-				li
-					a(class="diamondBtn", href="./treasure.html")
-						div(class="diamondBtn__container")
-							p 狂抽奪寶
-				li
-					a(class="diamondBtn", href="./analysis.html")
-						div(class="diamondBtn__container")
-							p 戰力評比
-				li
-					a(class="diamondBtn")
-						div(class="diamondBtn__container")
-							p 最新消息
-				li
-					a(class="diamondBtn")
-						div(class="diamondBtn__container")
-							div
-								p 預先創角
-								p coming soon
+			.menu-wrapper
+				ul.focus3(class="homepage__menu")
+					li
+						a(class="diamondBtn", data-index=0)
+							div(class="diamondBtn__container")
+								div
+									p 預創血盟
+									p coming soon
+					li
+						a(class="diamondBtn", data-index=1, href="./treasure.html")
+							div(class="diamondBtn__container")
+								p 狂抽奪寶
+					li
+						a.selected(class="diamondBtn", data-index=2, href="./analysis.html")
+							div(class="diamondBtn__container")
+								p 戰力評比
+					li
+						a(class="diamondBtn", data-index=3)
+							div(class="diamondBtn__container")
+								p 最新消息
+					li
+						a(class="diamondBtn", data-index=4)
+							div(class="diamondBtn__container")
+								div
+									p 預先創角
+									p coming soon
+			.menu-dot-list
+				.menu-dot
+				.menu-dot
+				.menu-dot.selected
+				.menu-dot
+				.menu-dot
 
 block script
+	script(src="//cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js")
 	script(src="assets/scripts/homepage.js")

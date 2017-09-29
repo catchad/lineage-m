@@ -558,9 +558,17 @@ main {
   .loading--active {
     opacity: 1;
     visibility: visible; }
+  .loading div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; }
   .loading img {
     width: 100%;
     max-width: 280px; }
+  .loading .loadgif {
+    width: 63px;
+    margin: 30px 0; }
 
 .lightbox .fb-like {
   display: none; }

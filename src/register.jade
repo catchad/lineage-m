@@ -20,14 +20,16 @@ block content
 			div(class="loading loading--active")
 				div
 					img(src="assets/images/logo.png")
-					p 載入中
+					img.loadgif(src="assets/images/register/loading.gif", alt="")
+					//- p 載入中...
+					p.loadprogress 
 			canvas(id="pixiCanvas")
 			div(class="arrow left")
 			div(class="arrow right")
 			div(id="info")
 				//- div(class="count")
 				//- 	p 目前登錄: 13,658人
-				div(class="search")					
+				div(class="search")
 					select(id="searchLocation")
 						option(value="TW") +886
 						option(value="HK") +852

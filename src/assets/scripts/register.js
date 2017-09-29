@@ -52,6 +52,13 @@ for( var i=1; i<=16; i++ ) {
     loader.add('character'+i, 'assets/images/register/character/'+i+'.png')
 }
 
+loader.on("progress", loadProgressHandler);
+
+function loadProgressHandler(loader) {
+    $(".loadprogress").html(parseInt(loader.progress) + "%");
+  // console.log("progress: " + loader.progress + "%"); 
+}
+
 loader.load(function(loader, resources) {
     // console.log( pageSize );
 

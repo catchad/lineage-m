@@ -417,9 +417,19 @@ main {
 		opacity: 1;
 		visibility: visible;
 	}
+	div {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+	}
 	img {
 		width: 100%;
 		max-width: 280px;
+	}
+	.loadgif {
+		width: 63px;
+		margin: 30px 0;
 	}
 }
 
