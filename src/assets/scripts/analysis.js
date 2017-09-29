@@ -430,7 +430,10 @@ $(".btn-name-submit").on("click", function() {
 		console.log(charName);
 		toPage(4);
 	} else {
-		alert("請輸入名字！");
+		$(".name-container").addClass('copyed');
+		setTimeout(function() {
+			$(".name-container").removeClass('copyed');
+		},800);
 	}
 })
 //-----------------------------------------------------------------------

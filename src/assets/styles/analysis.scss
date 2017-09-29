@@ -1,4 +1,5 @@
 @import "_common.scss";
+@charset "utf-8";
 
 $mobile-breakpoint: 1000px;
 $small-mobile-breakpoint: 350px;
@@ -316,6 +317,30 @@ main {
 			flex-direction: column;
 			justify-content: center;
 			align-items: center;
+			position: relative;
+			&::after {
+				content: "請輸入暱稱!";
+				text-align: center;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				width: 100%;
+				height: 100%;
+				position: absolute;
+				top: 0;
+				left: 0;
+				background-color: rgba(#ffe6c5,1);
+				color: black;
+				font-size: 1.2em;
+				opacity: 0;
+				transition: 0.5s;
+				pointer-events: none;
+			}
+			&.copyed {
+				&::after {
+					opacity: 1; 
+				}
+			}
 			.name-input {
 				height: 40px;
 				padding: 10px 20px;
@@ -350,22 +375,23 @@ main {
 			&.mobile {
 				.job0 {
 					@media screen and (max-width: $mobile-breakpoint ) {
-						left: calc((100% - 65%) / 2);
+						// left: calc((100% - 65%) / 2);
+						left: 17.5%;
 					}
 				}
 				.job1 {
 					@media screen and (max-width: $mobile-breakpoint ) {
-						left: calc((100% - 65%) / 2 - 65% * 1);
+						left: -47.5%;
 					}
 				}
 				.job2 {
 					@media screen and (max-width: $mobile-breakpoint ) {
-						left: calc((100% - 65%) / 2 - 65% * 2);
+						left: -112.5%;
 					}
 				}
 				.job3 {
 					@media screen and (max-width: $mobile-breakpoint ) {
-						left: calc((100% - 65%) / 2 - 65% * 3);
+						left: -177.5%;
 					}
 				}
 			}
