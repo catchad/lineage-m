@@ -338,15 +338,27 @@ main {
       overflow: auto;
       padding-top: 70px; } }
   @media screen and (max-width: 768px) {
+    #form {
+      padding-top: 20px; } }
+  @media screen and (max-width: 768px) {
     #form .close {
       position: absolute;
       top: 20px; } }
+  @media screen and (max-width: 414px) {
+    #form .close {
+      top: 15px;
+      right: 15px;
+      width: 30px; } }
   #form .wrapper {
     width: 100%;
     max-width: 600px; }
   #form .btn {
     margin-top: 30px;
     margin-bottom: 10px; }
+    @media screen and (max-width: 414px) {
+      #form .btn {
+        margin-top: 10px;
+        margin-bottom: 5px; } }
   #form label {
     line-height: 1.5em; }
     @media screen and (max-width: 768px) {
@@ -414,9 +426,9 @@ main {
   #form img.block {
     display: block;
     margin: 0 auto; }
-  #form img.title {
-    width: 100%;
-    max-width: 314px; }
+  @media screen and (max-width: 414px) {
+    #form img.title {
+      width: 200px; } }
   #form input, #form select {
     border: none;
     background-color: #1b1b1b;

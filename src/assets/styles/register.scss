@@ -1,5 +1,6 @@
 @import "_common.scss";
 $breakpoint: 768px;
+$breakpoint-s: 414px;
 
 
 body {
@@ -103,24 +104,33 @@ main {
 	    overflow: auto;
 	    padding-top: 70px;
 	}
-	
+	@media screen and (max-width: $breakpoint ) {
+	    padding-top: 20px;
+	}
 	.close {
 		@media screen and (max-width: $breakpoint ) {
 		    position: absolute;
 		    top: 20px;
+		}
+		@media screen and (max-width: $breakpoint-s ) {
+			top: 15px;
+			right: 15px;
+			width: 30px;
 		}
 	}
 	.wrapper {
 		width: 100%;
 		max-width: 600px;
 		// margin: 0 auto;
-
-
 		
 	}
 	.btn {
 		margin-top: 30px;
 		margin-bottom: 10px;
+		@media screen and (max-width: $breakpoint-s ) {
+			margin-top: 10px;
+			margin-bottom: 5px;
+		}
 	}
 	label {
 		line-height: 1.5em;
@@ -219,7 +229,7 @@ main {
 		&:nth-child(4) {
 			img {
 				width: 100%;
-				max-width: 200px;				
+				max-width: 200px;	
 			}
 		}
 	}
@@ -229,8 +239,12 @@ main {
 		margin: 0 auto;
 	}
 	img.title {
-	    width: 100%;
-	    max-width: 314px;
+	    // width: 100%;
+	    // max-width: 314px;
+		@media screen and (max-width: $breakpoint-s ) {
+		    width: 200px;
+		}
+
 	}
 	input, select {
 		border: none;

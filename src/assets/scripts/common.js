@@ -8,14 +8,7 @@ $(document).ready(function() {
 		$("header nav").removeClass('nav--active');
 	});
 
-	// $(window).on('resize', function(event) {
-	// 	alert( screen.orientation.angle );
-	// 	// if( screen.width > screen.height && screen.width < 768 ) {
-	// 	// 	alert("landscape");
-
-	// 	// }
-	// });
-
+	// 螢幕旋轉
 	$(window).on("orientationchange", function(){
 	    var orientation = window.orientation;
 	    if( orientation == 90 || orientation == -90 ) {
@@ -27,14 +20,9 @@ $(document).ready(function() {
 
 	// 音樂
 	if( device.desktop() ) {
-		var isAudioPlay = (window.localStorage.getItem("isAudioPlay") == 'true');
-		console.log( isAudioPlay );
-
-		if( isAudioPlay == null ) {
-			isAudioPlay = true;
-			window.localStorage.setItem("isAudioPlay", true);
-		}
-
+		var isAudioPlay;
+		window.localStorage.getItem("isAudioPlay") == null ? isAudioPlay = true : isAudioPlay = (window.localStorage.getItem("isAudioPlay") == 'true');
+		window.localStorage.setItem("isAudioPlay", isAudioPlay);
 		var audio = new Audio('assets/audios/music.mp3');
 		if (typeof audio.loop == 'boolean')	{
 		    audio.loop = true;
@@ -44,17 +32,12 @@ $(document).ready(function() {
 		        this.play();
 		    }, false);
 		}
-		
 
 		if( isAudioPlay ) {
 			audio.play();
-			console.log("play");
 		} else {
 			$(".nav .audio-switch").addClass("off");
 		}
-
-		// var isAudioPlay = true;
-		
 
 		$(".audio-switch").on('click', function(event) {
 			TweenMax.killTweensOf(audio);

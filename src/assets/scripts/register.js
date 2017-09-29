@@ -1,33 +1,43 @@
 var apiKey = $("#apikey").val();
-
 var ww = window.innerWidth;
 var wh = window.innerHeight;
 var isAjaxing = false;
-var mapPosition = 0;
+
 var textAnimateTimer = 0;
-var app = new PIXI.Application(ww, wh, { forceCanvas:false, backgroundColor: 0x000000, view: document.getElementById('pixiCanvas') });
+var app = new PIXI.Application(ww, wh, { forceCanvas:false, backgroundColor: 0x000000, view: document.getElementById('mapCanvas') });
 var activePages = {};
-var animSpeed = 0.075;
 var container = new PIXI.Container();
 var mapWidth = 2048; // 1280
 var mapHeight = 1024; // 640
+var animSpeed = 0.075; // 角色動畫速度
 var chatSpeed = 480; // 文字出現的速度 60=1秒
+var mapScrollSpeed = 10; // 滾輪移動地圖速度, 數字越小越快
+var arrowMapSpeed = 50; // 箭頭移動地圖速度, 數字越小越快
+var mapDistance = Math.sqrt(Math.pow(mapWidth/2, 2) + Math.pow(mapHeight/2, 2));
+var angle = angleBetween({x:0, y:0}, {x:mapWidth/2, y:-mapHeight/2});
+var mapPosition = mapDistance/2;
 var totalPage;
 var totalCount;
 var registerCharacter;
-
+var isDraging = false;
+var dragMapPosition = 0;
+var dragPosition = {x:0, y:0};
 var mapNum = 13; // 地圖數量13行 (39張)
 var frontNum = 2; // 地圖有2行 (6張) 不加入迴圈
 var pageMapNum = 4; // 一頁4行地圖 (12張)
-var characterNum = 9; // 每張地圖上人物9行 (30個)
+(ww > 1920) && (pageMapNum = 5);
+(ww <= 1920 && ww > 1024) && (pageMapNum = 3);
+(ww <= 1024) && (pageMapNum = 2);
+var characterNum = 8; // 每張地圖上人物8行 (24個)
 var pageSize = pageMapNum*3*characterNum;
-var cameraOffset = {x:0, y:50};
+var cameraOffset = {x:0, y:0};
+ww < 1024 ? cameraOffset.y = 120 : cameraOffset.y = 50;
 var isMoveActive = false;
 var moveDirection = 0;
 var editData = {};
 var fakeData = [];
 var fakeText = ['賣+10屠龍刀 密我出價 鳥價不回', '賣帳號 99等女妖 密我', '老公我兵單來了 >"<', '幹好lag = =', '靠邀 超多人...', '我要下線了 881', '8口口口口D', '媽我上電視了 ^0^', '徵婆 會養 會疼 要真心 ^^', '收月卡70w 無限收 意密 ^^', '阿貴代練工作室 3天99等 有興趣請密', '血盟【天上人間】收人 歡迎新手 有老手會帶', '貴大師 死白目 搶怪開紅 見一次殺一次'];
-for( var i=0; i<1000; i++ ) {
+for( var i=0; i<500; i++ ) {
     fakeData.push({memo: fakeText[Math.floor(Math.random()*fakeText.length)], userwear:(Math.floor(Math.random()*16)+1), guid:i });
 }
 
@@ -42,7 +52,7 @@ loader.add('anim1', 'assets/images/register/animate/anim1.json');
 loader.add('anim2', 'assets/images/register/animate/anim2.json');
 loader.add('anim3', 'assets/images/register/animate/anim3.json');
 loader.add('anim4', 'assets/images/register/animate/anim4.json');
-loader.add('anim5', 'assets/images/register/animate/anim5.json');
+// loader.add('anim5', 'assets/images/register/animate/anim5.json');
 loader.add('anim6', 'assets/images/register/animate/anim6.json');
 for( var i=1; i<=39; i++ ) {
     loader.add('map'+i, 'assets/images/register/map/'+i+'.png');
@@ -56,43 +66,31 @@ loader.on("progress", loadProgressHandler);
 
 function loadProgressHandler(loader) {
     $(".loadprogress").html(parseInt(loader.progress) + "%");
-  // console.log("progress: " + loader.progress + "%"); 
 }
 
 loader.load(function(loader, resources) {
-    // console.log( pageSize );
 
     container.pivot.set(0.5, 0.5);
     app.stage.addChild(container);
-
     var mapContainer = new PIXI.Container();
-    container.addChild(mapContainer);
-    
+    container.addChild(mapContainer);    
     var mapEndContainer = new PIXI.Container();
     container.addChild(mapEndContainer);
-
     var registerContainer = new PIXI.Container();
     container.addChild(registerContainer);
-
     var characterContainer = new PIXI.Container();
     container.addChild(characterContainer);
-
     var characterTextContainer = new PIXI.Container();
     container.addChild(characterTextContainer);
-
     var uiContainer = new PIXI.Container();
     container.addChild(uiContainer);
 
 
-    var mapDistance = Math.sqrt(Math.pow(mapWidth/2, 2) + Math.pow(mapHeight/2, 2));
-    var angle = angleBetween({x:0, y:0}, {x:mapWidth/2, y:-mapHeight/2});
 
-    mapPosition = mapDistance/2;
+    // mapPosition = mapDistance/2;
     var p = getPoint(angle, mapPosition);
     container.x = window.innerWidth/2 + p.x + cameraOffset.x;
     container.y = window.innerHeight/2 + p.y + cameraOffset.y;
-    // TweenMax.to(container, 0.5, {x:window.innerWidth/2 + p.x, y:window.innerHeight/2 + p.y} );
-    // var page = 1;
 
     var style = new PIXI.TextStyle({
         fontFamily: '微軟正黑體',
@@ -105,64 +103,6 @@ loader.load(function(loader, resources) {
     addMap(0);
     addMap(1);
     addMapFront();
-    // addMapEnd();
-
-    // var anim1= new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim1']));
-    // anim1.x = -700;
-    // anim1.y = 150;
-    // anim1.anchor.set(0.5);
-    // anim1.animationSpeed = animSpeed;
-    // anim1.play();
-    // container.addChild(anim1);
-
-    // var anim2 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim2']));
-    // anim2.x = -550;
-    // anim2.y = 250;
-    // anim2.anchor.set(0.5);
-    // anim2.animationSpeed = animSpeed;
-    // anim2.play();
-    // container.addChild(anim2);
-
-    // var anim3 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim3']));
-    // anim3.x = -450;
-    // anim3.y = 350;
-    // anim3.anchor.set(0.5);
-    // anim3.animationSpeed = animSpeed;
-    // anim3.play();
-    // container.addChild(anim3);
-
-    // var anim4 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim4']));
-    // anim4.x = -320;
-    // anim4.y = 220;
-    // anim4.anchor.set(0.5);
-    // anim4.animationSpeed = animSpeed;
-    // anim4.play();
-    // container.addChild(anim4);
-
-    // var anim5 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim5']));
-    // anim5.x = -100;
-    // anim5.y = 160;
-    // anim5.anchor.set(0.5);
-    // anim5.animationSpeed = animSpeed;
-    // anim5.play();
-    // container.addChild(anim5);
-
-    // var anim6 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim6']));
-    // anim6.x = -950;
-    // anim6.y = 150;
-    // anim6.anchor.set(0.5);
-    // anim6.animationSpeed = animSpeed;
-    // anim6.play();
-    // container.addChild(anim6);
-
-
-    function getAnimTextureArr(target) {
-        var arr = [];
-        for (var key in target.textures) {
-            arr.push(target.textures[key]);
-        }
-        return arr;
-    }
 
     function addMapFront() {
         var rowCenter = {x: mapWidth/2*-1, y: -mapHeight/2*-1 };
@@ -172,26 +112,27 @@ loader.load(function(loader, resources) {
         map.anchor.set(0.5);
         map.x = -mapWidth/2;
         map.y = mapHeight/2;
-        map.scale.set(1.01, 1.01);
+        map.width +=1;
+        map.height +=1;
         container.addChild(map);
 
         var map2 = new PIXI.Sprite(resources['mapf1'].texture);
         map2.anchor.set(0.5);
         map2.x = rowCenter.x + mapWidth/2;
         map2.y = rowCenter.y + mapHeight/2;
-        map2.scale.set(1.01, 1.01);
+        map2.width +=1;
+        map2.height +=1;
         container.addChild(map2);
 
         var map3 = new PIXI.Sprite(resources['mapf3'].texture);
         map3.anchor.set(0.5);
         map3.x = rowCenter.x - mapWidth/2;
         map3.y = rowCenter.y - mapHeight/2;
-        map3.scale.set(1.01, 1.01);
+        map3.width +=1;
+        map3.height +=1;
         container.addChild(map3);
     }
-    function addMapEnd() {
-        // console.log('addmap: '+totalPage);
-        
+    function addMapEnd() {        
         page = totalPage+1;
         var pageMapContainer = new PIXI.Container();
         var pageCharacterContainer = new PIXI.Container();
@@ -201,15 +142,11 @@ loader.load(function(loader, resources) {
 
             var rowCenter = {x: mapWidth/2*i, y: -mapHeight/2*i };
             var pageCenter = {x: mapWidth/2*page*pageMapNum, y: -mapHeight/2*page*pageMapNum };
-            // console.log( 'map'+((i*3+(mapNum*3)*(page-1)+1)%39+1) );
 
             var m1 = ((page*pageMapNum*3) + (i*3)) +1;
             var m2 = ((page*pageMapNum*3) + (i*3+1)) +1;
             var m3 = ((page*pageMapNum*3) + (i*3+2)) +1;
 
-            // if( m1 > mapNum*3 ) m1 = (((page-1)*mapNum*3) + (i*3))%(mapNum*3-frontNum*3) +1 +frontNum*3;
-            // if( m2 > mapNum*3 ) m2 = (((page-1)*mapNum*3) + (i*3+1))%(mapNum*3-frontNum*3) +1 +frontNum*3;
-            // if( m3 > mapNum*3 ) m3 = (((page-1)*mapNum*3) + (i*3+2))%(mapNum*3-frontNum*3) +1 +frontNum*3;
             if( m1 > mapNum*3 ) m1 = Math.round((((page-mapNum/pageMapNum)*pageMapNum*3) + (i*3))%(mapNum*3-frontNum*3) +1 +frontNum*3);
             if( m2 > mapNum*3 ) m2 = Math.round((((page-mapNum/pageMapNum)*pageMapNum*3) + (i*3+1))%(mapNum*3-frontNum*3) +1 +frontNum*3);
             if( m3 > mapNum*3 ) m3 = Math.round((((page-mapNum/pageMapNum)*pageMapNum*3) + (i*3+2))%(mapNum*3-frontNum*3) +1 +frontNum*3);
@@ -218,28 +155,24 @@ loader.load(function(loader, resources) {
             map.anchor.set(0.5);
             map.x = pageCenter.x + rowCenter.x;
             map.y = pageCenter.y + rowCenter.y;
-            // map.alpha = 0.5;
-            // map.scale.set(1.01, 1.01);
-            // map.scale.set(0.99, 0.99);
-
+            map.width +=1;
+            map.height +=1;
             mapEndContainer.addChild(map);
 
             var map2 = new PIXI.Sprite(resources['map'+m1].texture);
             map2.anchor.set(0.5);
             map2.x = pageCenter.x + rowCenter.x + mapWidth/2;
             map2.y = pageCenter.y + rowCenter.y + mapHeight/2;
-            // map2.alpha = 0.5;
-            // map2.scale.set(1.01, 1.01);
-            // map2.scale.set(0.99, 0.99);
+            map2.width +=1;
+            map2.height +=1;
             mapEndContainer.addChild(map2);
 
             var map3 = new PIXI.Sprite(resources['map'+m3].texture);
             map3.anchor.set(0.5);
             map3.x = pageCenter.x + rowCenter.x - mapWidth/2;
             map3.y = pageCenter.y + rowCenter.y - mapHeight/2;
-            // map3.alpha = 0.5;
-            // map3.scale.set(1.01, 1.01);
-            // map3.scale.set(0.99, 0.99);
+            map3.width +=1;
+            map3.height +=1;
             mapEndContainer.addChild(map3);
 
         }
@@ -277,7 +210,7 @@ loader.load(function(loader, resources) {
                     totalCount = fakeData.length;
                     addMapEnd();
                 }
-                // console.log("addMap(測試): " +page);
+
             } else {
                 // 正式用
                 if( response.code == "0000" ) {
@@ -287,13 +220,11 @@ loader.load(function(loader, resources) {
                         totalCount = response.data.totalcount;
                         addMapEnd();
                     }
-                    // console.log("addMap(正式): " +page);
                 } else {
                     alert(response.message);
-                }              
+                } 
             }
             if( characterData.length == 0 || characterData == undefined) {
-                // console.log("no data");
                 if( completeFn !== undefined ) completeFn();
                 return;
             }
@@ -306,20 +237,16 @@ loader.load(function(loader, resources) {
 
 
         function updatePixi(page) {
-            // console.log(page);
-            // console.log('addmap: ' +page);
-
             var pageMapContainer = new PIXI.Container();
             var pageCharacterContainer = new PIXI.Container();
             var pageTextContainer = new PIXI.Container();
             var pageAnimContainer = new PIXI.Container();
 
-            console.log("---------------");
+            // console.log("---------------");
             for( var i=0; i<pageMapNum; i++ ) {
 
                 var rowCenter = {x: mapWidth/2*i, y: -mapHeight/2*i };
                 var pageCenter = {x: mapWidth/2*page*pageMapNum, y: -mapHeight/2*page*pageMapNum };
-                // console.log( 'map'+((i*3+(mapNum*3)*(page-1)+1)%39+1) );
 
                 var m1 = ((page*pageMapNum*3) + (i*3)) +1;
                 var m2 = ((page*pageMapNum*3) + (i*3+1)) +1;
@@ -328,8 +255,7 @@ loader.load(function(loader, resources) {
                 if( m1 > mapNum*3 ) m1 = Math.round((((page-mapNum/pageMapNum)*pageMapNum*3) + (i*3))%(mapNum*3-frontNum*3) +1 +frontNum*3);
                 if( m2 > mapNum*3 ) m2 = Math.round((((page-mapNum/pageMapNum)*pageMapNum*3) + (i*3+1))%(mapNum*3-frontNum*3) +1 +frontNum*3);
                 if( m3 > mapNum*3 ) m3 = Math.round((((page-mapNum/pageMapNum)*pageMapNum*3) + (i*3+2))%(mapNum*3-frontNum*3) +1 +frontNum*3);
-                console.log(m1, m2, m3);
-
+                // console.log(m1, m2, m3);
 
                 var map = new PIXI.Sprite(resources['map'+m2].texture);
                 map.anchor.set(0.5);
@@ -337,9 +263,6 @@ loader.load(function(loader, resources) {
                 map.y = pageCenter.y + rowCenter.y;
                 map.width +=1;
                 map.height +=1;
-                // map.scale.set(1.01, 1.01);
-                // map.scale.set(0.99, 0.99);
-
                 pageMapContainer.addChild(map);
 
                 var map2 = new PIXI.Sprite(resources['map'+m1].texture);
@@ -348,8 +271,6 @@ loader.load(function(loader, resources) {
                 map2.y = pageCenter.y + rowCenter.y + mapHeight/2;
                 map2.width +=1;
                 map2.height +=1;
-                // map2.scale.set(1.01, 1.01);
-                // map2.scale.set(0.99, 0.99);
                 pageMapContainer.addChild(map2);
 
                 var map3 = new PIXI.Sprite(resources['map'+m3].texture);
@@ -358,252 +279,246 @@ loader.load(function(loader, resources) {
                 map3.y = pageCenter.y + rowCenter.y - mapHeight/2;
                 map3.width +=1;
                 map3.height +=1;
-                // map3.scale.set(1.01, 1.01);
-                // map3.scale.set(0.99, 0.99);
                 pageMapContainer.addChild(map3);
 
-                if( m2 == 8 ) {
-                    var anim1 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim1']));
-                    anim1.x = map.x + 100;
-                    anim1.y = map.y + 100;
-                    anim1.anchor.set(0.5);
-                    anim1.animationSpeed = animSpeed;
-                    anim1.play();
-                    pageAnimContainer.addChild(anim1);
+                if( ww > 414 ) {
+                    if( m2 == 8 ) {
+                        var anim1 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim1']));
+                        anim1.x = map.x + 100;
+                        anim1.y = map.y + 100;
+                        anim1.anchor.set(0.5);
+                        anim1.animationSpeed = animSpeed;
+                        anim1.play();
+                        pageAnimContainer.addChild(anim1);
 
-                    var anim4 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim4']));
-                    anim4.x = map.x -200;
-                    anim4.y = map.y - 200;
-                    anim4.anchor.set(0.5);
-                    anim4.animationSpeed = animSpeed;
-                    anim4.play();
-                    pageAnimContainer.addChild(anim4);
+                        var anim4 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim4']));
+                        anim4.x = map.x -200;
+                        anim4.y = map.y - 200;
+                        anim4.anchor.set(0.5);
+                        anim4.animationSpeed = animSpeed;
+                        anim4.play();
+                        pageAnimContainer.addChild(anim4);
 
-                    var anim6 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim6']));
-                    anim6.x = map.x + 200;
-                    anim6.y = map.y - 500;
-                    anim6.anchor.set(0.5);
-                    anim6.animationSpeed = animSpeed;
-                    anim6.play();
-                    pageAnimContainer.addChild(anim6);
+                        var anim6 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim6']));
+                        anim6.x = map.x + 200;
+                        anim6.y = map.y - 500;
+                        anim6.anchor.set(0.5);
+                        anim6.animationSpeed = animSpeed;
+                        anim6.play();
+                        pageAnimContainer.addChild(anim6);
 
+                    }
+
+                    if( m2 == 11 ) {
+                        var anim1 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim1']));
+                        anim1.x = map.x;
+                        anim1.y = map.y - 350;
+                        anim1.anchor.set(0.5);
+                        anim1.animationSpeed = animSpeed;
+                        anim1.play();
+                        pageAnimContainer.addChild(anim1);
+
+                        var anim4 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim4']));
+                        anim4.x = map.x -200;
+                        anim4.y = map.y + 250;
+                        anim4.anchor.set(0.5);
+                        anim4.animationSpeed = animSpeed;
+                        anim4.play();
+                        pageAnimContainer.addChild(anim4);
+
+                        var anim6 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim6']));
+                        anim6.x = map.x + 700;
+                        anim6.y = map.y - 200;
+                        anim6.anchor.set(0.5);
+                        anim6.animationSpeed = animSpeed;
+                        anim6.play();
+                        pageAnimContainer.addChild(anim6);
+
+                    }
+
+                    if( m2 == 14 ) {
+                        var anim2 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim2']));
+                        anim2.x = map.x;
+                        anim2.y = map.y - 350;
+                        anim2.anchor.set(0.5);
+                        anim2.animationSpeed = animSpeed;
+                        anim2.play();
+                        pageAnimContainer.addChild(anim2);
+
+                        var anim3 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim3']));
+                        anim3.x = map.x - 300;
+                        anim3.y = map.y - 200;
+                        anim3.anchor.set(0.5);
+                        anim3.animationSpeed = animSpeed;
+                        anim3.play();
+                        pageAnimContainer.addChild(anim3);
+
+                        var anim4 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim4']));
+                        anim4.x = map.x + 300;
+                        anim4.y = map.y + 100;
+                        anim4.anchor.set(0.5);
+                        anim4.animationSpeed = animSpeed;
+                        anim4.play();
+                        pageAnimContainer.addChild(anim4);
+
+                    }
+
+                    if( m2 == 17 ) {
+                        var anim1 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim1']));
+                        anim1.x = map.x - 350;
+                        anim1.y = map.y - 350;
+                        anim1.anchor.set(0.5);
+                        anim1.animationSpeed = animSpeed;
+                        anim1.play();
+                        pageAnimContainer.addChild(anim1);
+
+                        var anim2 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim2']));
+                        anim2.x = map.x - 150;
+                        anim2.y = map.y - 550;
+                        anim2.anchor.set(0.5);
+                        anim2.animationSpeed = animSpeed;
+                        anim2.play();
+                        pageAnimContainer.addChild(anim2);
+
+                        var anim4 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim4']));
+                        anim4.x = map.x + 550;
+                        anim4.y = map.y + 100;
+                        anim4.anchor.set(0.5);
+                        anim4.animationSpeed = animSpeed;
+                        anim4.play();
+                        pageAnimContainer.addChild(anim4);
+                    }
+
+                    if( m2 == 20 ) {
+                        var anim1 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim1']));
+                        anim1.x = map.x - 400;
+                        anim1.y = map.y - 300;
+                        anim1.anchor.set(0.5);
+                        anim1.animationSpeed = animSpeed;
+                        anim1.play();
+                        pageAnimContainer.addChild(anim1);
+                    }
+
+                    if( m2 == 23 ) {
+                        var anim3 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim3']));
+                        anim3.x = map.x + 320;
+                        anim3.y = map.y + 220;
+                        anim3.anchor.set(0.5);
+                        anim3.animationSpeed = animSpeed;
+                        anim3.play();
+                        pageAnimContainer.addChild(anim3);
+                    }
+
+                    if( m2 == 26 ) {
+                        var anim1 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim1']));
+                        anim1.x = map.x + 250;
+                        anim1.y = map.y + 150;
+                        anim1.anchor.set(0.5);
+                        anim1.animationSpeed = animSpeed;
+                        anim1.play();
+                        pageAnimContainer.addChild(anim1);
+
+                        var anim2 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim2']));
+                        anim2.x = map.x + 50;
+                        anim2.y = map.y + 250;
+                        anim2.anchor.set(0.5);
+                        anim2.animationSpeed = animSpeed;
+                        anim2.play();
+                        pageAnimContainer.addChild(anim2);
+
+                        var anim4 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim4']));
+                        anim4.x = map.x - 700;
+                        anim4.y = map.y - 50;
+                        anim4.anchor.set(0.5);
+                        anim4.animationSpeed = animSpeed;
+                        anim4.play();
+                        pageAnimContainer.addChild(anim4);
+                    }
+
+                    if( m2 == 29 ) {
+                        var anim1 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim1']));
+                        anim1.x = map.x + 250;
+                        anim1.y = map.y + 50;
+                        anim1.anchor.set(0.5);
+                        anim1.animationSpeed = animSpeed;
+                        anim1.play();
+                        pageAnimContainer.addChild(anim1);
+
+                        var anim2 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim2']));
+                        anim2.x = map.x - 730;
+                        anim2.y = map.y - 80;
+                        anim2.anchor.set(0.5);
+                        anim2.animationSpeed = animSpeed;
+                        anim2.play();
+                        pageAnimContainer.addChild(anim2);
+
+                        var anim4 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim4']));
+                        anim4.x = map.x + 50;
+                        anim4.y = map.y + 150;
+                        anim4.anchor.set(0.5);
+                        anim4.animationSpeed = animSpeed;
+                        anim4.play();
+                        pageAnimContainer.addChild(anim4);
+                    }
+
+                    if( m2 == 32 ) {
+                        var anim3 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim3']));
+                        anim3.x = map.x;
+                        anim3.y = map.y - 420;
+                        anim3.anchor.set(0.5);
+                        anim3.animationSpeed = animSpeed;
+                        anim3.play();
+                        pageAnimContainer.addChild(anim3);
+                    }
+
+                    if( m2 == 35 ) {
+                        var anim1 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim1']));
+                        anim1.x = map.x + 250;
+                        anim1.y = map.y;
+                        anim1.anchor.set(0.5);
+                        anim1.animationSpeed = animSpeed;
+                        anim1.play();
+                        pageAnimContainer.addChild(anim1);
+
+                        var anim2 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim2']));
+                        anim2.x = map.x - 630;
+                        anim2.y = map.y - 80;
+                        anim2.anchor.set(0.5);
+                        anim2.animationSpeed = animSpeed;
+                        anim2.play();
+                        pageAnimContainer.addChild(anim2);
+                    }
+
+                    if( m2 == 38 ) {
+                        var anim1 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim1']));
+                        anim1.x = map.x - 150;
+                        anim1.y = map.y - 350;
+                        anim1.anchor.set(0.5);
+                        anim1.animationSpeed = animSpeed;
+                        anim1.play();
+                        pageAnimContainer.addChild(anim1);
+
+                        var anim2 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim2']));
+                        anim2.x = map.x - 250;
+                        anim2.y = map.y - 200;
+                        anim2.anchor.set(0.5);
+                        anim2.animationSpeed = animSpeed;
+                        anim2.play();
+                        pageAnimContainer.addChild(anim2);
+
+                        var anim4 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim4']));
+                        anim4.x = map.x - 550;
+                        anim4.y = map.y - 150;
+                        anim4.anchor.set(0.5);
+                        anim4.animationSpeed = animSpeed;
+                        anim4.play();
+                        pageAnimContainer.addChild(anim4);
+                    }
                 }
 
-                if( m2 == 11 ) {
-                    var anim1 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim1']));
-                    anim1.x = map.x;
-                    anim1.y = map.y - 350;
-                    anim1.anchor.set(0.5);
-                    anim1.animationSpeed = animSpeed;
-                    anim1.play();
-                    pageAnimContainer.addChild(anim1);
-
-                    var anim4 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim4']));
-                    anim4.x = map.x -200;
-                    anim4.y = map.y + 250;
-                    anim4.anchor.set(0.5);
-                    anim4.animationSpeed = animSpeed;
-                    anim4.play();
-                    pageAnimContainer.addChild(anim4);
-
-                    var anim6 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim6']));
-                    anim6.x = map.x + 700;
-                    anim6.y = map.y - 200;
-                    anim6.anchor.set(0.5);
-                    anim6.animationSpeed = animSpeed;
-                    anim6.play();
-                    pageAnimContainer.addChild(anim6);
-
-                }
-
-                if( m2 == 14 ) {
-                    var anim2 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim2']));
-                    anim2.x = map.x;
-                    anim2.y = map.y - 350;
-                    anim2.anchor.set(0.5);
-                    anim2.animationSpeed = animSpeed;
-                    anim2.play();
-                    pageAnimContainer.addChild(anim2);
-
-                    var anim3 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim3']));
-                    anim3.x = map.x - 300;
-                    anim3.y = map.y - 200;
-                    anim3.anchor.set(0.5);
-                    anim3.animationSpeed = animSpeed;
-                    anim3.play();
-                    pageAnimContainer.addChild(anim3);
-
-                    var anim4 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim4']));
-                    anim4.x = map.x + 300;
-                    anim4.y = map.y + 100;
-                    anim4.anchor.set(0.5);
-                    anim4.animationSpeed = animSpeed;
-                    anim4.play();
-                    pageAnimContainer.addChild(anim4);
-
-                }
-
-                if( m2 == 17 ) {
-                    var anim1 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim1']));
-                    anim1.x = map.x - 350;
-                    anim1.y = map.y - 350;
-                    anim1.anchor.set(0.5);
-                    anim1.animationSpeed = animSpeed;
-                    anim1.play();
-                    pageAnimContainer.addChild(anim1);
-
-                    var anim2 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim2']));
-                    anim2.x = map.x - 150;
-                    anim2.y = map.y - 550;
-                    anim2.anchor.set(0.5);
-                    anim2.animationSpeed = animSpeed;
-                    anim2.play();
-                    pageAnimContainer.addChild(anim2);
-
-                    var anim4 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim4']));
-                    anim4.x = map.x + 550;
-                    anim4.y = map.y + 100;
-                    anim4.anchor.set(0.5);
-                    anim4.animationSpeed = animSpeed;
-                    anim4.play();
-                    pageAnimContainer.addChild(anim4);
-                }
-
-                if( m2 == 20 ) {
-                    var anim1 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim1']));
-                    anim1.x = map.x - 400;
-                    anim1.y = map.y - 300;
-                    anim1.anchor.set(0.5);
-                    anim1.animationSpeed = animSpeed;
-                    anim1.play();
-                    pageAnimContainer.addChild(anim1);
-                }
-
-                if( m2 == 23 ) {
-                    var anim3 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim3']));
-                    anim3.x = map.x + 320;
-                    anim3.y = map.y + 220;
-                    anim3.anchor.set(0.5);
-                    anim3.animationSpeed = animSpeed;
-                    anim3.play();
-                    pageAnimContainer.addChild(anim3);
-                }
-
-                if( m2 == 26 ) {
-                    var anim1 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim1']));
-                    anim1.x = map.x + 250;
-                    anim1.y = map.y + 150;
-                    anim1.anchor.set(0.5);
-                    anim1.animationSpeed = animSpeed;
-                    anim1.play();
-                    pageAnimContainer.addChild(anim1);
-
-                    var anim2 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim2']));
-                    anim2.x = map.x + 50;
-                    anim2.y = map.y + 250;
-                    anim2.anchor.set(0.5);
-                    anim2.animationSpeed = animSpeed;
-                    anim2.play();
-                    pageAnimContainer.addChild(anim2);
-
-                    var anim4 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim4']));
-                    anim4.x = map.x - 700;
-                    anim4.y = map.y - 50;
-                    anim4.anchor.set(0.5);
-                    anim4.animationSpeed = animSpeed;
-                    anim4.play();
-                    pageAnimContainer.addChild(anim4);
-                }
-
-                if( m2 == 29 ) {
-                    var anim1 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim1']));
-                    anim1.x = map.x + 250;
-                    anim1.y = map.y + 50;
-                    anim1.anchor.set(0.5);
-                    anim1.animationSpeed = animSpeed;
-                    anim1.play();
-                    pageAnimContainer.addChild(anim1);
-
-                    var anim2 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim2']));
-                    anim2.x = map.x - 730;
-                    anim2.y = map.y - 80;
-                    anim2.anchor.set(0.5);
-                    anim2.animationSpeed = animSpeed;
-                    anim2.play();
-                    pageAnimContainer.addChild(anim2);
-
-                    var anim4 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim4']));
-                    anim4.x = map.x + 50;
-                    anim4.y = map.y + 150;
-                    anim4.anchor.set(0.5);
-                    anim4.animationSpeed = animSpeed;
-                    anim4.play();
-                    pageAnimContainer.addChild(anim4);
-                }
-
-                if( m2 == 32 ) {
-                    var anim3 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim3']));
-                    anim3.x = map.x;
-                    anim3.y = map.y - 420;
-                    anim3.anchor.set(0.5);
-                    anim3.animationSpeed = animSpeed;
-                    anim3.play();
-                    pageAnimContainer.addChild(anim3);
-                }
-
-                if( m2 == 35 ) {
-                    var anim1 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim1']));
-                    anim1.x = map.x + 250;
-                    anim1.y = map.y;
-                    anim1.anchor.set(0.5);
-                    anim1.animationSpeed = animSpeed;
-                    anim1.play();
-                    pageAnimContainer.addChild(anim1);
-
-                    var anim2 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim2']));
-                    anim2.x = map.x - 630;
-                    anim2.y = map.y - 80;
-                    anim2.anchor.set(0.5);
-                    anim2.animationSpeed = animSpeed;
-                    anim2.play();
-                    pageAnimContainer.addChild(anim2);
-                }
-
-                if( m2 == 38 ) {
-                    var anim1 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim1']));
-                    anim1.x = map.x - 150;
-                    anim1.y = map.y - 350;
-                    anim1.anchor.set(0.5);
-                    anim1.animationSpeed = animSpeed;
-                    anim1.play();
-                    pageAnimContainer.addChild(anim1);
-
-                    var anim2 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim2']));
-                    anim2.x = map.x - 250;
-                    anim2.y = map.y - 200;
-                    anim2.anchor.set(0.5);
-                    anim2.animationSpeed = animSpeed;
-                    anim2.play();
-                    pageAnimContainer.addChild(anim2);
-
-                    var anim4 = new PIXI.extras.AnimatedSprite(getAnimTextureArr(resources['anim4']));
-                    anim4.x = map.x - 550;
-                    anim4.y = map.y - 150;
-                    anim4.anchor.set(0.5);
-                    anim4.animationSpeed = animSpeed;
-                    anim4.play();
-                    pageAnimContainer.addChild(anim4);
-                }
 
                 for( var j=0; j<characterNum; j++) {
-                    // console.log( ((page-1)*characterNum*3*mapNum) + (i*characterNum*3) + (j*3) + 1 );
-                    // console.log( ((page-1)*characterNum*3*mapNum) + (i*characterNum*3) + (j*3) + 2 );
-                    // console.log( ((page-1)*characterNum*3*mapNum) + (i*characterNum*3) + (j*3) + 3 );
-                    // console.log( (i*characterNum*3) + (j*3) + 1 );
-                    // console.log( (i*characterNum*3) + (j*3) + 2 );
-                    // console.log( (i*characterNum*3) + (j*3) + 3 );
                     var id = (i*characterNum*3) + (j*3);
-
                     var r = j * mapDistance/characterNum + (mapDistance/characterNum/2) - mapDistance/2;
                     var characterCenter = getPoint(angle, r);
                     characterCenter.x -= 20;
@@ -631,13 +546,7 @@ loader.load(function(loader, resources) {
                             }
 
                             newCharacter.scale.set(0.9, 0.9);
-                            // newCharacter.interactive = true;
-                            // newCharacter.buttonMode = true;
-                            // newCharacter.alpha = 0.2;
-                            // newCharacter.on('pointerdown', characterClick);
-                            newCharacter.data = {};
-                            newCharacter.data.guid = characterData[id+k].guid;
-                            newCharacter.data.memo = characterData[id+k].memo;
+                            newCharacter.data = {guid:characterData[id+k].guid, memo:characterData[id+k].memo};
                             pageCharacterContainer.addChild(newCharacter);
 
                             var text = new PIXI.Text(characterData[id+k].memo, style);
@@ -648,26 +557,17 @@ loader.load(function(loader, resources) {
                             text.data = {fixedPosition:{x:text.x ,y:text.y}, time:Math.floor(Math.random()*chatSpeed)};
                             pageTextContainer.addChild(text);
                         }
-
                     }
-
                 }
-
             }
 
             mapContainer.addChild(pageMapContainer);
             characterContainer.addChild(pageCharacterContainer);            
             characterContainer.addChild(pageAnimContainer);
             characterTextContainer.addChild(pageTextContainer);
-
-            // characterContainer.setChildIndex(pageTextContainer, characterContainer.children.length-1);
             activePages[page] = {content:[pageMapContainer, pageCharacterContainer, pageTextContainer, pageAnimContainer]}
-            
-            // activePages.push({page:page, content:[pageMapContainer, pageCharacterContainer]});
         }
-
     }
-
     
     // var textAnimateTarget = [];
     app.ticker.add(function(delta) {
@@ -676,11 +576,9 @@ loader.load(function(loader, resources) {
             if( activePages[key].content == undefined ) continue;
             for( var i=0; i<activePages[key].content[2].children.length; i++) {
                 var target = activePages[key].content[2].children[i];
-                // console.log( target.data.time);
                 if( target.data.time == textAnimateTimer ) {
                     TweenMax.fromTo(target, 0.5, {y:target.data.fixedPosition.y+30, alpha:0}, {y:target.data.fixedPosition.y, alpha:1, immediateRender:false} );
                     TweenMax.fromTo(target, 0.5, {y:target.data.fixedPosition.y, alpha:1}, {y:target.data.fixedPosition.y+30, alpha:0, delay:2, immediateRender:false} );
-
                 }
             }
         }
@@ -698,31 +596,20 @@ loader.load(function(loader, resources) {
 
         if( isMoveActive ) {
             if( totalCount == undefined ) return;
-            // console.log( moveDist );
-
-
             if( moveDirection == 1 ) {
-                mapPosition-=mapDistance/50; //60 30
+                mapPosition-=mapDistance/arrowMapSpeed; //60 30
             } else {
-                mapPosition+=mapDistance/50;
+                mapPosition+=mapDistance/arrowMapSpeed;
             }
             mapPosition = Math.max(Math.min(mapPosition, mapDistance/2), getCharacterMapPosition(totalCount)-200);
-
-            // mapPosition = Math.max( mapPosition, getCharacterMapPosition(totalCount) );
-
             updateCamera();
         }
-  
-
     });
-
-
     function characterClick(event) {
-        console.log(event.target.data.guid);
+
     }
     function removeMap(page) {
         if(page < 0 && page > totalPage) return;
-        console.log('removemap: '+page);
         for( var i=0; i<activePages[page].content[2].children.length; i++ ) {
             TweenMax.killTweensOf(activePages[page].content[2].children[i]);
         }
@@ -730,54 +617,36 @@ loader.load(function(loader, resources) {
             activePages[page].content[i].destroy({children: true});
         }
         delete activePages[page];
-        
     }
 
-    // console.log( activePages );
-    // console.log( activePages[1] );
 
-    function angleBetween(point1, point2) {
-        return Math.atan2( point2.x - point1.x, point2.y - point1.y );
-    }
-
-    function getPoint(theta, r) {
-        var x = (r *Math.sin(theta));
-        var y = (r *Math.cos(theta));
-        return {x:x, y:y};
-    }
-
-    $("#pixiCanvas").on('mousewheel', function(event) {
+    $("#mapCanvas").on('mousewheel', function(event) {
         if( totalCount == undefined ) return;
-        // console.log(event);
+
         if( event.deltaY > 0 ) {
-            mapPosition-=mapDistance/10; //60 30
+            mapPosition-=mapDistance/mapScrollSpeed;
         } else {
-            mapPosition+=mapDistance/10;
+            mapPosition+=mapDistance/mapScrollSpeed;
         }
         mapPosition = Math.max(Math.min(mapPosition, mapDistance/2), getCharacterMapPosition(totalCount)-200);
-
-        // mapPosition = Math.max( mapPosition, getCharacterMapPosition(totalCount) );
 
         updateCamera();
     });
 
     function updateCamera(parameter) {
         if( parameter == undefined ) parameter = {};
+        if( parameter.speed == undefined ) parameter.speed = 0.5;
         // parameter.targetID
         // parameter.completeFn
-
+        // parameter.speed
         if( parameter.targetID !== undefined ) {
             mapPosition = getCharacterMapPosition(parameter.targetID);
         }
-        
-        var a = Math.floor(-mapPosition+mapDistance/2);
-        var b = Math.floor(mapDistance*pageMapNum);
-        var c = Math.floor(a/b);
-        // console.log(a/b);
+        // var a = Math.floor(-mapPosition+mapDistance/2);
+        // var b = Math.floor(mapDistance*pageMapNum);
+        // var c = Math.floor(a/b);
 
-        var currentPage = Math.floor(a/b);
-        // console.log(currentPage)
-        // console.log(mapPosition);
+        var currentPage = Math.floor(Math.floor(-mapPosition+mapDistance/2)/Math.floor(mapDistance*pageMapNum));
         
         if( activePages[currentPage] == undefined ) {
             if( parameter !== undefined ) {
@@ -796,34 +665,35 @@ loader.load(function(loader, resources) {
         if( activePages[currentPage-1] == undefined ) {
             addMap(currentPage-1);
         }
-
         for (var key in activePages) {
             if( Number(key) !== currentPage && Number(key) !== currentPage+1 && Number(key) !== Math.max(currentPage-1, 0) ) {
                 removeMap(key);
             }
-
         }
-
         var p = getPoint(angle, mapPosition);
         if( parameter.noTween == true ) {
-            container.x = window.innerWidth/2 + p.x + cameraOffset.x;
-            container.y = window.innerHeight/2 + p.y + cameraOffset.y;
+
+            if( parameter.targetID !== undefined ) {
+                var p1 = getPoint(angle, mapPosition-1000);
+                container.x = window.innerWidth/2 + p1.x + cameraOffset.x;
+                container.y = window.innerHeight/2 + p1.y + cameraOffset.y;
+                var p2 = getPoint(angle, mapPosition);
+                TweenMax.to(container, 1.5, {x:window.innerWidth/2 + p2.x + cameraOffset.x, y:window.innerHeight/2 + p2.y +cameraOffset.y} );
+            } else {
+                container.x = window.innerWidth/2 + p.x + cameraOffset.x;
+                container.y = window.innerHeight/2 + p.y + cameraOffset.y;
+            }
         } else {
-            TweenMax.to(container, 0.5, {x:window.innerWidth/2 + p.x + cameraOffset.x, y:window.innerHeight/2 + p.y +cameraOffset.y} );
+            TweenMax.to(container, parameter.speed, {x:window.innerWidth/2 + p.x + cameraOffset.x, y:window.innerHeight/2 + p.y +cameraOffset.y} );
         }
 
-
-        if( uiContainer.children.length > 0 ) {
-            
+        if( uiContainer.children.length > 0 ) {            
             var uiPosition = -distanceBetween({x:uiContainer.children[2].x, y: uiContainer.children[2].y}, {x:0, y:0});
             var d = Math.abs(mapPosition - uiPosition);
-            // console.log(d);
             if( d > 1500 ) {
                 removeEditMemoUI();
             }
-
         }
-
     }
 
     $("#info .search .icon").on('click', function(event) {
@@ -838,27 +708,29 @@ loader.load(function(loader, resources) {
         })
         .always(function(response) {
             isAjaxing = false;
-
             if( response.data == undefined ) {
                 // 測試用
                 var guid = 100;
                 updateCamera({targetID: guid, noTween:true, completeFn:function(){
-                    // console.log("search complete");
                     addEditMemoUI(guid);
                 }})
             } else {
                 // 正式用
                 if( response.code == "0000" ) {
-                    updateCamera({targetID: response.data.data[0].guid, noTween:true, completeFn:function(){
-                        // console.log("search complete");
-                    }})
+                    if( response.data.data.lenth !== 0 ) {
+                        updateCamera({targetID: response.data.data[0].guid, noTween:true, completeFn:function(){
+                            addEditMemoUI(response.data.data[0].guid);
+                        }})
+                    } else {
+                        alert("查無資料");
+                    }
                 } else {
                     alert( response.message );
                 }
             }
         });
     });
-    
+
     function addEditMemoUI(guid) {
         if( uiContainer.children.length > 0 ) {
             removeEditMemoUI();
@@ -898,7 +770,6 @@ loader.load(function(loader, resources) {
         editBtn.x = text.x + text.width/2 + textPadding/2 + editBtn.width/2;
         editBtn.y = character.y -120;
         editBtn.anchor.set(0.5, 0.5);
-        editBtn.scale.set(1, 1);
         editBtn.interactive = true;
         editBtn.buttonMode = true;
         editBtn.on('pointerdown', editBtnClick);
@@ -906,7 +777,6 @@ loader.load(function(loader, resources) {
         fbshareBtn.x = editBtn.x + editBtn.width/2 + textPadding/2 + fbshareBtn.width/2;
         fbshareBtn.y = character.y -120;
         fbshareBtn.anchor.set(0.5, 0.5);
-        fbshareBtn.scale.set(1, 1);
         fbshareBtn.interactive = true;
         fbshareBtn.buttonMode = true;
         fbshareBtn.on('pointerdown', fbShareClick);
@@ -914,11 +784,9 @@ loader.load(function(loader, resources) {
         closeBtn.x = fbshareBtn.x + fbshareBtn.width/2 + textPadding/2 + closeBtn.width/2;
         closeBtn.y = character.y -120;
         closeBtn.anchor.set(0.5, 0.5);
-        closeBtn.scale.set(1, 1);
         closeBtn.interactive = true;
         closeBtn.buttonMode = true;
-        closeBtn.on('pointerdown', removeEditMemoUI);
-   
+        closeBtn.on('pointerdown', removeEditMemoUI);   
 
         var graphics = new PIXI.Graphics();
         var textBoxWidth = text.width + editBtn.width + closeBtn.width + fbshareBtn.width + textPadding + boxPaddingWidth;
@@ -963,16 +831,12 @@ loader.load(function(loader, resources) {
 
     function getCharacterMapPosition(id) {
         // id是玩家編號, 0是第一個
-        // console.log(id);
-        // id = id-1;
         var page = Math.floor(id/pageSize);
         var characterID = id%pageSize;
 
         // var lastCharacterNum = totalCount%pageSize; //殘數
         var rowNum = Math.floor(characterID/(characterNum*3));
-        // console.log(rowNum);
         var characterRowNum = Math.floor((characterID%(characterNum*3))/3);
-        // console.log( characterRowNum );
         var r = characterRowNum * mapDistance/characterNum + (mapDistance/characterNum/2) - mapDistance/2;
         var characterCenter = getPoint(angle, r);
         characterCenter.x -= 30;
@@ -982,12 +846,9 @@ loader.load(function(loader, resources) {
         var pageCenter = {x: mapWidth/2*page*pageMapNum, y: -mapHeight/2*page*pageMapNum };
 
         var lastCharacterCenter = {x: rowCenter.x + pageCenter.x + characterCenter.x, y: rowCenter.y + pageCenter.y + characterCenter.y};
-        // var lastCharacterCenter = {x: rowCenter.x + pageCenter.x, y: rowCenter.y + pageCenter.y};
-        // mapPosition = -(mapDistance*mapNum*(totalPage));
         var position = -distanceBetween(lastCharacterCenter, {x:0, y:0});
         if( id < (characterNum*3) /2 ) position *=-1;
         return position;
-        // updateCamera();
 
     }
 
@@ -995,7 +856,6 @@ loader.load(function(loader, resources) {
         // parameter.memo
         // parameter.userwear
         // parameter.guid
-        // console.log("drop");
         var page = Math.floor(parameter.guid/pageSize);
         var lastCharacterNum = totalCount%pageSize; //殘數
         var lastRowNum = Math.floor(lastCharacterNum/(characterNum*3));
@@ -1041,27 +901,20 @@ loader.load(function(loader, resources) {
 
         newCharacter.anchor.set(0.5, 1);
         newCharacter.scale.set(0.9, 0.9);
-        // newCharacter.interactive = true;
-        // newCharacter.buttonMode = true;
         newCharacter.on('pointerdown', characterClick);
-        newCharacter.data = {};
-        newCharacter.data.guid = parameter.guid;
-        newCharacter.data.memo = parameter.memo;
+        newCharacter.data = {guid:parameter.guid, memo:parameter.memo };
         registerContainer.addChild(newCharacter);
 
-        // console.log(parameter.memo);
         var text = new PIXI.Text(parameter.memo, style);
         text.x = newCharacter.x;
         text.y = newCharacter.y - 120;
         text.anchor.set(0.5, 0.5);
         text.alpha = 0;
-        text.data = {fixedPosition:{x:text.x ,y:text.y}, time:(textAnimateTimer+90)%chatSpeed};
+        text.data = {fixedPosition:{x:text.x ,y:text.y}, time:(textAnimateTimer+120)%chatSpeed};
         registerContainer.addChild(text);
 
-        TweenMax.from(newCharacter, 1, {y:"-=150", alpha:0, ease:Bounce.easeOut, delay:1});
+        TweenMax.from(newCharacter, 1, {y:"-=150", alpha:0, ease:Bounce.easeOut, delay:1.5});
         registerCharacter = {character: newCharacter, text: text};
-        // fakeData.push({memo:$("#form-memo").val(), guid: fakeData.length, userwear:parameter.userwear});
-        // totalCount+=1;
     }
 
     function fbShareClick() {
@@ -1122,12 +975,6 @@ loader.load(function(loader, resources) {
         });
     });
 
-
-    $(".lightbox .close").on('click', function(event) {
-        $(this).parents(".lightbox").removeClass("active");
-        isDraging = false;
-    });
-
     $("#registerSendBtn").on('click', function(event) {
         if( isAjaxing ) return;
         
@@ -1182,10 +1029,9 @@ loader.load(function(loader, resources) {
                 if( response.code == "0000" ) {
                     $("#form").removeClass("active");
                     $("#registerBtn").removeClass("btn--active");
-
-                    updateCamera({targetID: response.data.data.guid, noTween:true, completeFn:function(){
-                        dropUser({memo: response.data.data.memo, userwear: response.data.data.userwear, guid:response.data.data.guid});
-                    }}) 
+                    updateCamera({targetID: response.data.data[0].guid, noTween:true, completeFn:function(){
+                        dropUser({memo: response.data.data[0].memo, userwear: response.data.data[0].userwear, guid:response.data.data[0].guid});
+                    }})
                 } else {
                     if(response.code == "9998" ) {
                         $("#form").removeClass("active");
@@ -1201,18 +1047,14 @@ loader.load(function(loader, resources) {
         });        
     });
 
-
-
-
-    $(".arrow").on('touchstart mousedown', function(event) {
-        
+    // 箭頭移動地圖
+    $(".arrow").on('touchstart mousedown', function(event) {        
         isMoveActive = true;
         if( $(this).hasClass('left') ) {
             moveDirection = 0;
         } else {
             moveDirection = 1;
         }
-
     });
 
     $(".arrow").on('touchend mouseup mouseleave', function(event) {
@@ -1221,53 +1063,27 @@ loader.load(function(loader, resources) {
 
     $('.arrow').on('dragstart mousemove touchmove', function(event) { event.preventDefault(); });
 
-    $(".ruleBtn").on('click', function(event) {
-        event.preventDefault();
-        $("#rule").addClass("active");
-    });
 
-
-    var isDraging = false;
-    var dragMapPosition = 0;
-    var dragPosition = {x:0, y:0};
-
-    $("#pixiCanvas").on('mousedown touchstart', function(event) {
-        // console.log(event);
+    // 拖曳地圖
+    $("#mapCanvas").on('mousedown touchstart', function(event) {
         isDraging = true;
-        if( event.touches ) {
-            dragPosition = {x:event.touches[0].pageX, y:event.touches[0].pageY};
-        } else {
-            dragPosition = {x:event.pageX, y:event.pageY};
-        }
-        
+        event.touches ? dragPosition = {x:event.touches[0].pageX, y:event.touches[0].pageY} : dragPosition = {x:event.pageX, y:event.pageY};     
         dragMapPosition = mapPosition;
     });
 
-    $("#pixiCanvas").on('mouseup touchend', function(event) {
+    $("#mapCanvas").on('mouseup touchend', function(event) {
         isDraging = false;
     });
 
-    $("#pixiCanvas").on('mousemove touchmove', function(event) {
+    $("#mapCanvas").on('mousemove touchmove', function(event) {
         if( !isDraging ) return;
         var nowPosition;
-        if( event.touches ) {
-            nowPosition = {x:event.touches[0].pageX, y:event.touches[0].pageY};
-        } else {
-            nowPosition = {x:event.pageX, y:event.pageY};
-        }
-
         var value;
-        if( dragPosition.x > nowPosition.x ) {
-            value = -distanceBetween(dragPosition, nowPosition);
-        } else {
-            value = distanceBetween(dragPosition, nowPosition);
-        }
-        mapPosition = dragMapPosition + value;
-        mapPosition = Math.max(Math.min(mapPosition, mapDistance/2), getCharacterMapPosition(totalCount)-200);
-
+        event.touches ? nowPosition = {x:event.touches[0].pageX, y:event.touches[0].pageY} : nowPosition = {x:event.pageX, y:event.pageY};
+        dragPosition.x > nowPosition.x ? value = -distanceBetween(dragPosition, nowPosition) : value = distanceBetween(dragPosition, nowPosition);
+        mapPosition = Math.max(Math.min(dragMapPosition + value, mapDistance/2), getCharacterMapPosition(totalCount)-200);
         updateCamera({noTween:true});
     });
-
 
     resizeHandler();
     $(window).on('resize', resizeHandler);
@@ -1275,30 +1091,53 @@ loader.load(function(loader, resources) {
     function resizeHandler() {
         ww = window.innerWidth;
         wh = window.innerHeight;
-        if( ww < 1024 ) {
-            cameraOffset.y = 120;
-        } else {
-            cameraOffset.y = 50;
-        }
+        ww < 1024 ? cameraOffset.y = 120 : cameraOffset.y = 50;
         app.renderer.resize(ww, wh);
         updateCamera();
     }
 
-    setTimeout(loadComplete, 300);
-    // loadComplete();
+    setTimeout(loadComplete, 1000);
     function loadComplete() {
         $(".loading").removeClass("loading--active");
+        mapPosition -= 1000;
+        updateCamera({noTween:true});
+        mapPosition += 1000;
+        updateCamera({speed:2});
     }    
 });
 
+
 function distanceBetween(point1, point2) {
     return Math.sqrt(Math.pow(point2.x - point1.x, 2) + Math.pow(point2.y - point1.y, 2));
+}
+function angleBetween(point1, point2) {
+    return Math.atan2( point2.x - point1.x, point2.y - point1.y );
+}
+function getPoint(theta, r) {
+    var x = (r *Math.sin(theta));
+    var y = (r *Math.cos(theta));
+    return {x:x, y:y};
+}
+function getAnimTextureArr(target) {
+    var arr = [];
+    for (var key in target.textures) {
+        arr.push(target.textures[key]);
+    }
+    return arr;
 }
 
 function ready() {
     $("#registerBtn").on('click', function(event) {
         $("#form").addClass("active");
     });
+    $(".ruleBtn").on('click', function(event) {
+        $("#rule").addClass("active");
+    });
+    $(".lightbox .close").on('click', function(event) {
+        $(this).parents(".lightbox").removeClass("active");
+        isDraging = false;
+    });
+
 }
 
 ready();
