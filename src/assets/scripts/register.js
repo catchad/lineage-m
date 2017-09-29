@@ -16,6 +16,7 @@ var arrowMapSpeed = 50; // 箭頭移動地圖速度, 數字越小越快
 var mapDistance = Math.sqrt(Math.pow(mapWidth/2, 2) + Math.pow(mapHeight/2, 2));
 var angle = angleBetween({x:0, y:0}, {x:mapWidth/2, y:-mapHeight/2});
 var mapPosition = mapDistance/2;
+
 var totalPage;
 var totalCount;
 var registerCharacter;
@@ -629,7 +630,6 @@ loader.load(function(loader, resources) {
             mapPosition+=mapDistance/mapScrollSpeed;
         }
         mapPosition = Math.max(Math.min(mapPosition, mapDistance/2), getCharacterMapPosition(totalCount)-200);
-
         updateCamera();
     });
 
@@ -833,14 +833,13 @@ loader.load(function(loader, resources) {
         // id是玩家編號, 0是第一個
         var page = Math.floor(id/pageSize);
         var characterID = id%pageSize;
-
         // var lastCharacterNum = totalCount%pageSize; //殘數
         var rowNum = Math.floor(characterID/(characterNum*3));
         var characterRowNum = Math.floor((characterID%(characterNum*3))/3);
         var r = characterRowNum * mapDistance/characterNum + (mapDistance/characterNum/2) - mapDistance/2;
         var characterCenter = getPoint(angle, r);
-        characterCenter.x -= 30;
-        characterCenter.y -= 30;
+        characterCenter.x -= 20;
+        characterCenter.y -= 20;
 
         var rowCenter = {x: mapWidth/2*rowNum, y: -mapHeight/2*rowNum };
         var pageCenter = {x: mapWidth/2*page*pageMapNum, y: -mapHeight/2*page*pageMapNum };
@@ -865,8 +864,8 @@ loader.load(function(loader, resources) {
         var lastPosition = (lastCharacterNum%(characterNum*3))%3;
         var r = lastCharacterRowNum * mapDistance/characterNum + (mapDistance/characterNum/2) - mapDistance/2;
         var characterCenter = getPoint(angle, r);
-        characterCenter.x -= 30;
-        characterCenter.y -= 30;
+        characterCenter.x -= 20;
+        characterCenter.y -= 20;
         var rowCenter = {x: mapWidth/2*lastRowNum, y: -mapHeight/2*lastRowNum };
         var pageCenter = {x: mapWidth/2*page*pageMapNum, y: -mapHeight/2*page*pageMapNum };
 
@@ -876,8 +875,8 @@ loader.load(function(loader, resources) {
         // var newCharacter;
         var r = (lastCharacterRowNum) * mapDistance/characterNum + (mapDistance/characterNum/2) - mapDistance/2;
         var characterCenter = getPoint(angle, r);
-        characterCenter.x -= 30;
-        characterCenter.y -= 30;
+        characterCenter.x -= 20;
+        characterCenter.y -= 20;
 
         var newCharacter = new PIXI.Sprite(resources['character'+parameter.userwear].texture);
         newCharacter.anchor.set(0.5, 1);
