@@ -10,13 +10,13 @@ block content
 	input#APIKey(type="hidden", value="替換這裡")
 	// input#ma(type="hidden", value="替換這裡")
 	main
-		.debug
-			button(data-to="1") page1
-			button(data-to="2") page2
-			button(data-to="3") page3
-			button(data-to="4") page4
-			button(data-to="5") page5
-			button(data-to="6") page6
+		//- .debug
+		//- 	button(data-to="1") page1
+		//- 	button(data-to="2") page2
+		//- 	button(data-to="3") page3
+		//- 	button(data-to="4") page4
+		//- 	button(data-to="5") page5
+		//- 	button(data-to="6") page6
 		//- .canvas-test
 		section#title
 			img(src="assets/images/analysis/title.png", alt="")
@@ -78,7 +78,7 @@ block content
 		section#page3.page
 			.subtitle
 				p 請輸入您的角色暱稱
-			.name-container
+			.name-container.after-hidden
 				input.name-input(placeholder="暱稱")
 			.btn.btn-name-submit
 				.btn__container
@@ -124,7 +124,7 @@ block content
 				.quiz-title
 					p 一、你會注重強化哪一種能力值呢？
 				.hr
-				.quiz-option-list
+				.quiz-option-list.after-hidden
 					.quiz-option.option1(data-value="")
 						p A.力量
 					.quiz-option.option2(data-value="")

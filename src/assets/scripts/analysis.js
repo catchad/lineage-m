@@ -430,9 +430,13 @@ $(".btn-name-submit").on("click", function() {
 		console.log(charName);
 		toPage(4);
 	} else {
+		$(".name-container").removeClass('after-hidden');
 		$(".name-container").addClass('copyed');
 		setTimeout(function() {
 			$(".name-container").removeClass('copyed');
+			setTimeout(function() {
+				$(".name-container").addClass('after-hidden');
+			},500);
 		},800);
 	}
 })
@@ -575,9 +579,13 @@ $(".btn-quiz-submit").on("click", function() {
 			}, 300)
 		}
 	} else {
+		$(".quiz-option-list").removeClass('after-hidden');
 		$(".quiz-option-list").addClass('after-active');
 		setTimeout(function() {
 			$(".quiz-option-list").removeClass('after-active');
+			setTimeout(function() {
+				$(".quiz-option-list").addClass('after-hidden');
+			},500);
 		},800);
 	}
 })

@@ -1,9 +1,13 @@
 var clipboard = new Clipboard('.btn-copy');
 clipboard.on('success', function(e) {
     e.clearSelection();
+    $(".copy-complete").removeClass('hidden');
     $(".copy-complete").addClass('copyed');
     setTimeout(function() {
     	$(".copy-complete").removeClass('copyed');
+    	setTimeout(function() {
+    		$(".copy-complete").addClass('hidden');
+    	},500);
     },800);
 });
 

@@ -439,15 +439,16 @@ main {
         color: black;
         font-size: 1.2em;
         opacity: 0;
-        transition: 0.5s;
-        z-index: -1; }
+        transition: 0.5s; }
         main #page2 .invite-container .invite-link-container .copy-complete.copyed {
           opacity: 1;
           z-index: 0; }
+        main #page2 .invite-container .invite-link-container .copy-complete.hidden {
+          z-index: -1; }
       main #page2 .invite-container .invite-link-container .btn-copy {
         padding: 7px 10px;
         background-color: rgba(0, 0, 0, 0.7);
-        font-size: 0.5em;
+        font-size: 0.9em;
         cursor: pointer;
         transition: 0.2s; }
         main #page2 .invite-container .invite-link-container .btn-copy:hover {

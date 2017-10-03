@@ -339,12 +339,16 @@ main {
 				font-size: 1.2em;
 				opacity: 0;
 				transition: 0.5s;
-				z-index: -1;
 			}
 			&.copyed {
 				&::after {
 					opacity: 1; 
 					z-index: 0;
+				}
+			}
+			&.after-hidden {
+				&::after {
+					z-index: -1;
 				}
 			}
 			.name-input {
@@ -573,12 +577,16 @@ main {
 					font-size: 1.5em;
 					opacity: 0;
 					transition: 0.5s;
-					z-index: -1;
 				}
 				&.after-active {
 					&::after {
 						opacity: 1;
 						z-index: 0;
+					}
+				}
+				&.after-hidden {
+					&::after {
+						z-index: -1;
 					}
 				}
 				.quiz-option {
