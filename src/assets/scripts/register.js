@@ -851,6 +851,20 @@ loader.load(function(loader, resources) {
 
     }
 
+    // $(".search").on("click", function() {
+    //     // updateCamera({targetID: totalCount, noTween:true, completeFn:function(){
+    //     //     var fakeee = {memo:"喔喔喔", userwear:1, guid:totalCount+10};
+    //     //     dropUser(fakeee);
+    //     // }})
+    //     var id = prompt("id");
+    //     id = parseInt(id);
+    //     updateCamera({targetID: id, noTween:true, completeFn:function(){
+    //         dropUser({memo: $("#formMemo").val(), userwear: '7', guid:id});
+    //         console.log(totalCount);
+    //     }})
+        
+    // })
+
     function dropUser(parameter) {
         // parameter.memo
         // parameter.userwear
@@ -1126,6 +1140,7 @@ function getAnimTextureArr(target) {
 }
 
 function ready() {
+    $("#form").addClass("active");
     $("#registerBtn").on('click', function(event) {
         $("#form").addClass("active");
     });

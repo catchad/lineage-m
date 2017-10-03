@@ -458,20 +458,33 @@ $(".job-clicker").on("click", function() {
 
 var mc = new Hammer($("#page4 .choose-container")[0]);
 mc.on("swipeleft", function(ev) {
-	var nowJob = $(".job.selected").data("job");
-	console.log(nowJob);
-	var index = jobList.indexOf(nowJob);
-	if(index < jobList.length-1) {
-		jobScroll(index+1);
-	}
+	scrollTo("right");
 });
 mc.on("swiperight", function(ev) {
+	scrollTo("left");
+});
+
+$(".arrow-left").on("click", function() {
+	scrollTo("left");
+})
+$(".arrow-right").on("click", function() {
+	scrollTo("right");
+})
+
+function scrollTo(direction) {
 	var nowJob = $(".job.selected").data("job");
 	var index = jobList.indexOf(nowJob);
-	if(index > 0) {
-		jobScroll(index-1);
+	if(direction == "right") {
+		if(index < jobList.length-1) {
+			jobScroll(index+1);
+		}
+	} else if (direction == "left") {
+		if(index > 0) {
+			jobScroll(index-1);
+		}
 	}
-});
+}
+
 function jobScroll(index) {
 	for(var i=0;i<jobList.length;i++) {
 		$(".img-container,.clicker-container").removeClass("job"+i);
@@ -482,6 +495,14 @@ function jobScroll(index) {
 
 	$(".job-switch.selected").removeClass("selected");
 	$(".job-switch."+jobList[index]).addClass("selected");
+
+	$(".arrow.disable").removeClass("disable");
+	if(index == 0) {
+		$(".arrow-left").addClass("disable");
+	}
+	if (index == 3) {
+		$(".arrow-right").addClass("disable");
+	}
 }
 
 function jobIndexToName(jobIndex) {
@@ -554,7 +575,10 @@ $(".btn-quiz-submit").on("click", function() {
 			}, 300)
 		}
 	} else {
-		alert("請選擇選項！");
+		$(".quiz-option-list").addClass('after-active');
+		setTimeout(function() {
+			$(".quiz-option-list").removeClass('after-active');
+		},800);
 	}
 })
 

@@ -301,6 +301,9 @@ main {
     main #title img {
       width: 70%;
       max-width: 250px; }
+      @media screen and (max-width: 1000px) {
+        main #title img {
+          width: 50%; } }
   main .page {
     position: relative;
     width: 100%;
@@ -392,7 +395,8 @@ main {
         justify-content: flex-start;
         align-items: center; }
         main #page1 .choose-container .choose-frame .frame-container p {
-          font-size: 1em; }
+          font-size: 1em;
+          margin: 2px 0; }
           @media screen and (max-width: 1000px) {
             main #page1 .choose-container .choose-frame .frame-container p {
               font-size: 0.7em; } }
@@ -477,7 +481,7 @@ main {
   main #page2 .btn-char-submit {
     margin-bottom: 50px; }
   main #page3 .name-container {
-    margin: 150px 0;
+    margin: 70px 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -499,18 +503,19 @@ main {
       font-size: 1.2em;
       opacity: 0;
       transition: 0.5s;
-      pointer-events: none; }
+      z-index: -1; }
     main #page3 .name-container.copyed::after {
-      opacity: 1; }
+      opacity: 1;
+      z-index: 0; }
     main #page3 .name-container .name-input {
       height: 40px;
       padding: 10px 20px;
-      background: transparent;
       border: 0;
       outline: none;
       font-size: 1.1em;
       text-align: center;
-      color: #fff; }
+      color: #fff;
+      background-color: rgba(51, 51, 51, 0.7); }
   main #page3 .btn-name-submit {
     margin-bottom: 50px; }
   main #page4 .choose-container {
@@ -615,6 +620,20 @@ main {
           display: block;
           width: 100%;
           padding-bottom: 127.68%; }
+    main #page4 .choose-container .arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      opacity: 0.7;
+      z-index: 3;
+      width: 30px; }
+      main #page4 .choose-container .arrow.disable {
+        opacity: 0.2; }
+    main #page4 .choose-container .arrow-left {
+      left: 5%;
+      transform: translateY(-50%) rotate(180deg); }
+    main #page4 .choose-container .arrow-right {
+      right: 5%; }
   main #page4 .mobile-job-switch-list {
     display: none;
     margin: 10px 0; }
@@ -651,10 +670,30 @@ main {
       padding-bottom: 20px; }
     main #page5 .quiz-container .quiz-option-list {
       padding: 50px 0;
-      width: 100%; }
+      width: 100%;
+      position: relative; }
       @media screen and (max-width: 1000px) {
         main #page5 .quiz-container .quiz-option-list {
           padding: 30px 0; } }
+      main #page5 .quiz-container .quiz-option-list::after {
+        content: "請選擇選項！";
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: rgba(255, 230, 197, 0.9);
+        color: black;
+        font-size: 1.5em;
+        opacity: 0;
+        transition: 0.5s;
+        z-index: -1; }
+      main #page5 .quiz-container .quiz-option-list.after-active::after {
+        opacity: 1;
+        z-index: 0; }
       main #page5 .quiz-container .quiz-option-list .quiz-option {
         width: 100%;
         font-size: 1.5em;
@@ -689,8 +728,10 @@ main {
           background-color: #ffe6c5; }
   main #page5 .btn-quiz-submit {
     margin-bottom: 50px; }
+  main #page6 .subtitle {
+    margin-bottom: 20px; }
   main #page6 .final-img {
-    margin: 10px 0 20px 0;
+    margin: 0 0 20px 0;
     width: 90%;
     max-width: 800px;
     position: relative; }

@@ -44,12 +44,15 @@ block content
 			.choose-container
 				.choose-frame.old(data-stat="old")
 					.frame-container
-						p 資深玩家
-						p 擁有天堂月/免服帳號，登入看角色戰力
+						p 資深玩家實際戰力
+						p 想知道自己角色的戰力贏過多少人嗎?
+						p 登入beanfun!，立即觀看你的「角色實際戰力值」
 				.choose-frame.new(data-stat="new")
 					.frame-container
-						p 天堂新血
-						p 接受測驗了解自身潛力
+						p 天堂新血模擬戰力
+						p 沒有天堂角色也不用擔心，
+						p 立即接受測驗觀看「角色模擬戰力」
+
 			
 			
 		section#page2.page
@@ -73,11 +76,10 @@ block content
 					p 確認
 			
 		section#page3.page
-			
+			.subtitle
+				p 請輸入您的角色暱稱
 			.name-container
-				input.name-input(placeholder="請輸入您的角色暱稱")
-				.hr
-
+				input.name-input(placeholder="暱稱")
 			.btn.btn-name-submit
 				.btn__container
 					p 確認
@@ -105,11 +107,13 @@ block content
 					.job-clicker(data-job="knight")
 					.job-clicker(data-job="elf")
 					.job-clicker(data-job="wizard")
-			.mobile-job-switch-list
-				.job-switch.king.selected
-				.job-switch.knight
-				.job-switch.elf
-				.job-switch.wizard
+				img.arrow.arrow-left.disable(src="assets/images/analysis/arrow.svg", alt="")
+				img.arrow.arrow-right(src="assets/images/analysis/arrow.svg", alt="")
+			//- .mobile-job-switch-list
+			//- 	.job-switch.king.selected
+			//- 	.job-switch.knight
+			//- 	.job-switch.elf
+			//- 	.job-switch.wizard
 			.btn.btn-job-submit
 				.btn__container
 					p 進入測驗

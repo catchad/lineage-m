@@ -35,7 +35,7 @@ block content
 			
 		section#page2.page
 			.subtitle
-				p 完成登入，恭喜獲得一張抽獎券
+				p 每日登入完成，恭喜獲得一張抽獎券
 			.ticket-container
 				img.ticket-img(src="assets/images/treasure/ticket.png", alt="")
 				.ticket-amount-container
@@ -50,7 +50,7 @@ block content
 			.invite-container
 				p 我的邀請連結
 				.invite-link-container
-					p.invite-link https://goo.gl/G8VDFv
+					input.invite-link(type="text",readonly=true,value="https://goo.gl/G8VDFv") 
 					p.copy-complete 已複製至剪貼簿！
 					.btn-copy(data-clipboard-target=".invite-link") 複製
 				p 邀請好友來參加活動，即可累積更多中獎機會
