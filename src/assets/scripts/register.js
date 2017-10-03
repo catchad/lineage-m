@@ -931,7 +931,7 @@ loader.load(function(loader, resources) {
     }
 
     function fbShareClick() {
-        console.log("fbshare");
+        window.open("http://www.facebook.com/sharer/sharer.php?u=https://event.beanfun.com/LineageM/E20170921/register.aspx","_blank");
     }
 
     function editBtnClick() {
@@ -1002,11 +1002,25 @@ loader.load(function(loader, resources) {
             memo: $("#formMemo").val(),
             pageCount: pageSize
         }
-
-        if(!/((?=(09))[0-9]{10})$/g.test(String(data.phone))){
-            alert("手機號碼格式不正確");
-            return;
+        if($("#formLocation").val() == "TW") {
+            if(!/((?=(09))[0-9]{10})$/g.test(String(data.phone))){
+                if(!/((?=(9))[0-9]{9})$/g.test(String(data.phone))){
+                    alert("手機號碼格式不正確");
+                    return;
+                }
+            }
+        } else if($("#formLocation").val() == "HK") {
+            if(!/((?=(5|8|9))[0-9]{8})$/g.test(String(data.phone))){
+                alert("手機號碼格式不正確");
+                return;
+            }
+        } else {
+            if(!/((?=(6))[0-9]{8})$/g.test(String(data.phone))){
+                alert("手機號碼格式不正確");
+                return;
+            }
         }
+        
 
         if (data.memo.length > 10) {
             alert("留言字數超過限制(10字)");
@@ -1147,6 +1161,12 @@ function ready() {
     $(".ruleBtn").on('click', function(event) {
         $("#rule").addClass("active");
     });
+    $(".ruleBtn").on('click', function(event) {
+        $("#rule").addClass("active");
+    });
+    $(".treasureBtn").on("click", function() {
+        $("#treasureInfo").addClass("active");
+    })
     $(".lightbox .close").on('click', function(event) {
         $(this).parents(".lightbox").removeClass("active");
         isDraging = false;

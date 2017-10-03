@@ -9,8 +9,14 @@ $(document).ready(function() {
 	});
 
 	// 螢幕旋轉
+	var orientation = window.orientation;
+	if( orientation == 90 || orientation == -90 ) {
+		$("#mobileLandscapeAlert").addClass('active');
+	} else {
+		$("#mobileLandscapeAlert").removeClass('active');
+	}
 	$(window).on("orientationchange", function(){
-	    var orientation = window.orientation;
+	    orientation = window.orientation;
 	    if( orientation == 90 || orientation == -90 ) {
 	    	$("#mobileLandscapeAlert").addClass('active');
 	    } else {

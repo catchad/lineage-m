@@ -34,7 +34,7 @@ block content
 						option(value="TW") +886
 						option(value="HK") +852
 						option(value="MAC") +853
-					input(id="searchPhone", type="text", placeholder="輸入電話號碼找自己", maxlength="10", onkeypress='return event.charCode >= 48 && event.charCode <= 57')
+					input(id="searchPhone", type="tel", placeholder="輸入電話號碼找自己", maxlength="10", onkeypress='return event.charCode >= 48 && event.charCode <= 57')
 					img(class="icon", src="assets/images/register/search.png", alt="search")
 				div(class="fb-like", data-href="https://www.facebook.com/Gamania.Lineage.M/", data-width="200", data-layout="button_count", data-action="like", data-size="small", data-show-faces="false", data-share="true")
 
@@ -90,6 +90,10 @@ block content
 
 					p 除本隱私權政策之規定內容外，本公司將不會出售或出租任何您的個人資料予第三方。
 					p 若相關法律之規定與本隱私權政策有所衝突，本公司將遵循該法律之規定。
+			
+			div(id="treasureInfo", class="lightbox")
+				img(class="close", src="assets/images/close.png", alt="close")
+				img.info-img(src="assets/images/register/treasure_info.png", alt="")
 
 			div(id="edit", class="lightbox")
 				img(class="close", src="assets/images/close.png", alt="close")
@@ -138,7 +142,7 @@ block content
 										p STEP4
 										p 完成獎勵
 									td
-										img(src="assets/images/register/treasure.png")
+										img.treasureBtn(src="assets/images/register/treasure.png")
 						div
 							input(id="ruleCheckbox", type="checkbox")
 							label(for="ruleCheckbox")

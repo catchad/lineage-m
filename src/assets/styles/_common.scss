@@ -42,6 +42,9 @@ html {
 	text-align: center;
 	opacity: 1;
 	visibility: visible;
+	width: 100vw;
+	height: 100vh;
+	z-index: 1100;
 
 	&.active {
 		display: flex;
@@ -51,10 +54,9 @@ html {
 	// }
 
 
-	.logo {
-		width: 400px;
-		max-width: 100%;
-		margin-bottom: 10px;
+	img {
+		height: 120px;
+		width: 192px;
 	}
 }
 // html.landscape.mobile {

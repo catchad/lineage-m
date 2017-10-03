@@ -76,13 +76,15 @@ html {
   background-color: #000000;
   text-align: center;
   opacity: 1;
-  visibility: visible; }
+  visibility: visible;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1100; }
   #mobileLandscapeAlert.active {
     display: flex; }
-  #mobileLandscapeAlert .logo {
-    width: 400px;
-    max-width: 100%;
-    margin-bottom: 10px; }
+  #mobileLandscapeAlert img {
+    height: 120px;
+    width: 192px; }
 
 header {
   display: flex;
@@ -327,6 +329,15 @@ main {
   #rule p {
     line-height: 1.5em; }
 
+#treasureInfo {
+  z-index: 1011;
+  display: flex;
+  justify-content: center;
+  align-items: center; }
+  #treasureInfo .info-img {
+    width: 60%;
+    max-width: 300px; }
+
 #form {
   display: flex;
   justify-content: center;
@@ -400,8 +411,7 @@ main {
     #form tr:nth-child(1) td:nth-child(2) select {
       width: 75px; }
     #form tr:nth-child(1) td:nth-child(2) input {
-      flex: 1;
-      width: 100%;
+      width: calc(100% - 75px);
       border-left: 1px solid #7c7c7c; }
   #form tr:nth-child(2) td:nth-child(2) > div {
     display: inline-block;
@@ -446,6 +456,8 @@ main {
     text-align: left; }
     #form ul li {
       margin: 10px 0; }
+  #form .treasureBtn {
+    cursor: pointer; }
 
 #info {
   position: fixed;

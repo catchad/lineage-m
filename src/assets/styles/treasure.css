@@ -76,13 +76,15 @@ html {
   background-color: #000000;
   text-align: center;
   opacity: 1;
-  visibility: visible; }
+  visibility: visible;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1100; }
   #mobileLandscapeAlert.active {
     display: flex; }
-  #mobileLandscapeAlert .logo {
-    width: 400px;
-    max-width: 100%;
-    margin-bottom: 10px; }
+  #mobileLandscapeAlert img {
+    height: 120px;
+    width: 192px; }
 
 header {
   display: flex;
@@ -423,6 +425,7 @@ main {
         font-size: 1.2em;
         color: #ffe6c5;
         position: relative;
+        text-align: center;
         background-color: transparent;
         border: none; }
       main #page2 .invite-container .invite-link-container .copy-complete {
