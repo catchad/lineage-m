@@ -20,7 +20,7 @@ $(".btn-login").on("click", function() {
 	if($(".tel-input").val().length && /^[09]{2}[0-9]{8}$/.test($(".tel-input").val())) {
 		toPage(2);
 	} else {
-		alert("手機號碼格式不正確");
+		alertText("手機號碼格式不正確");
 	}
 })
 

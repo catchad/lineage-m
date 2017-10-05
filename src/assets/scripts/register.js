@@ -10,7 +10,7 @@ var container = new PIXI.Container();
 var mapWidth = 2048; // 1280
 var mapHeight = 1024; // 640
 var animSpeed = 0.075; // 角色動畫速度
-var chatSpeed = 480; // 文字出現的速度 60=1秒
+var chatSpeed = 960; // 文字出現的速度 60=1秒 //原本480
 var mapScrollSpeed = 10; // 滾輪移動地圖速度, 數字越小越快
 var arrowMapSpeed = 50; // 箭頭移動地圖速度, 數字越小越快
 var mapDistance = Math.sqrt(Math.pow(mapWidth/2, 2) + Math.pow(mapHeight/2, 2));
@@ -29,10 +29,11 @@ var pageMapNum = 4; // 一頁4行地圖 (12張)
 (ww > 1920) && (pageMapNum = 5);
 (ww <= 1920 && ww > 1024) && (pageMapNum = 3);
 (ww <= 1024) && (pageMapNum = 2);
-var characterNum = 8; // 每張地圖上人物8行 (24個)
+var characterNum = 16; // 每張地圖上人物8行 (24個)
 var pageSize = pageMapNum*3*characterNum;
 var cameraOffset = {x:0, y:0};
 ww < 1024 ? cameraOffset.y = 120 : cameraOffset.y = 50;
+ww < 1024 ? cameraOffset.x = 60 : cameraOffset.x = 0;
 var isMoveActive = false;
 var moveDirection = 0;
 var editData = {};
@@ -217,12 +218,12 @@ loader.load(function(loader, resources) {
                 if( response.code == "0000" ) {
                     characterData = response.data.data;
                     if( totalPage == undefined ) {
-                        totalPage = response.data.totalpage;
-                        totalCount = response.data.totalcount;
+                        totalPage = response.data.totalpage || 0;
+                        totalCount = response.data.totalcount || 0;
                         addMapEnd();
                     }
                 } else {
-                    alert(response.message);
+                    alertText(response.message);
                 } 
             }
             if( characterData.length == 0 || characterData == undefined) {
@@ -530,6 +531,7 @@ loader.load(function(loader, resources) {
                             
                             var newCharacter = new PIXI.Sprite(resources['character'+characterData[id+k].userwear].texture);
                             newCharacter.anchor.set(0.5, 1);
+                            newCharacter.zIndex = id+k;
 
                             if( k == 0 ) {
                                 var p = getPoint(-angle + Math.PI, 80);
@@ -561,6 +563,13 @@ loader.load(function(loader, resources) {
                     }
                 }
             }
+
+            //角色z-index排序
+            pageCharacterContainer.children.sort(function(b, a) {
+                a.zIndex = a.zIndex || 0;
+                b.zIndex = b.zIndex || 0;
+                return a.zIndex - b.zIndex;
+            });
 
             mapContainer.addChild(pageMapContainer);
             characterContainer.addChild(pageCharacterContainer);            
@@ -670,21 +679,40 @@ loader.load(function(loader, resources) {
                 removeMap(key);
             }
         }
+
+        if(ww < 1024) {
+            container.scale.set(0.7,0.7);
+            if(activePages[key] && activePages[key].content) {
+                for( var i=0; i<activePages[key].content[2].children.length; i++) {
+                    var target = activePages[key].content[2].children[i];
+                    target.style.fontSize = "22px";
+                }
+            }
+        } else {
+            container.scale.set(1,1);
+            if(activePages[key] && activePages[key].content) {
+                for( var i=0; i<activePages[key].content[2].children.length; i++) {
+                    var target = activePages[key].content[2].children[i];
+                    target.style.fontSize = "16px";
+                }
+            }
+        }
+
         var p = getPoint(angle, mapPosition);
         if( parameter.noTween == true ) {
 
             if( parameter.targetID !== undefined ) {
                 var p1 = getPoint(angle, mapPosition-1000);
-                container.x = window.innerWidth/2 + p1.x + cameraOffset.x;
-                container.y = window.innerHeight/2 + p1.y + cameraOffset.y;
+                container.x = (window.innerWidth/2 + p1.x + cameraOffset.x)*container.scale.x;
+                container.y = (window.innerHeight/2 + p1.y + cameraOffset.y)*container.scale.x;
                 var p2 = getPoint(angle, mapPosition);
-                TweenMax.to(container, 1.5, {x:window.innerWidth/2 + p2.x + cameraOffset.x, y:window.innerHeight/2 + p2.y +cameraOffset.y} );
+                TweenMax.to(container, 1.5, {x:(window.innerWidth/2 + p2.x + cameraOffset.x)*container.scale.x, y:(window.innerHeight/2 + p2.y +cameraOffset.y)*container.scale.x} );
             } else {
-                container.x = window.innerWidth/2 + p.x + cameraOffset.x;
-                container.y = window.innerHeight/2 + p.y + cameraOffset.y;
+                container.x = (window.innerWidth/2 + p.x + cameraOffset.x)*container.scale.x;
+                container.y = (window.innerHeight/2 + p.y + cameraOffset.y)*container.scale.x;
             }
         } else {
-            TweenMax.to(container, parameter.speed, {x:window.innerWidth/2 + p.x + cameraOffset.x, y:window.innerHeight/2 + p.y +cameraOffset.y} );
+            TweenMax.to(container, parameter.speed, {x:(window.innerWidth/2 + p.x + cameraOffset.x)*container.scale.x, y:(window.innerHeight/2 + p.y +cameraOffset.y)*container.scale.x} );
         }
 
         if( uiContainer.children.length > 0 ) {            
@@ -717,15 +745,15 @@ loader.load(function(loader, resources) {
             } else {
                 // 正式用
                 if( response.code == "0000" ) {
-                    if( response.data.data.lenth !== 0 ) {
+                    if( response.data.data.length !== 0 ) {
                         updateCamera({targetID: response.data.data[0].guid, noTween:true, completeFn:function(){
                             addEditMemoUI(response.data.data[0].guid);
                         }})
                     } else {
-                        alert("查無資料");
+                        alertText("查無資料");
                     }
                 } else {
-                    alert( response.message );
+                    alertText( response.message );
                 }
             }
         });
@@ -935,7 +963,7 @@ loader.load(function(loader, resources) {
     }
 
     function editBtnClick() {
-        // alert("edit!");
+        // alertText("edit!");
         $("#edit").addClass('active');
         $("#editMemo").val(editData.memo);
     }
@@ -980,7 +1008,7 @@ loader.load(function(loader, resources) {
                     removeEditMemoUI();
                     isDraging = false;
                 } else {
-                    alert(response.message)
+                    alertText(response.message)
                 }
 
             }
@@ -992,7 +1020,7 @@ loader.load(function(loader, resources) {
         if( isAjaxing ) return;
         
         if( !$("#ruleCheckbox").prop("checked") ) {
-            alert("請同意隱私權政策");
+            alertText("請同意隱私權政策");
             return;
         }
 
@@ -1005,30 +1033,30 @@ loader.load(function(loader, resources) {
         if($("#formLocation").val() == "TW") {
             if(!/((?=(09))[0-9]{10})$/g.test(String(data.phone))){
                 if(!/((?=(9))[0-9]{9})$/g.test(String(data.phone))){
-                    alert("手機號碼格式不正確");
+                    alertText("手機號碼格式不正確");
                     return;
                 }
             }
         } else if($("#formLocation").val() == "HK") {
             if(!/((?=(5|8|9))[0-9]{8})$/g.test(String(data.phone))){
-                alert("手機號碼格式不正確");
+                alertText("手機號碼格式不正確");
                 return;
             }
         } else {
             if(!/((?=(6))[0-9]{8})$/g.test(String(data.phone))){
-                alert("手機號碼格式不正確");
+                alertText("手機號碼格式不正確");
                 return;
             }
         }
         
 
         if (data.memo.length > 10) {
-            alert("留言字數超過限制(10字)");
+            alertText("留言字數超過限制(10字)");
             return;
         }
 
         if (data.memo.length == 0) {
-            alert("請輸入留言");
+            alertText("請輸入留言");
             return;
         }
  
@@ -1061,13 +1089,17 @@ loader.load(function(loader, resources) {
                     }})
                 } else {
                     if(response.code == "9998" ) {
-                        $("#form").removeClass("active");
-                        $("#registerBtn").removeClass("btn--active");                 
-                        $("#searchPhone").val($("#formPhone").val());
-                        $("#searchLocation").val($("#formLocation").val());
-                        $("#info .search .icon").trigger('click');
+                        alertText("請勿輸入不雅詞句！");
+                        $("#formMemo").val("");
+                        // $("#form").removeClass("active");
+                        // $("#registerBtn").removeClass("btn--active");                 
+                        // $("#searchPhone").val($("#formPhone").val());
+                        // $("#searchLocation").val($("#formLocation").val());
+                        // $("#info .search .icon").trigger('click');
+                    } else {
+                        alertText(response.message);
                     }
-                    alert(response.message);
+                    
                 }
             }
             
@@ -1118,7 +1150,8 @@ loader.load(function(loader, resources) {
     function resizeHandler() {
         ww = window.innerWidth;
         wh = window.innerHeight;
-        ww < 1024 ? cameraOffset.y = 120 : cameraOffset.y = 50;
+        ww < 1024 ? cameraOffset.y = 300 : cameraOffset.y = 50;
+        ww < 1024 ? cameraOffset.x = 60 : cameraOffset.x = 0;
         app.renderer.resize(ww, wh);
         updateCamera();
     }
@@ -1171,7 +1204,6 @@ function ready() {
         $(this).parents(".lightbox").removeClass("active");
         isDraging = false;
     });
-
 }
 
 ready();

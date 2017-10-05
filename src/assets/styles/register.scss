@@ -243,6 +243,11 @@ main {
 				max-width: 200px;	
 			}
 		}
+		.fanpage {
+			p {
+				margin: 10px 0;
+			}
+		}
 	}
 
 	img.block {
@@ -298,7 +303,7 @@ main {
 	@media screen and (max-width: $breakpoint ) {
 	    top: 12px;
 	    left: 10px;
-	    width: 220px;
+	    width: 250px;
 	}
 	
 	.fb-like {

@@ -68,8 +68,8 @@ function getPlayerLog() {
 	// 		showPlayerLog();
 	// 	} else {
 	// 		//有錯誤，回到首頁
-	// 		alert(request.message);
-	// 		window.open(request.url);
+	// 		alertText(request.message);
+			// window.open(request.url);
 	// 	}		
 	// });
 	
@@ -111,9 +111,9 @@ function getPlayerLog() {
 			}
 			showPlayerLog();
 		} else {
-			//有錯誤，回到首頁
-			alert(request.message);
-			window.open(request.url);
+			//有錯誤
+			alertText(request.message);
+			// window.open(request.url);
 		}		
 	}, 300);
 }
@@ -331,8 +331,8 @@ $(".choose-frame").on("click", function(){
 				toPage(3);
 			} else {
 				//有錯誤，回到首頁
-				alert(request.message);
-				window.open(request.url);
+				alertText(request.message);
+				// window.open(request.url);
 			}
 		}, 300)
 	}
@@ -395,8 +395,8 @@ $(".btn-char-submit").on("click", function() {
 				toPage(6);
 			} else {
 				//有錯誤，回到首頁
-				alert(request.message);
-				window.open(request.url);
+				alertText(request.message);
+				// window.open(request.url);
 			}
 		}, 300)
 	}
@@ -430,14 +430,7 @@ $(".btn-name-submit").on("click", function() {
 		console.log(charName);
 		toPage(4);
 	} else {
-		$(".name-container").removeClass('after-hidden');
-		$(".name-container").addClass('copyed');
-		setTimeout(function() {
-			$(".name-container").removeClass('copyed');
-			setTimeout(function() {
-				$(".name-container").addClass('after-hidden');
-			},500);
-		},800);
+		alertText("請輸入暱稱！");
 	}
 })
 //-----------------------------------------------------------------------
@@ -573,20 +566,13 @@ $(".btn-quiz-submit").on("click", function() {
 					toPage(6);
 				} else {
 					//有錯誤，回到首頁
-					alert(request.message);
-					window.open(request.url);
+					alertText(request.message);
+					// window.open(request.url);
 				}
 			}, 300)
 		}
 	} else {
-		$(".quiz-option-list").removeClass('after-hidden');
-		$(".quiz-option-list").addClass('after-active');
-		setTimeout(function() {
-			$(".quiz-option-list").removeClass('after-active');
-			setTimeout(function() {
-				$(".quiz-option-list").addClass('after-hidden');
-			},500);
-		},800);
+		alertText("請選擇選項！");
 	}
 })
 
@@ -670,8 +656,8 @@ $(".btn-fb-share").on("click", function() {
 				window.open("http://www.facebook.com/sharer/sharer.php?u="+shareURL, "_blank");
 			} else {
 				//有錯誤，回到首頁
-				alert(request.message);
-				window.open(request.url);
+				alertText(request.message);
+				// window.open(request.url);
 			}
 		}, 300)
 	} else {

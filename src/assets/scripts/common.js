@@ -64,6 +64,15 @@ $(document).ready(function() {
 	} else {
 		$(".nav .audio").remove();
 	}
-
 });
+
+//alert
+function alertText(text,onComplete) {
+	$(".alert-text").html(text);
+	$("#alert").addClass('active');
+	setTimeout(function() {
+		$("#alert").removeClass('active');
+		if(onComplete) onComplete();
+	},700);
+}
 
