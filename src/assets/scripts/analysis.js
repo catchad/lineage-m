@@ -133,6 +133,7 @@ function showPlayerLog() {
 		$(".check-box.checked").removeClass("checked");
 		$(".row.selected .check-box").addClass("checked");
 	})
+	$(".char-loading").removeClass('active');
 }
 
 
@@ -606,20 +607,20 @@ function drawFinal(job,name,score,rank) {
 		canvas.height = img.height;
 		var ctx = canvas.getContext("2d");
 		ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-		ctx.font = "30pt Arial";
+		ctx.font = "45pt 微軟正黑體";
 		ctx.fillStyle = "white";
 		ctx.textAlign="start"; 
 		ctx.textBaseline = "alphabetic";
-		ctx.fillText(score.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"), 255, 465);
-		ctx.fillText(rank.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"), 255, 540);
+		ctx.fillText(score.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"), 370, 354);
+		ctx.fillText(rank.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"), 370, 450);
 		var rankWidth = ctx.measureText(rank.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")).width;
-		ctx.font = "20pt Arial";
-		ctx.fillText("名", 258+rankWidth, 540);
+		ctx.font = "30pt 微軟正黑體";
+		ctx.fillText("名", 370+rankWidth, 450);
 
-		ctx.font = "30pt Arial";
+		ctx.font = "45pt 微軟正黑體";
 		ctx.textAlign="center"; 
 		ctx.textBaseline = "middle";
-		ctx.fillText(name, 228, 372);
+		ctx.fillText(name, 303, 235);
 
 		imgDataURL = canvas.toDataURL("image/png");
 		$(".final-img .img-container").html("");

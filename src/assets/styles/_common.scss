@@ -1,7 +1,7 @@
 @charset "UTF-8";
 @import "compass/css3";
 @import "compass/reset";
-@import url(http://fonts.googleapis.com/earlyaccess/notosanstc.css);
+@import url(https://fonts.googleapis.com/earlyaccess/notosanstc.css);
 
 
 $breakpoint: 768px;
@@ -22,18 +22,16 @@ input {
 }
 
 #ieAlert {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	text-align: center;
 	background-color: #000000;
 	z-index: 2000;
-	> div {
-		position: absolute;
-		top: 50%;
-		left: 50%;
-	    margin-top: -77px;
-	    margin-left: -253px;
-	}
+	width: 100%;
+	height: 100%;
 	.logo {
-		width: 400px;
+		width: 80%;
 		margin-bottom: 20px;
 	}
 	p {
@@ -101,6 +99,16 @@ input {
 			display: flex;
 			justify-content: center;
 			align-items: center;
+			.close {
+				position: absolute;
+				top: 15px;
+				right: 15px;
+				width: 30px;
+				display: none;
+				&.active {
+					display: block;
+				}
+			}
 		}
 	}
 	

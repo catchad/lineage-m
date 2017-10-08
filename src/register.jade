@@ -5,6 +5,8 @@ block variables
 
 block head
 	link(rel="stylesheet", href="assets/styles/register.css")
+	script(src='https://www.google.com/recaptcha/api.js' async defer)
+
 
 block bodyStart
 	input(type="hidden", id="apikey", value="abcdefg")
@@ -158,8 +160,11 @@ block content
 						//- 	li 本公司將保留變更獎項內容及核准兌換與否之權利，詳細內容及異動說明均以本活動網頁最後一次公佈為準，請玩家密切注意網頁公布訊息
 						//- 	li 活動開始後，所有參與活動玩家將視同同意最後公告之內容
 
+						//- div(class="g-recaptcha" data-sitekey="6LdQYTMUAAAAAL5VE_0gV1X4dKduXDE-_hOqg9EO")
+						div(class="g-recaptcha", data-sitekey="6Lf6YTMUAAAAALUDnA_1Po_ZpR3lJBDzFKv0xfGe" data-callback="formSubmit", data-size="invisible")
+						
 						a(id="registerSendBtn", class="btn btn--block")
-							div(class="btn__container")
+							div(class="btn__container") 
 								p 立即登錄
 						a(class="ruleBtn") 注意事項
 

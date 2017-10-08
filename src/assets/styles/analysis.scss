@@ -231,6 +231,12 @@ main {
 		}
 	}
 	#page2 {
+		.char-loading {
+			background-color: rgba(#000,0.4);
+			background-image: url("../images/register/loading.gif");
+			background-repeat: no-repeat;
+			background-position: 50% 50%;
+		}
 		.char-table {
 			margin: 100px 0; 
 			display: flex;
@@ -501,9 +507,14 @@ main {
 				opacity: 0.7;
 				z-index: 3;
 				width: 30px;
+				display: none;
+				@media screen and (max-width: $mobile-breakpoint ) {
+					display: block;
+				}
 				&.disable {
 					opacity: 0.2;
 				}
+
 			}
 			.arrow-left {
 				left: 5%;
@@ -654,6 +665,9 @@ main {
 				left: 0;
 				width: 100%;
 				height: 100%;
+				background-image: url("../images/register/loading.gif");
+				background-repeat: no-repeat;
+				background-position: 50% 50%;
 				img {
 					width: 100%;
 					height: 100%;

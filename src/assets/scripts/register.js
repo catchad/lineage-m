@@ -39,9 +39,12 @@ var moveDirection = 0;
 var editData = {};
 var fakeData = [];
 var fakeText = ['賣+10屠龍刀 密我出價 鳥價不回', '賣帳號 99等女妖 密我', '老公我兵單來了 >"<', '幹好lag = =', '靠邀 超多人...', '我要下線了 881', '8口口口口D', '媽我上電視了 ^0^', '徵婆 會養 會疼 要真心 ^^', '收月卡70w 無限收 意密 ^^', '阿貴代練工作室 3天99等 有興趣請密', '血盟【天上人間】收人 歡迎新手 有老手會帶', '貴大師 死白目 搶怪開紅 見一次殺一次'];
-for( var i=0; i<500; i++ ) {
+for( var i=0; i<76727; i++ ) {
     fakeData.push({memo: fakeText[Math.floor(Math.random()*fakeText.length)], userwear:(Math.floor(Math.random()*16)+1), guid:i });
 }
+
+var dropUserID;
+var editingText;
 
 var loader = new PIXI.loaders.Loader();
 loader.add('mapf1', 'assets/images/register/map/f1.png');
@@ -527,7 +530,7 @@ loader.load(function(loader, resources) {
                     characterCenter.y -= 20;
 
                     for( var k=0; k<3; k++ ) {
-                        if( characterData[id+k] !== undefined ) {
+                        if( characterData[id+k] !== undefined) {
                             
                             var newCharacter = new PIXI.Sprite(resources['character'+characterData[id+k].userwear].texture);
                             newCharacter.anchor.set(0.5, 1);
@@ -553,19 +556,29 @@ loader.load(function(loader, resources) {
                             pageCharacterContainer.addChild(newCharacter);
 
                             var text = new PIXI.Text(characterData[id+k].memo, style);
+                            text.zIndex = id+k;
                             text.x = newCharacter.x;
                             text.y = newCharacter.y - 120;
                             text.anchor.set(0.5, 0.5);
                             text.alpha = 0;
                             text.data = {fixedPosition:{x:text.x ,y:text.y}, time:Math.floor(Math.random()*chatSpeed)};
                             pageTextContainer.addChild(text);
+                            // console.log(text.text);
                         }
                     }
                 }
             }
+            if(dropUserID) {
+                dropUserID = undefined;
+            }
 
             //角色z-index排序
             pageCharacterContainer.children.sort(function(b, a) {
+                a.zIndex = a.zIndex || 0;
+                b.zIndex = b.zIndex || 0;
+                return a.zIndex - b.zIndex;
+            });
+            pageTextContainer.children.sort(function(b, a) {
                 a.zIndex = a.zIndex || 0;
                 b.zIndex = b.zIndex || 0;
                 return a.zIndex - b.zIndex;
@@ -656,6 +669,7 @@ loader.load(function(loader, resources) {
         // var c = Math.floor(a/b);
 
         var currentPage = Math.floor(Math.floor(-mapPosition+mapDistance/2)/Math.floor(mapDistance*pageMapNum));
+        console.log(currentPage);
         
         if( activePages[currentPage] == undefined ) {
             if( parameter !== undefined ) {
@@ -732,7 +746,7 @@ loader.load(function(loader, resources) {
             type: 'POST',
             dataType: 'json',
             contentType: 'application/json; charset=UTF-8',
-            data: JSON.stringify({pagecount: 1, location:$("#searchLocation").val(), phone:$("#searchPhone").val()})
+            data: JSON.stringify({pagecount: pageSize, location:$("#searchLocation").val(), phone:$("#searchPhone").val()})
         })
         .always(function(response) {
             isAjaxing = false;
@@ -772,16 +786,19 @@ loader.load(function(loader, resources) {
                 if( activePages[key].content[1].children[i].data.guid == guid ) {
                     character = activePages[key].content[1].children[i];
                     characterText = activePages[key].content[2].children[i];
+                    console.log(activePages[key]);
                     break;
                 }
             }
         }
         characterText.visible = false;
-        editData.memo = characterText.text;
+        editData.memo = character.data.memo;
         editData.phone = $("#searchPhone").val();
         editData.location = $("#searchLocation").val();
         editData.textObject = characterText;
         editData.characterObject = character;
+        console.log(character.data.memo);
+        console.log(characterText.text);
 
         var textPadding = 10;
         var boxPaddingWidth = 30;
@@ -791,7 +808,15 @@ loader.load(function(loader, resources) {
         var closeBtn = new PIXI.Sprite(resources['close'].texture);
         var fbshareBtn = new PIXI.Sprite(resources['fbshare'].texture);
 
-        text.x = character.x - editBtn.width/2 - closeBtn.width/2 - fbshareBtn.width/2 - textPadding/2 - 3;
+
+        fbshareBtn.x = character.x - editBtn.width/2 - closeBtn.width/2 - text.width/2 - textPadding/2 - 3;
+        fbshareBtn.y = character.y -120;
+        fbshareBtn.anchor.set(0.5, 0.5);
+        fbshareBtn.interactive = true;
+        fbshareBtn.buttonMode = true;
+        fbshareBtn.on('pointerdown', fbShareClick);
+
+        text.x = fbshareBtn.x + fbshareBtn.width/2 + textPadding/2 + text.width/2;
         text.y = character.y - 120;
         text.anchor.set(0.5, 0.5);
         
@@ -802,14 +827,7 @@ loader.load(function(loader, resources) {
         editBtn.buttonMode = true;
         editBtn.on('pointerdown', editBtnClick);
 
-        fbshareBtn.x = editBtn.x + editBtn.width/2 + textPadding/2 + fbshareBtn.width/2;
-        fbshareBtn.y = character.y -120;
-        fbshareBtn.anchor.set(0.5, 0.5);
-        fbshareBtn.interactive = true;
-        fbshareBtn.buttonMode = true;
-        fbshareBtn.on('pointerdown', fbShareClick);
-
-        closeBtn.x = fbshareBtn.x + fbshareBtn.width/2 + textPadding/2 + closeBtn.width/2;
+        closeBtn.x = editBtn.x + editBtn.width/2 + textPadding/2 + closeBtn.width/2;
         closeBtn.y = character.y -120;
         closeBtn.anchor.set(0.5, 0.5);
         closeBtn.interactive = true;
@@ -832,6 +850,7 @@ loader.load(function(loader, resources) {
         uiContainer.addChild(editBtn);
         uiContainer.addChild(closeBtn);
         uiContainer.addChild(fbshareBtn);
+        // uiContainer.scale.set(1.1,1.1);
         TweenMax.fromTo(uiContainer, 0.5, {alpha:0, y:50}, {alpha:1, y:0});
     }
 
@@ -875,6 +894,7 @@ loader.load(function(loader, resources) {
         var lastCharacterCenter = {x: rowCenter.x + pageCenter.x + characterCenter.x, y: rowCenter.y + pageCenter.y + characterCenter.y};
         var position = -distanceBetween(lastCharacterCenter, {x:0, y:0});
         if( id < (characterNum*3) /2 ) position *=-1;
+        console.log("pos:"+position);
         return position;
 
     }
@@ -983,7 +1003,7 @@ loader.load(function(loader, resources) {
             type: 'POST',
             contentType: 'application/json; charset=UTF-8',
             headers: {
-                apikey: apiKey
+                apikey: $("#apikey").val()
             },
             dataType: 'json',
             data: JSON.stringify(data)
@@ -994,7 +1014,8 @@ loader.load(function(loader, resources) {
                 // 測試
                 editData.characterObject.data.memo = $("#editMemo").val();
                 editData.textObject.text = $("#editMemo").val();
-                TweenMax.killTweensOf(editData.textObject.text);
+                console.log(editData.textObject.text);
+                TweenMax.killTweensOf(editData.textObject);
                 editData.textObject.data.time = (textAnimateTimer+30)%chatSpeed;
                 $("#edit").removeClass('active');
                 removeEditMemoUI();
@@ -1059,13 +1080,22 @@ loader.load(function(loader, resources) {
             alertText("請輸入留言");
             return;
         }
- 
+        if(checkCookie()) {
+            grecaptcha.execute();
+            return;
+        } else {
+            window.formSubmitAjax(data);
+        }
+        
+    });
+
+    window.formSubmitAjax = function(data) {
         isAjaxing = true;
         $.ajax({
             url: setting.lineupAPIurl,
             type: 'POST',
             headers: {
-                apikey: apiKey
+                apikey: $("#apikey").val()
             },
             contentType: 'application/json; charset=UTF-8',
             dataType: 'json',
@@ -1084,11 +1114,12 @@ loader.load(function(loader, resources) {
                 if( response.code == "0000" ) {
                     $("#form").removeClass("active");
                     $("#registerBtn").removeClass("btn--active");
+                    dropUserID = response.data.data[0].guid;
                     updateCamera({targetID: response.data.data[0].guid, noTween:true, completeFn:function(){
                         dropUser({memo: response.data.data[0].memo, userwear: response.data.data[0].userwear, guid:response.data.data[0].guid});
                     }})
                 } else {
-                    if(response.code == "9998" ) {
+                    if(response.code == "9995" ) {
                         alertText("請勿輸入不雅詞句！");
                         $("#formMemo").val("");
                         // $("#form").removeClass("active");
@@ -1102,9 +1133,10 @@ loader.load(function(loader, resources) {
                     
                 }
             }
-            
-        });        
-    });
+        });
+    } 
+
+    
 
     // 箭頭移動地圖
     $(".arrow").on('touchstart mousedown', function(event) {        
@@ -1204,6 +1236,52 @@ function ready() {
         $(this).parents(".lightbox").removeClass("active");
         isDraging = false;
     });
+    // checkCookie();
+}
+
+function setCookie(c_name,value,expireSec) {
+    var exdate=new Date();
+    exdate.setSeconds(exdate.getSeconds()+expireSec);
+    // console.log(c_name+ "=" +value+((expireSec==null) ? "" : ";expires="+exdate.toGMTString()));
+    document.cookie=c_name+ "=" +escape(value)+((expireSec==null) ? "" : ";expires="+exdate.toGMTString());
+}
+
+function getCookie(c_name) {
+    if (document.cookie.length>0) {
+        c_start=document.cookie.indexOf(c_name + "=");
+        if (c_start!=-1) { 
+            c_start=c_start + c_name.length+1 ;
+            c_end=document.cookie.indexOf(";",c_start);
+            if (c_end==-1) {
+                c_end=document.cookie.length;
+                return unescape(document.cookie.substring(c_start,c_end));
+            }
+        } 
+    }
+    return "";
+}
+
+function checkCookie() {
+    var time = getCookie('time');
+    if (time!=null && time!="") {
+        return true;
+    }
+    else {
+        var exdate=new Date();
+        setCookie("time",exdate.toGMTString(),20);
+        return false;
+    }
+}
+
+function formSubmit() {
+    console.log("!!");
+    var data = {
+        location: $("#formLocation").val(),
+        phone: $("#formPhone").val(),
+        memo: $("#formMemo").val(),
+        pageCount: pageSize
+    }
+    window.formSubmitAjax(data);
 }
 
 ready();

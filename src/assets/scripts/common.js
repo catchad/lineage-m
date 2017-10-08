@@ -7,6 +7,16 @@ $(document).ready(function() {
 	$("header nav .close").on('click', function(event) {
 		$("header nav").removeClass('nav--active');
 	});
+	
+	if(navigator.userAgent.match(/Line/i)) {
+		alertTextClose("<p>建議使用Chrome瀏覽</p><p>以利最佳網頁體驗</p>");
+	}
+
+	var isSamsungBrowser = navigator.userAgent.match(/SamsungBrowser/i);
+	if(isSamsungBrowser) {
+		$("#ieAlert p").html('本站不支援本瀏覽器，建議使用Chrome以利最佳體驗');
+		$("#ieAlert").addClass('active');
+	}
 
 	// 螢幕旋轉
 	var orientation = window.orientation;
@@ -65,6 +75,16 @@ $(document).ready(function() {
 		$(".nav .audio").remove();
 	}
 });
+
+function alertTextClose(text) {
+	$(".alert-text").html(text);
+	$("#alert").css("background-color","rgba(0,0,0,0.8)");
+	$("#alert").addClass('active');
+	$("#alert .close").addClass('active');
+	$("#alert .close").on("click", function() {
+		$("#alert").removeClass('active');
+	})
+}
 
 //alert
 function alertText(text,onComplete) {
