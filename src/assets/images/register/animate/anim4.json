@@ -27,7 +27,7 @@
 "meta": {
 	"app": "http://www.codeandweb.com/texturepacker",
 	"version": "1.0",
-	"image": "anim4.png",
+	"image": "https://tw.hicdn.beanfun.com/beanfun/GamaWWW/LineageM/Event_E20170921/assets/images/register/animate/anim4.png",
 	"format": "RGBA8888",
 	"size": {"w":120,"h":396},
 	"scale": "1",
