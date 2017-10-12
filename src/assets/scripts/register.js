@@ -232,9 +232,11 @@ loader.load(function (loader, resources) {
                 if (completeFn !== undefined) completeFn();
                 return;
             }
+
             updatePixi(page);
             if (completeFn !== undefined) {
-                completeFn();
+                // completeFn();
+                setTimeout(completeFn, 200);
             }
         });
 
@@ -751,7 +753,7 @@ loader.load(function (loader, resources) {
             isAjaxing = false;
             if (response.data == undefined) {
                 // 測試用
-                var guid = 100;
+                var guid = 5000;
                 updateCamera({
                     targetID: guid, noTween: true, completeFn: function () {
                         addEditMemoUI(guid);
@@ -763,7 +765,7 @@ loader.load(function (loader, resources) {
                     if (response.data.data.length !== 0) {
                         totalCount = response.data.totalcount;
                         updateCamera({
-                            targetID: response.data.data[0].guid, noTween: true, completeFn: function () {
+                            targetID: response.data.data[0].guid, noTween: true, completeFn: function() {
                                 addEditMemoUI(response.data.data[0].guid);
                             }
                         })
