@@ -117,6 +117,11 @@ input {
       display: flex;
       justify-content: center;
       align-items: center; }
+      #alert .alert-box .alert-container p {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center; }
       #alert .alert-box .alert-container .close {
         position: absolute;
         top: 15px;
@@ -370,6 +375,11 @@ main {
       justify-content: center;
       align-items: center;
       flex-wrap: wrap; }
+      main .page .subtitle p {
+        padding: 5px 0; }
+      main .page .subtitle .br {
+        width: 100%;
+        height: 1px; }
       @media screen and (max-width: 1000px) {
         main .page .subtitle {
           margin: 0 0 20px 0;
@@ -378,8 +388,6 @@ main {
         main .page .subtitle {
           margin: 0 0 10px 0;
           font-size: 1em; } }
-      main .page .subtitle p:first-child {
-        padding-bottom: 5px; }
   main #page1 .gift-container {
     display: flex;
     flex-direction: column;
@@ -392,11 +400,13 @@ main {
       width: 90%;
       max-width: 350px; }
   main #page1 .tel-container {
-    margin: 20px 0 40px 0;
+    margin: 20px 0 20px 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center; }
+    main #page1 .tel-container p {
+      font-size: 1.3em; }
     main #page1 .tel-container .input-container {
       display: flex;
       justify-content: flex-start;
@@ -420,12 +430,17 @@ main {
         outline: none;
         font-size: 1.1em;
         color: #aaa; }
+  main #page1 .info {
+    margin-bottom: 20px;
+    cursor: pointer;
+    text-decoration: underline; }
   main #page2 .ticket-container {
     margin: 20px 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center; }
+    align-items: center;
+    font-size: 1.3em; }
     main #page2 .ticket-container .ticket-img {
       width: 90%;
       max-width: 300px;
@@ -453,7 +468,7 @@ main {
     justify-content: center;
     align-items: center; }
     main #page2 .invite-container p {
-      font-size: 0.7em; }
+      font-size: 1.3em; }
     main #page2 .invite-container .invite-link-container {
       display: flex;
       justify-content: center;

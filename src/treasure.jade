@@ -15,8 +15,10 @@ block content
 			img(src="assets/images/treasure/title.png", alt="")
 		section#page1.page.show
 			.subtitle
-				p 天天登入，累積抽獎機會，
-				p 週週狂抽「M」好禮
+				p 天天登入，邀請好友，
+				p 累積抽獎機會，
+				.br
+				p 邀請越多中獎機會越大。
 			.gift-container
 				p.gift-title 本週大獎
 				p.gift-name TOYOTA Prius C 1名
@@ -25,17 +27,22 @@ block content
 				p 輸入手機號碼
 				.input-container
 					select.tel-header-selecter
-						option(value="+886") +886
-						option(value="+852") +852
-						option(value="+853") +853
+						option(value="TW") +886
+						option(value="HK") +852
+						option(value="MAC") +853
 					input.tel-input(placeholder="手機號碼" type="tel" onkeypress='return event.charCode >= 48 && event.charCode <= 57' maxlength="10") 
+			a.info 活動辦法
 			.btn.btn-login
 				.btn__container
 					p 立即登入
 			
 		section#page2.page
 			.subtitle
-				p 每日登入完成，恭喜獲得一張抽獎券
+				p 每日登入完成，
+				p 恭喜獲得一張抽獎券。
+				.br
+				p 邀請好友來參加活動，
+				p 即可累積更多中獎機會。
 			.ticket-container
 				img.ticket-img(src="assets/images/treasure/ticket.png", alt="")
 				.ticket-amount-container
@@ -53,10 +60,9 @@ block content
 					input.invite-link(type="text",readonly=true,value="https://goo.gl/G8VDFv") 
 					p.copy-complete.hidden 已複製至剪貼簿！
 					.btn-copy(data-clipboard-target=".invite-link") 複製
-				p 邀請好友來參加活動，即可累積更多中獎機會
-			.btn.btn-info
-				.btn__container
-					p 活動辦法
+			//- .btn.btn-info
+			//- 	.btn__container
+			//- 		p 活動辦法
 		.info-box.lightbox
 			img.close(src="assets/images/close.png", alt="close")
 			

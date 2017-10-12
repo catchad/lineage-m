@@ -90,6 +90,14 @@ main {
 			justify-content: center;
 			align-items: center;
 			flex-wrap: wrap;
+			p {
+				padding: 5px 0;
+			}
+			.br {
+				width: 100%;
+				height: 1px;
+			}
+			
 			@media screen and (max-width: $mobile-breakpoint ) {
 				margin: 0 0 20px 0;
 				font-size: 1.3em;
@@ -97,9 +105,6 @@ main {
 			@media screen and (max-width: $small-mobile-breakpoint ) {
 				margin: 0 0 10px 0;
 				font-size: 1em;
-			}
-			p:first-child {
-				padding-bottom: 5px;
 			}
 		}
 	}
@@ -127,11 +132,14 @@ main {
 			}
 		}
 		.tel-container {
-			margin: 20px 0 40px 0; 
+			margin: 20px 0 20px 0; 
 			display: flex;
 			flex-direction: column;
 			justify-content: center;
 			align-items: center;
+			p {
+				font-size: 1.3em;
+			}
 			.input-container {
 				display: flex;
 				justify-content: flex-start;
@@ -162,6 +170,11 @@ main {
 				}
 			}
 		}
+		.info {
+			margin-bottom: 20px;
+			cursor: pointer;
+			text-decoration: underline; 
+		}
 	}
 	#page2 {
 		.ticket-container {
@@ -170,6 +183,7 @@ main {
 			flex-direction: column;
 			justify-content: center;
 			align-items: center;
+			font-size: 1.3em;
 			.ticket-img {
 				width: 90%;
 				max-width: 300px;
@@ -202,7 +216,7 @@ main {
 			justify-content: center;
 			align-items: center;
 			p {
-				font-size: 0.7em;
+				font-size: 1.3em;
 			}
 			.invite-link-container {
 				display: flex;

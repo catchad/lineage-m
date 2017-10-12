@@ -99,6 +99,12 @@ input {
 			display: flex;
 			justify-content: center;
 			align-items: center;
+			p {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+			}
 			.close {
 				position: absolute;
 				top: 15px;

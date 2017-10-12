@@ -117,6 +117,11 @@ input {
       display: flex;
       justify-content: center;
       align-items: center; }
+      #alert .alert-box .alert-container p {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center; }
       #alert .alert-box .alert-container .close {
         position: absolute;
         top: 15px;
