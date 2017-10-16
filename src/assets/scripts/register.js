@@ -39,7 +39,7 @@ var moveDirection = 0;
 var editData = {};
 var fakeData = [];
 var fakeText = ['賣+10屠龍刀 密我出價 鳥價不回', '賣帳號 99等女妖 密我', '老公我兵單來了 >"<', '幹好lag = =', '靠邀 超多人...', '我要下線了 881', '8口口口口D', '媽我上電視了 ^0^', '徵婆 會養 會疼 要真心 ^^', '收月卡70w 無限收 意密 ^^', '阿貴代練工作室 3天99等 有興趣請密', '血盟【天上人間】收人 歡迎新手 有老手會帶', '貴大師 死白目 搶怪開紅 見一次殺一次'];
-for (var i = 0; i < 76727; i++) {
+for (var i = 1; i <= 76727; i++) {
     fakeData.push({ memo: fakeText[Math.floor(Math.random() * fakeText.length)], userwear: (Math.floor(Math.random() * 16) + 1), guid: i });
 }
 
@@ -73,7 +73,6 @@ function loadProgressHandler(loader) {
 }
 
 loader.load(function (loader, resources) {
-
     container.pivot.set(0.5, 0.5);
     app.stage.addChild(container);
     var mapContainer = new PIXI.Container();
@@ -89,9 +88,6 @@ loader.load(function (loader, resources) {
     var uiContainer = new PIXI.Container();
     container.addChild(uiContainer);
 
-
-
-    // mapPosition = mapDistance/2;
     var p = getPoint(angle, mapPosition);
     container.x = window.innerWidth / 2 + p.x + cameraOffset.x;
     container.y = window.innerHeight / 2 + p.y + cameraOffset.y;
@@ -209,10 +205,12 @@ loader.load(function (loader, resources) {
                     if (fakeData[i] !== undefined) characterData.push(fakeData[i]);
                 }
                 if (totalPage == undefined) {
-                    // firsttime
                     totalPage = Math.ceil(fakeData.length / pageSize) - 1;
                     totalCount = fakeData.length;
                     addMapEnd();
+                }
+                if( characterData.length > 0 && characterData[characterData.length-1].guid > totalCount ) {
+                    characterData.splice(-(characterData[characterData.length-1].guid - totalCount));
                 }
 
             } else {
@@ -221,9 +219,13 @@ loader.load(function (loader, resources) {
                     characterData = response.data.data;
                     if (totalPage == undefined) {
                         totalPage = response.data.totalpage || 0;
-                        totalCount = response.data.totalcount || 0;
+                        totalCount = Number(response.data.totalcount || 0);
                         addMapEnd();
                     }
+                    if( characterData.length > 0 && characterData[characterData.length-1].guid > totalCount ) {
+                        characterData.splice(-(characterData[characterData.length-1].guid - totalCount));
+                    }
+
                 } else {
                     alertText(response.message);
                 }
@@ -531,8 +533,8 @@ loader.load(function (loader, resources) {
                     characterCenter.y -= 20;
 
                     for (var k = 0; k < 3; k++) {
-                        if (characterData[id + k] !== undefined) {
-                            // console.log(characterData[id + k].guid + " " + dropUserID);
+
+                        if (characterData[id + k] !== undefined ) {
                             if (characterData[id + k].guid != dropUserID) {
                                 var newCharacter = new PIXI.Sprite(resources['character' + characterData[id + k].userwear].texture);
                                 newCharacter.anchor.set(0.5, 1);
@@ -555,6 +557,7 @@ loader.load(function (loader, resources) {
 
                                 newCharacter.scale.set(0.9, 0.9);
                                 newCharacter.data = { guid: characterData[id + k].guid, memo: characterData[id + k].memo };
+                 
                                 pageCharacterContainer.addChild(newCharacter);
 
                                 var text = new PIXI.Text(characterData[id + k].memo, style);
@@ -630,7 +633,7 @@ loader.load(function (loader, resources) {
         }
     });
     function characterClick(event) {
-
+        console.log(this.data.guid);
     }
     function removeMap(page) {
         if (page < 0 && page > totalPage) return;
@@ -753,9 +756,11 @@ loader.load(function (loader, resources) {
             isAjaxing = false;
             if (response.data == undefined) {
                 // 測試用
-                var guid = 5000;
+                var guid = Number($("#searchPhone").val());
+                // var targetID = guid;
+                // if( guid > totalCount ) targetID = totalCount;
                 updateCamera({
-                    targetID: guid, noTween: true, completeFn: function () {
+                    targetID: guid > totalCount ? totalCount : guid, noTween: true, completeFn: function () {
                         addEditMemoUI(guid);
                     }
                 })
@@ -763,10 +768,10 @@ loader.load(function (loader, resources) {
                 // 正式用
                 if (response.code == "0000") {
                     if (response.data.data.length !== 0) {
-                        totalCount = response.data.totalcount;
+                        var guid = response.data.data[0].guid;
                         updateCamera({
-                            targetID: response.data.data[0].guid, noTween: true, completeFn: function() {
-                                addEditMemoUI(response.data.data[0].guid);
+                            targetID: guid > totalCount ? totalCount : guid, noTween: true, completeFn: function() {
+                                addEditMemoUI(guid);
                             }
                         })
                     } else {
@@ -785,19 +790,16 @@ loader.load(function (loader, resources) {
         }
         var character;
         var characterText;
-        if (guid == totalCount) {
+        if (registerCharacter !== undefined && guid == registerCharacter.guid) {
             character = registerCharacter.character;
             characterText = registerCharacter.text;
         } else {
             for (var key in activePages) {
                 if (activePages[key].content == undefined) continue;
                 for (var i = 0; i < activePages[key].content[1].children.length; i++) {
-                    // console.log( activePages[key].content[1].children[i].data.guid );
                     if (activePages[key].content[1].children[i].data.guid == guid) {
                         character = activePages[key].content[1].children[i];
                         characterText = activePages[key].content[2].children[i];
-                        //console.log(guid);
-                        //console.log(characterText.text);
                         break;
                     }
                 }
@@ -880,6 +882,7 @@ loader.load(function (loader, resources) {
                 activePages[key].content[2].children[i].visible = true;
             }
         }
+        if( registerCharacter !== undefined ) registerCharacter.text.visible = true;
         // }
 
 
@@ -903,7 +906,6 @@ loader.load(function (loader, resources) {
         var lastCharacterCenter = { x: rowCenter.x + pageCenter.x + characterCenter.x, y: rowCenter.y + pageCenter.y + characterCenter.y };
         var position = -distanceBetween(lastCharacterCenter, { x: 0, y: 0 });
         if (id < (characterNum * 3) / 2) position *= -1;
-       // console.log("pos:" + position);
         return position;
 
     }
@@ -926,7 +928,7 @@ loader.load(function (loader, resources) {
         // parameter.memo
         // parameter.userwear
         // parameter.guid
-        var page = Math.floor(parameter.guid / pageSize);
+        var page = totalPage; // Math.floor(parameter.guid / pageSize);
         var lastCharacterNum = totalCount % pageSize; //殘數
         var lastRowNum = Math.floor(lastCharacterNum / (characterNum * 3));
         var lastCharacterRowNum = Math.floor((lastCharacterNum % (characterNum * 3)) / 3)
@@ -971,7 +973,6 @@ loader.load(function (loader, resources) {
 
         newCharacter.anchor.set(0.5, 1);
         newCharacter.scale.set(0.9, 0.9);
-        newCharacter.on('pointerdown', characterClick);
         newCharacter.data = { guid: parameter.guid, memo: parameter.memo };
         registerContainer.addChild(newCharacter);
 
@@ -984,7 +985,7 @@ loader.load(function (loader, resources) {
         registerContainer.addChild(text);
 
         TweenMax.from(newCharacter, 1, { y: "-=150", alpha: 0, ease: Bounce.easeOut, delay: 1.5 });
-        registerCharacter = { character: newCharacter, text: text };
+        registerCharacter = { character: newCharacter, text: text, guid: parameter.guid };
     }
 
     function fbShareClick() {
@@ -1120,7 +1121,7 @@ loader.load(function (loader, resources) {
                 $("#registerBtn").removeClass("btn--active");
                 updateCamera({
                     targetID: totalCount, noTween: true, completeFn: function () {
-                        dropUser({ memo: $("#formMemo").val(), userwear: '7', guid: totalCount });
+                        dropUser({ memo: $("#formMemo").val(), userwear: '7', guid: fakeData.length+100 });
                     }
                 })
             } else {
@@ -1129,7 +1130,7 @@ loader.load(function (loader, resources) {
                     $("#registerBtn").removeClass("btn--active");
                     dropUserID = response.data.data[0].guid;
                     updateCamera({
-                        targetID: response.data.data[0].guid, noTween: true, completeFn: function () {
+                        targetID: totalCount, noTween: true, completeFn: function () {
                             dropUser({ memo: response.data.data[0].memo, userwear: response.data.data[0].userwear, guid: response.data.data[0].guid });
                         }
                     })
