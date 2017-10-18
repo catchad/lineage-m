@@ -698,23 +698,23 @@ loader.load(function (loader, resources) {
             }
         }
 
-        if (ww < 1024) {
-            container.scale.set(0.7, 0.7);
-            if (activePages[key] && activePages[key].content) {
-                for (var i = 0; i < activePages[key].content[2].children.length; i++) {
-                    var target = activePages[key].content[2].children[i];
-                    target.style.fontSize = "22px";
-                }
-            }
-        } else {
-            container.scale.set(1, 1);
-            if (activePages[key] && activePages[key].content) {
-                for (var i = 0; i < activePages[key].content[2].children.length; i++) {
-                    var target = activePages[key].content[2].children[i];
-                    target.style.fontSize = "16px";
-                }
-            }
-        }
+        // if (ww < 1024) {
+        //     // container.scale.set(0.7, 0.7);
+        //     if (activePages[key] && activePages[key].content) {
+        //         for (var i = 0; i < activePages[key].content[2].children.length; i++) {
+        //             var target = activePages[key].content[2].children[i];
+        //             target.style.fontSize = "22px";
+        //         }
+        //     }
+        // } else {
+        //     // container.scale.set(1, 1);
+        //     if (activePages[key] && activePages[key].content) {
+        //         for (var i = 0; i < activePages[key].content[2].children.length; i++) {
+        //             var target = activePages[key].content[2].children[i];
+        //             target.style.fontSize = "16px";
+        //         }
+        //     }
+        // }
 
         var p = getPoint(angle, mapPosition);
         if (parameter.noTween == true) {
@@ -884,7 +884,6 @@ loader.load(function (loader, resources) {
         }
         if( registerCharacter !== undefined ) registerCharacter.text.visible = true;
         // }
-
 
     }
 
@@ -1200,7 +1199,38 @@ loader.load(function (loader, resources) {
         wh = window.innerHeight;
         ww < 1024 ? cameraOffset.y = 300 : cameraOffset.y = 50;
         ww < 1024 ? cameraOffset.x = 60 : cameraOffset.x = 0;
-        app.renderer.resize(ww, wh);
+
+        if (ww < 1024) {
+            // container.scale.set(0.7, 0.7);
+            // TweenMax.set($("#mapCanvas"), {scale:0.7});
+            for (var key in activePages) {
+                if (activePages[key] && activePages[key].content) {
+                    for (var i = 0; i < activePages[key].content[2].children.length; i++) {
+                        var target = activePages[key].content[2].children[i];
+                        target.style.fontSize = "22px";
+                    }
+                }
+            }
+            app.renderer.resize(ww*1.6, wh*1.6);
+            
+            TweenMax.set($("#mapCanvas"), {scale:0.7, marginTop:-(wh*1.6)/2, marginLeft:-(ww*1.6)/2})
+
+        } else {
+            // container.scale.set(1, 1);
+            // TweenMax.set($("#mapCanvas"), {scale:1});
+            for (var key in activePages) {
+                if (activePages[key] && activePages[key].content) {
+                    for (var i = 0; i < activePages[key].content[2].children.length; i++) {
+                        var target = activePages[key].content[2].children[i];
+                        target.style.fontSize = "16px";
+                    }
+                }
+            }
+            app.renderer.resize(ww, wh);
+            TweenMax.set($("#mapCanvas"), {scale:1, marginTop:-wh/2, marginLeft:-ww/2})
+        }
+
+        // app.renderer.resize(ww, wh);
         updateCamera();
     }
 
